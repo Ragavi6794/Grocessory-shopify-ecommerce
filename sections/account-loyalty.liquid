@@ -1,0 +1,151 @@
+{{ 'account.css' | asset_url | stylesheet_tag: preload: true }}
+<div class="section section-index--{{section.index |  replace: '1', 'first' }} {% render 'sections-spacing' %} color-{{ section.settings.color_scheme }}">
+  <div class="ctnr account background">
+    <div class="s-content">
+      <div class="rw middle-md account__header">
+        <div class="clm" style="--w-xs:12;--w-md:6">
+          <h1	tabindex="-1" class="m-zero h2">{{ 'customer.account.title' | t }}</h1>
+        </div>
+        <div class="clm d-flex end-md middle-md top-xs fd-column fd-row-md mt-8 mb-32 m-zero-md" style="--w-xs:12;--w-md:6">
+          <span class="mr-md-24 welcome-heading">{{ 'customer.account.welcome_message' | t }} {{ customer.name | append: '!' }}</span>
+          <a class="btn btn-link btn-large mt-16 m-zero-md" href="{{ routes.account_logout_url }}">{{ 'customer.log_out' | t }}</a>
+        </div>
+      </div>
+      <div class="rw account-nav">
+        <div class="clm" style="--w-xs:12;">
+          <ul id="accountNavList" class="tab__header d-flex pb-32 p-relative ox-auto disable-scrollbars ls-none ws-nowrap gap-2x">
+  <li class="tab__item d-inline-block">
+    <a class="tab__link fw-700 mb-0 p-relative d-block" href="{{ routes.account_url }}">
+      {{ "customer.orders.title_1" | t }}
+    </a>
+  </li>
+  <li class="tab__item d-inline-block">
+    <a class="tab__link fw-700 mb-0 p-relative d-block" href="{{ routes.account_addresses_url }}">
+      {{ "customer.addresses.title" | t }}
+    </a>
+  </li>
+            <li class="tab__item d-inline-block">
+              <a class="tab__link fw-700 mb-0 p-relative d-block" href="/a/subscriptions/manage">
+               Subscriptions
+              </a>
+            </li>
+  <li class="tab__item d-inline-block" id="account-info-tab">
+    <a class="tab__link fw-700 mb-0 p-relative d-block tab__link--active" href="/account?loyalty=true">
+      Loyalty Points
+    </a>
+  </li>
+</ul>
+
+
+
+  <div class="d-block account-orders-section">
+    <h3 class="h5 mb-24 mb-md-32">{{ 'customer.orders.title' | t: order_count: customer.orders_count }}</h3>
+
+            {% paginate customer.orders by 5 %}
+              {% if customer.orders.size > 0 %}
+                <table class="w-100 ta-left">
+                  <thead class="t-thead" role="rowgroup">
+                    <tr role="row">
+                      <th id="columnOrder" scope="col" role="columnheader">{{ 'customer.orders.order_number' | t }}</th>
+                      <th id="columnDate" scope="col" role="columnheader">{{ 'customer.orders.date' | t }}</th>
+                      <th id="columnPayment" scope="col" role="columnheader">{{ 'customer.orders.payment_status' | t }}</th>
+                      <th id="columnFulfillment" scope="col" role="columnheader">{{ 'customer.orders.fulfillment_status' | t }}</th>
+                      <th id="columnTotal" class="ta-right" scope="col" role="columnheader">{{ 'customer.orders.total' | t }}</th>
+                    </tr>
+                  </thead>
+                  <tbody role="rowgroup">
+                    {% for order in customer.orders %}
+                      <tr class="t-tr pt-24 pb-24 p-zero-md" role="row">
+                        <td id="rowOrder"  headers="ColumnOrder" class="t-td" data-name="{{ 'customer.orders.order_number' | t }}" role="cell"><a href="{{ order.customer_url }}" class="tag" aria-label="{{ 'customer.orders.order_number_link' | t: number: order.name }}">{{ order.name }}</a></td>
+                        <td headers="rowOrder columnDate" class="t-td" data-name="{{ 'customer.orders.date' | t }}" role="cell">{{ order.created_at | time_tag: format: 'date' }}</td>
+                        <td headers="rowOrder columnPayment" class="t-td" data-name="{{ 'customer.orders.payment_status' | t }}" role="cell">{{ order.financial_status_label }}</td>
+                        <td headers="rowOrder columnFulfillment" class="t-td" data-name="{{ 'customer.orders.fulfillment_status' | t }}" role="cell">{{ order.fulfillment_status_label }}</td>
+                        <td headers="rowOrder columnTotal" class="t-td ta-right" data-name="{{ 'customer.orders.total' | t }}" role="cell">{{ order.total_price | money }}</td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              {% else %}
+                <p>{{ 'customer.orders.none' | t }}</p>
+              {% endif %}
+              {%- if paginate.pages > 1 -%}
+                <div class="s-footer">
+                  {%- render 'pagination', paginate: paginate -%}
+                </div>
+              {%- endif -%}
+            {% endpaginate %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="custom-account-form account-info-section" style="text-align: center">
+        <h1 class="h3 custom-account-title" >Loyalty Program & Rewards</h1>
+  <h2 style="font-size: 20px;">Coming Soon.</h2>
+            {% if customer.metafields.joy.loyalty_points %}
+  <p>Your Loyalty Points: {{ customer.metafields.joy.loyalty_points.value }}</p>
+{% else %}
+  <p>No Loyalty Points found.</p>
+{% endif %}
+      </div>
+          {% comment %}Address information ends{% endcomment %}
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const isAccountInfoPage = urlParams.get('information') == 'true';
+
+    const ordersSection = document.querySelector('.account-orders-section');
+    const infoSection = document.querySelector('.account-info-section');
+    const navList = document.querySelector('#accountNavList');
+    const accInfo = document.querySelector('#account-info-tab')
+
+      const activeLink = navList.querySelector('[aria-current="page"]');
+    if (isAccountInfoPage) {
+      // Show account info, hide orders
+      if (ordersSection) ordersSection.style.display = 'none';
+      if (infoSection) infoSection.style.display = 'grid';
+      if (activeLink) {
+        activeLink.classList.add("active-Acc-info");
+        accInfo.classList.add('active-Acc-info-tab');
+      }
+    } else {
+      // Show orders, hide account info
+      if (ordersSection) ordersSection.style.display = 'block';
+      if (infoSection) infoSection.style.display = 'none';
+      if (activeLink) {
+        activeLink.classList.remove("active-Acc-info");
+        accInfo.classList.remove('active-Acc-info-tab');
+      }
+    }
+  });
+</script>
+
+
+{% schema %}
+{
+  "name": "t:sections.account.name",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:general.settings.headers.header_general.content"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:general.settings.color_scheme.label",
+      "default": "scheme-3"
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+  .welcome-heading{
+    font-size:16px;
+    font-weight:600;
+  }
+</style>

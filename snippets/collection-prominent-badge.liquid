@@ -1,0 +1,8 @@
+{%- if collection.metafields.collection.badge -%}
+  <div class="prominent-badge d-grid card__badge p-absolute zi-3">
+    <div class="badge color-scheme-2 tt-up fw-700" style="background-color: {{ collection.metafields.collection.badge.value.color | default: 'unset' }};">{{ collection.metafields.collection.badge.value.content }}</div>
+  </div>
+{%- endif -%}
+
+
+

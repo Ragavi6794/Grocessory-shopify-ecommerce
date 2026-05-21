@@ -1,0 +1,285 @@
+{% liquid
+
+
+
+  assign min_height_mobile = section.settings.height_mobile
+  assign min_height_desktop = section.settings.height_desktop
+
+
+  if section.settings.show_collection_image and collection.image
+    assign sizes = '(min-width: 361px) calc(100vw - (var(--gutter-container) * 2))'
+    assign collection_media = collection.image.src | image_url: width: collection.image.width | image_tag: widths: '750, 950, 1024, 1200', sizes: sizes, alt: collection.title, class: 'media h-100 w-100 of-cover'
+
+    assign s_mask = 'sht-mask'
+    assign s_card = 's-card'
+
+    if min_height_desktop == "adapt_img"
+      assign min_height_desktop = ""
+      assign height_desktop = collection.image.aspect_ratio
+    endif
+
+    if min_height_mobile == "adapt_img"
+      assign min_height_mobile = ""
+      assign height_mobile = collection.image.aspect_ratio
+    endif
+
+
+    if section.settings.content_position_desktop contains 'mask--top'
+      assign overlay_style_md = 'sht-mask--top-md'
+    elsif section.settings.content_position_desktop contains 'mask--bottom'
+      assign overlay_style_md = 'sht-mask--bottom-md'
+    endif
+
+    if section.settings.content_position_mobile contains 'mask--top'
+      assign overlay_style = 'sht-mask--top'
+    elsif section.settings.content_position_mobile contains 'mask--bottom'
+      assign overlay_style = 'sht-mask--bottom'
+    endif
+
+  endif
+
+  unless section.settings.color_mask_overlay.alpha == 0.0 or section.settings.color_mask_overlay == blank
+    assign overlay_color = '--color-mask-overlay:' | append: section.settings.color_mask_overlay.red | append: ',' | append: section.settings.color_mask_overlay.green | append: ',' | append: section.settings.color_mask_overlay.blue | append: ';'
+  endunless
+  unless section.settings.color_text_overlay.alpha == 0.0 or section.settings.color_text_overlay == blank
+    assign content_color = 'color:' | append: section.settings.color_text_overlay | append: ';'
+  endunless
+%}
+
+<div class="section MainCollectionHeader {% if section.settings.show_collection_image and collection.image %} s--banner-spacing {% else %} {% render 'sections-spacing' %} {% endif %} section-index--{{section.index |  replace: '1', 'first' }} color-{{ section.settings.color_scheme }}" data-ui-component="Main Collection Header" style="--overlay: {{ section.settings.image_overlay_opacity }}; {{ overlay_color }}">
+  <div class="ctnr corner-radius-m ">
+    <div class="{{ s_mask }} card--content-inner p-relative {{ overlay_style }} {{ overlay_style_md }}">
+    {%- if section.settings.show_collection_image and collection.image -%}
+      <div class="p-absolute w-100 h-100 left-0 top-0">
+        {% render 'image', image_item: collection_media, image_wrap_classes: 'h-100', image_classes: 'h-100 js-animate anm anm-zoomOut' %}
+      </div>
+    {%- endif -%}
+    <div class="s-header__content {{ s_card }} zi-1 w-100 h-100 p-relative d-flex fd-column image-banner-height
+    {{ section.settings.content_position_mobile }}
+    {{ section.settings.content_position_desktop }}
+    " style="
+    --mh-xs: {{- min_height_mobile -}};
+    --mh-md: {{- min_height_desktop -}};
+    --image-ratio: {{- height_mobile -}};
+    --image-ratio-md: {{- height_desktop -}};
+    {{ content_color }}">
+
+          <h1 class="s-header__heading {{ section.settings.heading_size }} m-zero tt-cap js-animate anm anm-fadeInUpSmall" style="--duration: .6s;">{{- collection.title | escape -}}</h1>
+          {%- if section.settings.show_description and collection.description != blank -%}
+            <div class="s-header__description text-block js-animate anm anm-fadeInUpSmall" style="--duration: .7s; --delay: .05s">{{- collection.description -}}</div>
+          {%- endif -%}
+
+    </div>
+  </div>
+  </div>
+
+</div>
+{% schema %}
+{
+  "name": "t:sections.collection_header.name",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:general.settings.headers.header_general.content"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:general.settings.color_scheme.label",
+      "default": "scheme-2"
+    },
+    {
+      "type": "range",
+      "unit": "%",
+      "max": 90,
+      "min": 0,
+      "step": 1,
+      "default": 30,
+      "id": "image_overlay_opacity",
+      "label": "t:general.settings.overlay_opacity.label"
+    },
+    {
+      "type": "color",
+      "id": "color_mask_overlay",
+      "label": "t:general.settings.custom_mask_overlay.label",
+      "info": "t:general.settings.overlay_opacity.info"
+    },
+    {
+      "type": "color",
+      "id": "color_text_overlay",
+      "label": "t:general.settings.custom_text_overlay.label",
+      "info": "t:general.settings.overlay_opacity.info"
+    },
+    {
+      "type": "select",
+      "label": "t:general.settings.heading_size.label",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "headline",
+          "label": "t:general.settings.heading_size.options.headline.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:general.settings.heading_size.options.h1.label"
+        },
+        {
+          "value": "h2",
+          "label": "t:general.settings.heading_size.options.h2.label"
+        },
+        {
+          "value": "h3",
+          "label": "t:general.settings.heading_size.options.h3.label"
+        }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_image",
+      "label": "t:sections.collection_header.settings.show_collection_image.label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "t:sections.collection_header.settings.show_description.label",
+      "info": "t:sections.collection_header.settings.show_description.info",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:sections.collection_header.settings.header_collection_image.content"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:general.settings.paragraph.section_expand.content"
+    },
+    {
+      "type": "select",
+      "label": "t:general.settings.image_height_on_large_screen.label",
+      "id": "height_desktop",
+      "options": [
+        {
+          "value": "auto",
+          "label": "t:general.settings.height.options.adapt_to_content.label"
+        },
+        {
+          "value": "50vh",
+          "label": "t:general.settings.height.options.option_50.label"
+        },
+        {
+          "value": "70vh",
+          "label": "t:general.settings.height.options.option_70.label"
+        },
+        {
+          "value": "100vh",
+          "label": "t:general.settings.height.options.fill_screen_height.label"
+        },
+        {
+          "value": "adapt_img",
+          "label": "t:general.settings.image_ratio.options.option_adapt.label"
+        }
+      ],
+      "default": "70vh"
+    },
+    {
+      "type": "select",
+      "label": "t:general.settings.content_position_on_large_screen.label",
+      "id": "content_position_desktop",
+      "options": [
+        {
+          "value": "top-md start-md ta-start-md mask--top",
+          "label": "t:general.settings.content_position.options.option_top_left.label"
+        },
+        {
+          "value": "middle-md start-md ta-center-md mask--top",
+          "label": "t:general.settings.content_position.options.option_top_center.label"
+        },
+        {
+          "value": "top-md center-md ta-start-md",
+          "label": "t:general.settings.content_position.options.option_middle_left.label"
+        },
+        {
+          "value": "middle-md center-md ta-center-md",
+          "label": "t:general.settings.content_position.options.option_middle_center.label"
+        },
+        {
+          "value": "top-md end-md ta-start-md mask--bottom",
+          "label": "t:general.settings.content_position.options.option_bottom_left.label"
+        },
+        {
+          "value": "middle-md end-md ta-center-md mask--bottom",
+          "label": "t:general.settings.content_position.options.option_bottom_center.label"
+        }
+      ],
+      "default": "middle-md center-md ta-center-md"
+    },
+    {
+      "type": "select",
+      "label": "t:general.settings.image_height_on_mobile.label",
+      "id": "height_mobile",
+      "options": [
+        {
+          "value": "auto",
+          "label": "t:general.settings.height.options.adapt_to_content.label"
+        },
+        {
+          "value": "50vh",
+          "label": "t:general.settings.height.options.option_50.label"
+        },
+        {
+          "value": "70vh",
+          "label": "t:general.settings.height.options.option_70.label"
+        },
+        {
+          "value": "100vh",
+          "label": "t:general.settings.height.options.fill_screen_height.label"
+        },
+        {
+          "value": "adapt_img",
+          "label": "t:general.settings.image_ratio.options.option_adapt.label"
+        }
+      ],
+      "default": "70vh"
+    },
+    {
+      "type": "select",
+      "label": "t:general.settings.content_position_on_mobile.label",
+      "id": "content_position_mobile",
+      "options": [
+        {
+          "value": "top-xs start-xs ta-start mask--top",
+          "label": "t:general.settings.content_position.options.option_top_left.label"
+        },
+        {
+          "value": "middle-xs start-xs ta-center mask--top",
+          "label": "t:general.settings.content_position.options.option_top_center.label"
+        },
+        {
+          "value": "top-xs center-xs ta-start",
+          "label": "t:general.settings.content_position.options.option_middle_left.label"
+        },
+        {
+          "value": "middle-xs center-xs ta-center",
+          "label": "t:general.settings.content_position.options.option_middle_center.label"
+        },
+        {
+          "value": "top-xs end-xs ta-start mask--bottom",
+          "label": "t:general.settings.content_position.options.option_bottom_left.label"
+        },
+        {
+          "value": "middle-xs end-xs ta-center mask--bottom",
+          "label": "t:general.settings.content_position.options.option_bottom_center.label"
+        }
+      ],
+      "default": "middle-xs center-xs ta-center"
+    }
+  ]
+}
+{% endschema %}
+<style>
+  .s-header__heading{
+    color:#db325e;
+  }
+</style>

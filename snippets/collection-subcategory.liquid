@@ -1,0 +1,87 @@
+<div class="collection-subcategory">
+  <div class="collection-subcategory_grid">
+    <ul class="subcategory-ul">
+    {% for sub_coll in sub_collection %}
+        <li class="subcategory-item">
+          <div>
+            <a href="{{ sub_coll.url }}">
+              {% if sub_coll.image != blank %}
+                <div class="image_">
+                  <img src="{{ sub_coll.image | img_url: 'master' }}" alt="{{ sub_coll.title }}" width="86" height="86">
+                </div>
+              {% endif %}
+              <p class="subcategory-p">{{ sub_coll.title }}</p>
+            </a>
+          </div>
+        </li>
+    {% endfor %}
+    </ul>
+  </div>
+  
+<style>
+.collection-subcategory {
+    display: flex;
+    align-items: stretch;
+    overflow: hidden;
+}
+
+.collection-subcategory_grid {
+    scroll-snap-type: x mandatory;
+    scrollbar-color: currentColor #f7f7f7;
+    scrollbar-height: 2px;
+    padding-bottom: 10px !important;
+    margin-bottom: 10px !important;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.subcategory-item .subcategory-p {
+    display: flex;
+    justify-content: center;
+    font-size: 14px !important;
+    white-space: normal;
+}
+
+.subcategory-ul {
+    display: flex;
+    overflow-x: auto;
+    align-items: stretch;
+    gap: 10px;
+}
+
+@media (min-width: 768px) {
+    .subcategory-ul {
+      width: 1000px;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+}
+
+@media (max-width: 767px) {
+    .subcategory-ul {
+        width: 90vw;
+        max-width: 355px;
+        margin:auto;
+    }
+    .collection-subcategory_grid {
+      width: 100%;
+  }
+}
+
+li.subcategory-item {
+    padding-right: 1rem;
+    display: flex;
+    flex: 0 0 auto;
+    scroll-snap-align: unset !important;
+    margin-bottom: 0;
+    width: 103px;
+}
+
+.image_ {
+    background: #f2f2f2;
+    width: 86px; 
+}
+
+</style>
+</div>
+

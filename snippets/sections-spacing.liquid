@@ -1,0 +1,9 @@
+{%- liquid
+    assign section_style = 'section--solid'
+    assign page_background_color = settings.page_background | downcase
+    assign section_background_color = section.settings.color_scheme.settings.color_background | downcase
+    if page_background_color == section_background_color or section.settings.color_scheme.settings.color_background.alpha == 0.0
+        assign section_style = 'section--transparent'
+    endif
+-%}
+{{- section_style -}}

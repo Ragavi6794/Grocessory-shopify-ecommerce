@@ -1,0 +1,185 @@
+<section class="section ctnr mega-deals-section" style="background-color: {{ section.settings.background_color }};">
+    {% if section.settings.title != blank %}
+      <h2 class="s-header s-header__content mega-deals-title">{{ section.settings.title }}</h2>
+    {% endif %}
+    <div class="mega-deals-grid-wrapper">
+      <div class="mega-deals-grid mega-deals-scroll-desktop">
+        {% for block in section.blocks %}
+          <div class="mega-deals-item">
+            {% if block.settings.link != blank %}
+              <a href="{{ block.settings.link }}" class="mega-deals-link">
+                <img src="{{ block.settings.image | img_url: 'master' }}" alt="Mega Deal Image" class="mega-deals-image">
+              </a>
+            {% else %}
+              <img src="{{ block.settings.image | img_url: 'master' }}" alt="Mega Deal Image" class="mega-deals-image">
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+        {% assign half_index = section.blocks.size | divided_by: 2 %}
+        {% if section.blocks.size > 4 %}
+        <div class="mega-deals-grid mega-deals-scroll-mobile">
+        {% for block in section.blocks %}
+          {% if forloop.index0 >= half_index %}
+            {% break %}
+          {% endif %}
+          <div class="mega-deals-item">
+            {% if block.settings.link != blank %}
+              <a href="{{ block.settings.link }}" class="mega-deals-link">
+                <img src="{{ block.settings.image | img_url: 'master' }}" alt="Mega Deal Image" class="mega-deals-image">
+              </a>
+            {% else %}
+              <img src="{{ block.settings.image | img_url: 'master' }}" alt="Mega Deal Image" class="mega-deals-image">
+            {% endif %}
+          </div>
+        {% endfor %}
+        </div>
+          <div class="mega-deals-grid mega-deals-scroll-mobile">
+        {% for block in section.blocks %}
+          {% if forloop.index0 < half_index %}
+            {% continue %}
+          {% endif %}
+          <div class="mega-deals-item">
+            {% if block.settings.link != blank %}
+              <a href="{{ block.settings.link }}" class="mega-deals-link">
+                <img src="{{ block.settings.image | img_url: 'master' }}" alt="Mega Deal Image" class="mega-deals-image">
+              </a>
+            {% else %}
+              <img src="{{ block.settings.image | img_url: 'master' }}" alt="Mega Deal Image" class="mega-deals-image">
+            {% endif %}
+          </div>
+        {% endfor %}
+        </div>
+        {% else %}
+          <div class="mega-deals-grid mega-deals-scroll-mobile">
+        {% for block in section.blocks %}
+          <div class="mega-deals-item">
+            {% if block.settings.link != blank %}
+              <a href="{{ block.settings.link }}" class="mega-deals-link">
+                <img src="{{ block.settings.image | img_url: 'master' }}" alt="Mega Deal Image" class="mega-deals-image">
+              </a>
+            {% else %}
+              <img src="{{ block.settings.image | img_url: 'master' }}" alt="Mega Deal Image" class="mega-deals-image">
+            {% endif %}
+          </div>
+        {% endfor %}
+          </div>
+        {% endif %}
+    </div>
+</section>
+
+<style>
+  .mega-deals-section {
+    padding: 3rem;
+    border-radius: 12px;
+  }
+  .mega-deals-title {
+    text-align: left;
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 0;
+  }
+  .mega-deals-grid-wrapper {
+    /* overflow-x: auto; */
+    -webkit-overflow-scrolling: touch;
+  }
+  .mega-deals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1.5rem;
+  }
+  .mega-deals-item {
+    text-align: center;
+    border-radius: 12px;
+    background-color: #fff;
+    flex: 0 0 auto;
+  }
+  .mega-deals-image {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    border-radius: 12px;
+  }
+  .mega-deals-link {
+    display: block;
+    text-decoration: none;
+  }
+.mega-deals-grid::-webkit-scrollbar-thumb { 
+	  height: 2px;
+	  width: var(--width-thumb-mobile);
+	  background: transparent;
+	  border-radius: 10px;
+   }
+  .mega-deals-grid::-webkit-scrollbar {
+	height: 2px;
+	width: 100%;
+	background: transparent;
+	border-radius: 10px;
+  }
+  .mega-deals-scroll-mobile{
+    display: none;
+  }
+  @media screen and (max-width: 1284px) {
+  .mega-deals-scroll-desktop {
+    display: none;
+  }
+  .mega-deals-scroll-mobile{
+    display: flex;
+    justify-content: space-evenly;
+    overflow-x: auto;
+  }
+    .mega-deals-grid-wrapper {
+    gap: 1.5rem;
+    display: grid;
+  }
+}
+  @media screen and (max-width: 489px) {
+    .mega-deals-item {
+      max-width: 120px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Mega Deals Section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Mega Deals"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#f1ebde"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image_block",
+      "name": "Image Block",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Image Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Mega Deals",
+      "category": "Custom Sections"
+    }
+  ]
+}
+{% endschema %}

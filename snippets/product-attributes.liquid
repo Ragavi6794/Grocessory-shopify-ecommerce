@@ -1,0 +1,83 @@
+{%- if settings.product_attributes_metafield_namespace != blank -%}
+  {%- liquid
+    assign namespace_keys = namespace_keys | remove: " " | downcase | split: "."
+    assign namespace = namespace_keys[0]
+    assign keys = namespace_keys[1]
+  -%}
+    {%- case product.metafields[namespace][keys].type -%}
+      {%- when 'single_line_text_field' -%}
+        <div class="product-attributes {{ att_style | default: 'mb-16' }}">
+          <span class="subtext background {{ badge_style }}">{{- product.metafields[namespace][keys].value -}}</span>
+        </div>
+      {%- when 'list.single_line_text_field' -%}
+        <div class="product-attributes d-flex gap-4 gap-md-8 fw-wrap {{ att_style | default: 'mb-16' }}">
+          {% for item in product.metafields[namespace][keys].value %}
+            <span class="subtext background {{ badge_style }}">{{- item -}}</span>
+          {% endfor %}
+        </div>
+      {%- when 'metaobject_reference' -%}
+        {%- liquid
+          assign json_meta_objects_json = product.metafields[namespace][keys].value | json
+          assign meta_objects = json_meta_objects_json | split: ','
+
+          assign item_obj = ''
+          for meta_object in meta_objects
+            assign item_res = meta_object | split: ':'
+            assign item_res = item_res.first | replace: '{"', '' | replace: '"', ''
+            assign item_obj = item_obj | append: item_res | append: ','
+          endfor
+          assign item_obj_array = item_obj | split: ","
+        -%}
+        <div class="product-attributes d-flex gap-4 gap-md-8 fw-wrap {{ att_style | default: 'mb-16' }}">
+          {% for item_obj in item_obj_array %}
+            {% case product.metafields[namespace][keys].value[item_obj].type %}
+              {% when 'single_line_text_field' %}
+                <span class="subtext background {{ badge_style }}">{{- product.metafields[namespace][keys].value[item_obj] -}}</span>
+              {% when 'list.single_line_text_field' %}
+                {% for item in product.metafields[namespace][keys].value[item_obj].value %}
+                  <span class="subtext background {{ badge_style }}">{{- item -}}</span>
+                {% endfor %}
+            {% endcase %}
+          {% endfor %}
+        </div>
+      {%- when 'list.metaobject_reference' %}
+        {%- liquid
+        assign json_meta_objects_json = product.metafields[namespace][keys].value | json
+        assign meta_objects = json_meta_objects_json | join: ','
+
+        assign item_obj = ''
+        for meta_object in meta_objects
+          assign item_res = meta_object | split: ','
+          assign item_keys = ''
+          for key_value_pair in item_res
+            assign key_value = key_value_pair | split: ':'
+            assign key = key_value.first | replace: '{"', '' | replace: '"', ''
+            assign item_keys = item_keys | append: key | append: ','
+          endfor
+          assign item_obj = item_obj | append: item_keys | append: ','
+        endfor
+        assign item_obj_array = item_obj | replace: '[', '' | replace: '"]', '' | replace: '"', '' | split: ","
+
+        for item in item_obj_array
+          unless unique_array contains item
+            assign unique_array = unique_array | append: item | append: ","
+          endunless
+        endfor
+        assign unique_array = unique_array | split: ","
+        -%}
+        <div class="product-attributes d-flex gap-4 gap-md-8 fw-wrap {{ att_style | default: 'mb-16' }}">
+          {%- for product_obj in product.metafields[namespace][keys].value -%}
+            {% for item_obj in unique_array %}
+              {% case product_obj[item_obj].type %}
+                {% when 'single_line_text_field' %}
+                  <span class="subtext background {{ badge_style }}">{{- product_obj[item_obj].value -}}</span>
+                {% when 'list.single_line_text_field' %}
+                  {% for item in product_obj[item_obj].value %}
+                    <span class="subtext background {{ badge_style }}">{{- item -}}</span>
+                  {% endfor %}
+              {% endcase %}
+            {% endfor %}
+          {%- endfor -%}
+        </div>
+    {%- endcase -%}
+{%- endif -%}

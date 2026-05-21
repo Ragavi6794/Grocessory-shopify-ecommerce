@@ -1,0 +1,502 @@
+{{ 'account.css' | asset_url | stylesheet_tag: preload: true }}
+{%- paginate customer.addresses by 5 -%}
+  <div class="section section-index--{{section.index |  replace: '1', 'first' }} {% render 'sections-spacing' %} color-{{ section.settings.color_scheme }}">
+  <div class="ctnr account-adress color-{{ section.settings.color_scheme }} background">
+    <div class="s-content">
+      <div class="rw middle-md account__header">
+        <div class="clm" style="--w-xs:12;--w-md:6">
+          <h1	tabindex="-1" class="m-zero h2">{{ 'customer.account.title' | t }}</h1>
+        </div>
+        <div class="clm d-flex end-md middle-md top-xs fd-column fd-row-md mt-16 mb-32 m-zero-md" style="--w-xs:12;--w-md:6">
+          <span class="mr-16 welcome-heading">{{ 'customer.account.welcome_message' | t }} {{ customer.name | append: '!' }}</span>
+          <a class="btn btn-link btn-large mt-8 m-zero-md fw-700" href="{{ routes.account_logout_url }}">{{ 'customer.log_out' | t }}</a>
+        </div>
+      </div>
+      <div class="rw">
+        <div class="clm" style="--w-xs:12;">
+          <ul class="tab__header d-flex pb-32 p-relative ox-auto disable-scrollbars ls-none ws-nowrap gap-2x">
+            <li class="tab__item d-inline-block">
+              <a class="tab__link fw-700 mb-0 p-relative d-block" href="{{ routes.account_url }}">
+                {{ "customer.orders.title_1" | t }}
+              </a>
+            </li>
+            <li class="tab__item d-inline-block">
+              <a class="tab__link fw-700 mb-0 p-relative d-block tab__link--active" href="{{ routes.account_addresses_url }}">
+                {{ "customer.addresses.title" | t }}
+              </a>
+            </li>
+               <li class="tab__item d-inline-block">
+              <a class="tab__link fw-700 mb-0 p-relative d-block" href="/a/subscriptions/manage">
+               Subscriptions
+              </a>
+            </li> 
+            <li class="tab__item d-inline-block" id="account-info-tab">
+              {% if localization.language.iso_code == "ar" %}
+                <a class="tab__link fw-700 mb-0 p-relative d-block walletLink" href="/ar/account?wallet=true">
+                  محفظتي
+                </a>
+                {% else %}
+                <a class="tab__link fw-700 mb-0 p-relative d-block walletLink" href="/account?wallet=true">
+                  My Wallet
+                </a>
+                {% endif %}
+
+          </li>
+          </ul>
+          <div class="s-content">
+            <div class="d-flex top-xs middle-md between-md fd-column fd-row-md mb-32 mb-md-48">
+              <h3 class="h5 m-zero">{{ 'customer.addresses.title_1' | t: address_count: customer.addresses.size }}</h3>
+              <button type="button" id="editFormButton_addAddress" aria-expanded="false" data-address-id="addAddress" aria-controls="addAddress" class="btn btn-large btn-secondary mt-24 m-zero-md js-account-address-toggle-address-btn">
+                {{ 'customer.addresses.add_new' | t }}
+              </button>
+            </div>
+            <div id="addAddress" class="rw r-gap-24 pb-32 d-none">
+              <div class="clm" style="--w-xs:12">
+                <h4 id="addressNewHeading" class="m-zero h5">{{ 'customer.addresses.add_new' | t }}</h4>
+              </div>
+              {%- form 'customer_address', customer.new_address, aria-labelledBy: 'addressNewHeading', class: 'd-flex fw-wrap r-gap-24 r-gap-md-32' -%}
+                <div class="clm" style="--w-md:6">
+                  <label for="addressFirstNameNew" class="field__label d-block mb-8 fw-700">
+                    {% if localization.language.iso_code == "ar" %}
+                      الاسم الأول
+                    {% else %}
+                      First Name
+                    {% endif %}
+                  <span class="ml-4 color-error">*</span></label>
+                  <input class="field__text field--focus field--hover w-100" type="text" id="addressFirstNameNew" name="address[first_name]" value="{{ form.first_name }}" autocomplete="given-name" placeholder="{% if localization.language.iso_code == "ar" %}الاسم الأول{% else %}First Name{% endif %}" required/>
+                </div>
+                <div class="clm" style="--w-md:6">
+                  <label for="addressLastNameNew" class="field__label d-block mb-8 fw-700">{{ 'customer.addresses.last_name' | t }}<span class="ml-4 color-error">*</span></label>
+                  <input class="field__text field--focus field--hover w-100" type="text" id="addressLastNameNew" name="address[last_name]" value="{{ form.last_name }}" autocomplete="family-name" placeholder="{{ 'customer.addresses.last_name' | t }}" required/>
+                </div>
+                <div class="clm" style="--w-md:6">
+                  <label for="addressPhoneNew" class="field__label d-block mb-8 fw-700">
+                    {{ 'customer.addresses.phone' | t }}
+                    <span class="ml-4 color-error">*</span>
+                  </label>
+                  <div class="phone-input-wrapper" style="display: flex; align-items: center;">
+                    <span class="phone-prefix" style="background: #f8f9fa; border: 1px solid #ddd; border-right: none; padding: 10px 12px; border-radius: 4px 0 0 4px; font-weight: 500;">+971</span>
+                    <input class="field__text field--focus field--hover" style="border-radius: 0 4px 4px 0; flex: 1;" type="tel" id="addressPhoneNew" name="address[phone]" value="{{ form.phone }}" autocomplete="tel" placeholder="50 1234567" pattern="^(50|52|54|55|56|58)\s?\d{7}$" title="Please enter a valid UAE mobile number" required/>
+                  </div>
+                </div>
+                <div class="clm" style="--w-md:6">
+                  <label for="addressAddress1New" class="field__label d-block mb-8 fw-700">          
+                    {% if localization.language.iso_code == "ar" %}
+                      عنوان الفيلا/الشقة
+                    {% else %}
+                      Villa/Flat Address
+                    {% endif %}  
+                  <span class="ml-4 color-error">*</span></label>
+                  <input class="field__text field--focus field--hover w-100" type="text" id="addressAddress1New" name="address[address1]" value="{{ form.address1 }}" autocomplete="address-line1" placeholder="{% if localization.language.iso_code == "ar" %}عنوان الفيلا/الشقة{% else %}Villa/Flat Address{% endif %}" required/>
+                </div>
+                <div class="clm" style="--w-md:6">
+                  <label for="addressAddress2New" class="field__label d-block mb-8 fw-700">
+                  {% if localization.language.iso_code == "ar" %}
+                    عنوان الشارع
+                  {% else %}
+                    Street Address
+                  {% endif %} 
+                  <span class="ml-4 color-error">*</span></label>
+                  <input class="field__text field--focus field--hover w-100" type="text" id="addressAddress2New" name="address[address2]" value="{{ form.address2 }}" autocomplete="address-line2" placeholder="{% if localization.language.iso_code == "ar" %}عنوان الشارع{% else %}Street Address{% endif %}" required/>
+                </div>
+                <div class="clm" style="--w-md:6">
+                  <label for="addressCityNew" class="field__label d-block mb-8 fw-700">Area<span class="ml-4 color-error">*</span></label>
+                  <input required class="field__text field--focus field--hover w-100" type="text" id="addressCityNew" name="address[city]" value="{{ form.city }}" autocomplete="address-level2" placeholder="Area"/>
+                </div>
+                <div class="clm" style="--w-md:6">
+                  <label for="addressProvinceNew" class="field__label d-block mb-8 fw-700">                      {% if localization.language.iso_code == "ar" %}
+                        الولاية / المحافظة
+                      {% else %}
+                        State/Province
+                      {% endif %}<span class="ml-4 color-error">*</span></label>
+                  <div class="field__select p-relative">
+                    <select class="field__text field--focus field--hover w-100" id="addressProvinceNew" name="address[province]" autocomplete="address-level1" required>
+                      <option value="" selected disabled>  
+                        {% if localization.language.iso_code == "ar" %}
+                          اختر الإمارة
+                        {% else %}
+                          Select State
+                        {% endif %}
+                      </option>
+                      <option value="Dubai">
+                        {% if localization.language.iso_code == "ar" %}
+                          دبي
+                        {% else %}
+                          Dubai
+                        {% endif %}
+                      </option>
+                      <option value="Abu Dhabi">
+                        {% if localization.language.iso_code == "ar" %}
+                          أبوظبي
+                        {% else %}
+                          Abu Dhabi
+                        {% endif %}
+                      </option>
+                    </select>
+                    <span class="btn btn-large btn-icon p-absolute right-0 pe-none">
+                      {% render 'icon-chevron-down' %}
+                    </span>
+                  </div>
+                </div>
+                
+                <!-- Hidden country field with default UAE value -->
+                <input type="hidden" name="address[country]" value="United Arab Emirates" />
+                
+                <div class="clm" style="--w-xs:12">
+                  <label class="d-flex c-pointer" for="address_default_address_{{ form.id }}">
+                    <input type="checkbox" class="field__checkbox p-absolute opacity-0" id='address_default_address_{{ form.id }}' name='address[default]' value='1'>
+                    {% render 'icon-check', class: 'icon-checkmark mr-8 field--hover checkbox--hover' %}
+                    <span>{{ 'customer.addresses.set_default' | t }}</span>
+                  </label>
+                </div>
+                <div class="clm d-flex end-md gap-12 fd-column-reverse fd-row-md" style="--w-xs:12">
+                  <button class="btn btn-large btn-secondary js-account-address-cancel-address-btn" type="reset" data-address-id="addAddress">{{ 'customer.addresses.cancel' | t }}</button>
+                  <button class="btn btn-large btn-primary">          
+                    {% if localization.language.iso_code == "ar" %}
+                      إضافة العنوان
+                    {% else %}
+                      Add Address
+                    {% endif %}
+                  </button>
+                </div>
+              {%- endform -%}
+            </div>
+
+            {%- for address in customer.addresses -%}
+              <div class="address address-{{ address.id }} js-account-address-container">
+                <div class="rw">
+                  <div class="clm d-flex between-xs middle-xs d-block-md mb-16 m-zero-md" style="--w-xs:12;--w-md:3">
+                    <span class="d-block fw-700">{{ address.name }}</span>
+                    {%- if address == customer.default_address -%}
+                      <span class="d-inline-block mt-md-12 tag">
+                        {{ 'customer.addresses.default' | t }}
+                      </span>
+                    {%- endif -%}
+                  </div>
+                  <div class="clm" style="--w-xs:12;--w-md:7">
+                    <span class="d-block mb-8">{{ address.company }}</span>
+                    <span class="d-block mb-8">{{ address.phone }}</span>
+                    <span class="d-block mb-8">{{ address.address1 }}</span>
+                    <span class="d-block mb-8">{{ address.city }}
+                      {{ address.province_code }}
+                      {{ address.zip }}
+                    </span>
+                    <span class="d-block">{{ address.country }}</span>
+                  </div>
+                  <div class="clm d-flex end-md mt-16 m-zero-md top-md" style="--w-xs:12;--w-md:2">
+                    <button class="btn btn-link btn-small js-account-address-toggle-address-btn" id="editFormButton_{{ address.id }}" aria-label="{{ 'customer.addresses.edit_address' | t }} {{ forloop.index }}" aria-controls="editAddress_{{ address.id }}" aria-expanded="false" data-address-id="editAddress_{{ address.id }}">
+                      {{ 'customer.addresses.edit' | t }}
+                    </button>
+                    <button class="ml-12 btn btn-link btn-small js-account-address-delete-address-btn" aria-label="{{ 'customer.addresses.delete' | t }} {{ forloop.index }}" data-target="{{ address.url }}" data-confirm-message="{{ 'customer.addresses.delete_confirm' | t }}">
+                      {{ 'customer.addresses.delete' | t }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div id="editAddress_{{ address.id }}" class="rw pb-32 d-none r-gap-24">
+                <div class="clm" style="--w-xs:12">
+                  <h4 class="m-zero h5">{{ 'customer.addresses.edit_address' | t }}</h4>
+                </div>
+                {%- form 'customer_address', address, class: 'd-flex fw-wrap r-gap-24 r-gap-md-32' -%}
+                  <div class="clm" style="--w-md:6">
+                    <label for="addressFirstName_{{ form.id }}" class="field__label d-block mb-8 fw-700">
+                      {% if localization.language.iso_code == "ar" %}
+                        الاسم الأول
+                      {% else %}
+                        First Name
+                      {% endif %}
+                    <span class="ml-4 color-error">*</span></label>
+                    <input required class="field__text field--focus field--hover w-100" type="text" id="addressFirstName_{{ form.id }}" name="address[first_name]" value="{{ form.first_name }}" autocomplete="given-name" placeholder="{% if localization.language.iso_code == "ar" %}الاسم الأول{% else %}First Name{% endif %}"/>
+                  </div>
+                  <div class="clm" style="--w-md:6">
+                    <label for="addressLastName_{{ form.id }}" class="field__label d-block mb-8 fw-700">{{ 'customer.addresses.last_name' | t }}<span class="ml-4 color-error">*</span></label>
+                    <input required class="field__text field--focus field--hover w-100" type="text" id="addressLastName_{{ form.id }}" name="address[last_name]" value="{{ form.last_name }}" autocomplete="family-name" placeholder="{{ 'customer.addresses.last_name' | t }}"/>
+                  </div>
+                  <div class="clm" style="--w-md:6">
+                    <label for="addressPhone_{{ form.id }}" class="field__label d-block mb-8 fw-700">
+                      {{ 'customer.addresses.phone' | t }}
+                      <span class="ml-4 color-error">*</span>
+                    </label>
+                    <div class="phone-input-wrapper" style="display: flex; align-items: center;">
+                      <span class="phone-prefix" style="background: #f8f9fa; border: 1px solid #ddd; border-right: none; padding: 10px 12px; border-radius: 4px 0 0 4px; font-weight: 500;">+971</span>
+                      <input class="field__text field--focus field--hover" style="border-radius: 0 4px 4px 0; flex: 1;" type="tel" id="addressPhone_{{ form.id }}" name="address[phone]" value="{{ form.phone | replace: '+971', '' | strip }}" autocomplete="tel" placeholder="50 1234567" pattern="^(50|52|54|55|56|58)\s?\d{7}$" title="Please enter a valid UAE mobile number" required/>
+                    </div>
+                  </div>
+                  <div class="clm" style="--w-md:6">
+                    <label for="addressAddress1_{{ form.id }}" class="field__label d-block mb-8 fw-700">
+                      {% if localization.language.iso_code == "ar" %}
+                        عنوان الفيلا/الشقة
+                      {% else %}
+                        Villa/Flat Address
+                      {% endif %}
+                    <span class="ml-4 color-error">*</span></label>
+                    <input required class="field__text field--focus field--hover w-100" type="text" id="addressAddress1_{{ form.id }}" name="address[address1]" value="{{ form.address1 }}" autocomplete="address-line1" placeholder="{% if localization.language.iso_code == "ar" %}عنوان الفيلا/الشقة{% else %}Villa/Flat Address{% endif %}"/>
+                  </div>
+                  <div class="clm" style="--w-md:6">
+                    <label for="addressAddress2_{{ form.id }}" class="field__label d-block mb-8 fw-700">
+                      {% if localization.language.iso_code == "ar" %}
+                        عنوان الشارع
+                      {% else %}
+                        Street Address
+                      {% endif %}
+                    <span class="ml-4 color-error">*</span></label>
+                    <input required class="field__text field--focus field--hover w-100" type="text" id="addressAddress2_{{ form.id }}" name="address[address2]" value="{{ form.address2 }}" autocomplete="address-line2" placeholder="{% if localization.language.iso_code == "ar" %}عنوان الشارع{% else %}Street Address{% endif %}"/>
+                  </div>
+                  <div class="clm" style="--w-md:6">
+                    <label for="addressCity_{{ form.id }}" class="field__label d-block mb-8 fw-700">{{ 'customer.addresses.city' | t }}<span class="ml-4 color-error">*</span></label>
+                    <input required class="field__text field--focus field--hover w-100" type="text" id="addressCity_{{ form.id }}" name="address[city]" value="{{ form.city }}" autocomplete="address-level2" placeholder="{{ 'customer.addresses.city' | t }}"/>
+                  </div>
+                  <div class="clm" style="--w-md:6">
+                    <label for="addressProvince_{{ form.id }}" class="field__label d-block mb-8 fw-700">
+                      {% if localization.language.iso_code == "ar" %}
+                        الولاية / المحافظة
+                      {% else %}
+                        State/Province
+                      {% endif %}
+                    <span class="ml-4 color-error">*</span></label>
+                    <div class="field__select p-relative">
+                      <select class="field__text field--focus field--hover w-100" id="addressProvince_{{ form.id }}" name="address[province]" data-default="{{ form.province }}" autocomplete="address-level1" required>
+                        <option value="" selected disabled>
+                          {% if localization.language.iso_code == "ar" %}
+                            اختر الإمارة
+                          {% else %}
+                            Select State
+                          {% endif %}
+                        </option>
+                        <option value="Dubai" {% if form.province == 'Dubai' %}selected{% endif %}>
+                          {% if localization.language.iso_code == "ar" %}
+                            دبي
+                          {% else %}
+                            Dubai
+                          {% endif %}
+                        </option>
+                        <option value="Abu Dhabi" {% if form.province == 'Abu Dhabi' %}selected{% endif %}>
+                          {% if localization.language.iso_code == "ar" %}
+                            أبوظبي
+                          {% else %}
+                            Abu Dhabi
+                          {% endif %}
+                        </option>
+                        <option value="Sharjah" {% if form.province == 'Sharjah' %}selected{% endif %}>
+                          {% if localization.language.iso_code == "ar" %}
+                            الشارقة
+                          {% else %}
+                            Sharjah
+                          {% endif %}
+                        </option>
+                        <option value="Ajman" {% if form.province == 'Ajman' %}selected{% endif %}>
+                          {% if localization.language.iso_code == "ar" %}
+                            عجمان
+                          {% else %}
+                            Ajman
+                          {% endif %}
+                        </option>
+                      </select>
+                      <span class="btn btn-large btn-icon p-absolute right-0 pe-none">
+                        {% render 'icon-chevron-down' %}
+                      </span>
+                    </div>
+                  </div>
+                  
+                  <!-- Hidden country field with default UAE value -->
+                  <input type="hidden" name="address[country]" value="United Arab Emirates" />
+                  <div class="clm" style="--w-xs:12">
+                    <label class="d-flex c-pointer" for="address_default_address_{{ form.id }}">
+                      <input type="checkbox" class="field__checkbox p-absolute opacity-0" id='address_default_address_{{ form.id }}' name='address[default]' value='1'>
+                      {% render 'icon-check', class: 'icon-checkmark mr-8 field--hover checkbox--hover' %}
+                      <span>{{ 'customer.addresses.set_default' | t }}</span>
+                    </label>
+                  </div>
+
+                  <div class="clm d-flex end-md gap-12 fd-column-reverse fd-row-md" style="--w-xs:12">
+                    <button class="btn btn-large btn-secondary js-account-address-cancel-address-btn" data-address-id="{{ address.id }}" type="reset">{{ 'customer.addresses.cancel' | t }}</button>
+                    <button class="btn btn-large btn-primary">{{ 'customer.addresses.update' | t }}</button>
+                  </div>
+                {%- endform -%}
+              </div>
+            {%- endfor -%}
+          </div>
+          {%- if paginate.pages > 1 -%}
+            <div class="s-footer">
+              {%- render 'pagination', paginate: paginate -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+{%- endpaginate -%}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+  const isArabic = '{{ localization.language.iso_code }}' === 'ar';
+  const requiredMessage = isArabic ? 'يرجى ملء هذا الحقل' : 'Please fill in this field';
+  
+  // Set custom validation messages for all required fields
+  const requiredFields = document.querySelectorAll('input[required], select[required]');
+  requiredFields.forEach(field => {
+    field.addEventListener('invalid', function() {
+      if (this.validity.valueMissing) {
+        this.setCustomValidity(requiredMessage);
+      }
+    });
+    
+    field.addEventListener('input', function() {
+      this.setCustomValidity(''); // Clear custom message when user starts typing
+    });
+  });
+});
+  </script>
+<script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer="defer"></script>
+{%- liquid
+  assign files = "component-account.js" | split: ', '
+  render 'js-loader', files: files
+-%}
+{% schema %}
+  {
+    "name": "t:sections.account_login.name",
+    "settings": [
+      {
+        "type": "header",
+        "content": "t:general.settings.headers.header_general.content"
+      },
+      {
+        "type": "color_scheme",
+        "id": "color_scheme",
+        "label": "t:general.settings.color_scheme.label",
+        "default": "scheme-3"
+      }
+    ]
+  }
+  {% endschema %}
+  <script>
+  document.getElementById('addressPhoneNew').addEventListener('input', function () {
+    var phoneInput = this;
+    var phonePattern = /^(\+971|971)\s?(50|52|54|55|56|58)\s?\d{7}$/;
+    var validationMessage = document.getElementById('phoneValidationMessage');
+
+    if (phoneInput.value.trim() === '') {
+      validationMessage.style.display = 'block';
+      validationMessage.textContent = 'Phone number is required.';
+      phoneInput.setCustomValidity('Phone number is required.');
+    } else if (!phonePattern.test(phoneInput.value)) {
+      validationMessage.style.display = 'block';
+      validationMessage.textContent = 'Please enter a valid phone number in the format: +971 55 1234567 or 971 55 1234567.';
+      phoneInput.setCustomValidity('Invalid phone number format.');
+    } else {
+      validationMessage.style.display = 'none';
+      phoneInput.setCustomValidity('');
+    }
+  });
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var phoneInput = document.getElementById('addressPhone_{{ form.id }}');
+    var validationMessage = document.getElementById('phoneValidationMessage_{{ form.id }}');
+    
+    phoneInput.addEventListener('input', function () {
+      var phonePattern = /^(\+971|971)\s?(50|52|54|55|56|58)\s?\d{7}$/;
+
+      if (phoneInput.value.trim() === '') {
+        validationMessage.style.display = 'block';
+        validationMessage.textContent = 'Phone number is required.';
+        phoneInput.setCustomValidity('Phone number is required.');
+      } else if (!phonePattern.test(phoneInput.value)) {
+        validationMessage.style.display = 'block';
+        validationMessage.textContent = 'Please enter a valid phone number in the format: +971 55 1234567 or 971 55 1234567.';
+        phoneInput.setCustomValidity('Invalid phone number format.');
+      } else {
+        validationMessage.style.display = 'none';
+        phoneInput.setCustomValidity('');
+      }
+    });
+  });
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const cityInput = document.getElementById("addressCityNew");
+  const zipInput = document.getElementById("addressZipNew");
+  const phoneInput = document.getElementById("addressPhoneNew");
+  const firstNameInput = document.getElementById("addressFirstNameNew");
+  const lastNameInput = document.getElementById("addressLastNameNew");
+  const address1Input = document.getElementById("addressAddress1New");
+  const address2Input = document.getElementById("addressAddress2New");
+
+  function validateWhitespace(event) {
+    if (event.target.value.trim() === "") {
+      event.target.setCustomValidity("This field cannot be empty or just spaces.");
+    } else {
+      event.target.setCustomValidity("");
+    }
+  }
+
+  function restrictPhoneInput(event) {
+    event.target.value = event.target.value.replace(/\D/g, ""); // Allow only numbers
+  }
+
+  function restrictNameInput(event) {
+    event.target.value = event.target.value.replace(/[^A-Za-z\s]/g, ""); // Allow only letters and spaces
+    validateWhitespace(event); // Ensure it's not empty or only spaces
+  }
+
+  function restrictZipInput(event) {
+    event.target.value = event.target.value.replace(/\D/g, ""); // Allow only numbers
+  }
+
+  // Apply validations
+  cityInput.addEventListener("input", validateWhitespace);
+  zipInput.addEventListener("input", restrictZipInput);
+  phoneInput.addEventListener("input", restrictPhoneInput);
+  firstNameInput.addEventListener("input", restrictNameInput);
+  lastNameInput.addEventListener("input", restrictNameInput);
+  address1Input.addEventListener("input", validateWhitespace);
+  address2Input.addEventListener("input", validateWhitespace);
+});
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  const provinceSelect = document.getElementById("addressProvinceNew");
+
+  function addDefaultOption() {
+    if (provinceSelect) {
+      // Check if the default option is already added
+      if (!provinceSelect.querySelector("option[value='']")) {
+        const defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.textContent = provinceSelect.getAttribute("data-default") || "Please Select Provience";
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
+
+        provinceSelect.prepend(defaultOption);
+      }
+    }
+  }
+
+  // Run when the page loads
+  addDefaultOption();
+
+  // Observe changes in the select field (in case options are dynamically added)
+  const observer = new MutationObserver(() => {
+    addDefaultOption();
+  });
+
+  observer.observe(provinceSelect, { childList: true });
+});
+
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const select = document.getElementById('addressCountryNew');
+    if (select) {
+      for (let option of select.options) {
+        if (option.text.trim() === 'United Arab Emirates') {
+          option.selected = true;
+          break;
+        }
+      }
+    }
+  });
+</script>

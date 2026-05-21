@@ -1,0 +1,104 @@
+{% if customer %}
+  {% if  customer.addresses.size > 0 %}
+    <div class="delivery-address">
+      <div class="address-header">
+        {% if localization.language.iso_code == "ar" %}
+          عنوان التوصيل
+        {% else %}
+          <h3>Delivery Address</h3>
+        {% endif %}
+        
+      </div>
+            <div class="address-utility-wrapper" id="address-utility-wrapper">
+              <div id="address-changing-popup"> 
+                {% if localization.language.iso_code == "ar" %}✎ 
+                  تغيير العنوان
+                {% else %}✎ 
+                    Change Address
+                {% endif %}
+              </div>
+              <a href="javascript:void(0)" class="change-address" onclick="openAddressModal()">✎ 
+                {% if localization.language.iso_code == "ar" %}
+                    إضافة عنوان جديد
+                {% else %}
+                    Add New Address
+                {% endif %}
+              </a>
+            </div>
+      <div class="address-default-card">
+        <label class="default-address-option">
+          <input type="radio" name="shipping_address" value="{{ customer.default_address.id }}" data-name="{{ customer.default_address.name }}" data-address1="{{ customer.default_address.address1 }}" data-address2="{{ customer.default_address.address2 }}" data-city="{{ customer.default_address.city }}" data-province="{{ customer.default_address.province }}" data-country="{{ customer.default_address.country }}" data-phone="{{ customer.default_address.phone }}" data-email="{{ customer.email }}" checked >
+
+          <div class="address-box">
+            <div class="default-address-details-left">
+              <p>
+                <strong>{{ customer.default_address.name }}
+                </strong>
+              </p>
+              <p>{{ customer.default_address.address1 }}
+              </p>
+              {% if customer.default_address.address2 != "" %}
+                <p>{{ customer.default_address.address2 }}
+                </p>
+              {% endif %}
+              <p>{{ customer.default_address.city }}
+                ,
+                {{ customer.default_address.province }}
+              </p>
+              <p>{{ customer.default_address.state }}
+              </p>
+            </div>
+
+            <div class="default-address-details-right ta-right">
+              <div class="info-block">
+                <p class="label phone-label">
+                  {% if localization.language.iso_code == "ar" %}
+                    رقم الهاتف
+                  {% else %}
+                    Phone
+                  {% endif %}
+                </p>
+                <p>{{ customer.default_address.phone }}
+                </p>
+              </div>
+              <div class="info-block">
+                <p class="label phone-label">
+                  {% if localization.language.iso_code == "ar" %}
+                    البريد الإلكتروني
+                  {% else %}
+                    Email
+                  {% endif %}
+                </p>
+                <p>{{ customer.email }}
+                </p>
+              </div>
+            </div>
+            <span class="default-badge">
+              {% if localization.language.iso_code == "ar" %}
+                افتراضي
+              {% else %}
+                Default
+             {% endif %}
+              </span>
+          </div>
+          
+
+        </label>
+
+      </div>
+
+    </div>
+  {% else %}
+    <div class="address-header empty-address-header">
+      <h3>Delivery Address</h3>
+      <a href="javascript:void(0)" class="change-address" onclick="openAddressModal()">+ Add New Address</a>
+    </div>
+  {% endif %}
+{% else %}
+  <div class="address-header">
+    <h3>Delivery Address</h3>
+    <div id="address-changing-popup">change address</div>
+    <a href="{{ routes.account_addresses_url }}?return_to=cart" class="change-address">✎ Add New Address</a>
+  </div>
+{% endif %}
+

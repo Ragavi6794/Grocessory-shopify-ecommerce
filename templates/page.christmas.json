@@ -1,0 +1,319 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "slideshow_cTbbDc": {
+      "type": "slideshow",
+      "blocks": {
+        "slide_kpmmJY": {
+          "type": "slide",
+          "settings": {
+            "content_position_desktop": "center-md middle-md ta-center",
+            "content_position_mobile": "center-xs middle-xs ta-center",
+            "image_overlay_opacity": 0,
+            "color_mask_overlay": "",
+            "color_text_overlay": "",
+            "sub_heading": "",
+            "heading": "",
+            "description": "",
+            "desktop_image": "shopify://shop_images/New-year.jpg",
+            "mobile_image": "shopify://shop_images/New-year2.jpg",
+            "slide_link": "",
+            "button_1_label": "",
+            "button_1_style": "btn-primary",
+            "button_1_link": "",
+            "button_2_label": "",
+            "button_2_style": "btn-secondary",
+            "button_2_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "slide_kpmmJY"
+      ],
+      "name": "t:sections.slideshow.name",
+      "settings": {
+        "color_scheme": "",
+        "heading_size": "h2",
+        "height_desktop": "adapt_img",
+        "height_mobile": "adapt_img",
+        "enable_pagination": false,
+        "enable_navigation": false,
+        "enable_autoplay": false,
+        "delay": 1,
+        "accessibility_content": "Slideshow about our brand"
+      }
+    },
+    "17592210973182803d": {
+      "type": "_blocks",
+      "settings": {}
+    },
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "color_scheme": "scheme-1",
+        "show_page_title": true,
+        "heading_size": "h2",
+        "show_page_content": true
+      }
+    },
+    "image_with_text_columns_QgQRrk": {
+      "type": "image-with-text-columns",
+      "blocks": {
+        "text_EQf8ea": {
+          "type": "text",
+          "settings": {
+            "image": "shopify://shop_images/new.jpg",
+            "heading": "",
+            "description": "",
+            "image_link": "shopify://collections/deals"
+          }
+        },
+        "text_t8DwW8": {
+          "type": "text",
+          "settings": {
+            "image": "shopify://shop_images/Christmas-Baskets_0fd5877f-8a35-46e6-ab94-0fe755bb7743.jpg",
+            "heading": "",
+            "description": "",
+            "image_link": "shopify://collections/fruit-basket"
+          }
+        },
+        "text_L3FKFp": {
+          "type": "text",
+          "settings": {
+            "image": "shopify://shop_images/Christmas-Platters_3f19d0c5-1683-40ae-b6c6-e6eca3a1446f.jpg",
+            "heading": "",
+            "description": "",
+            "image_link": "shopify://collections/platters"
+          }
+        },
+        "text_LrGfTG": {
+          "type": "text",
+          "settings": {
+            "image": "shopify://shop_images/Christmas-cakes_7793377f-6b1b-4d41-80b6-1dbe1e3a7e34.jpg",
+            "heading": "",
+            "description": "",
+            "image_link": "shopify://collections/fruit-cakes"
+          }
+        }
+      },
+      "block_order": [
+        "text_EQf8ea",
+        "text_t8DwW8",
+        "text_L3FKFp",
+        "text_LrGfTG"
+      ],
+      "name": "t:sections.image_with_text_columns.name",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "subheading": "",
+        "heading": "",
+        "heading_size": "h4",
+        "image_ratio": "3/4",
+        "items_per_row_on_desktop": "4",
+        "enable_carousel": true,
+        "show_progress_indicator": false,
+        "content_alignment": "ta-center",
+        "text": "",
+        "link": ""
+      }
+    },
+    "product_lists_Uc7xPR": {
+      "type": "product-lists",
+      "blocks": {
+        "collection_wN3WjM": {
+          "type": "collection",
+          "settings": {
+            "collection": "platters",
+            "heading": "Collection"
+          }
+        }
+      },
+      "block_order": [
+        "collection_wN3WjM"
+      ],
+      "name": "t:sections.product_lists.name",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "subheading": "",
+        "heading": "New Year Specials",
+        "heading_size": "h5",
+        "description": "",
+        "items_to_show": 12,
+        "items_per_row_on_desktop": "6",
+        "items_per_row_on_mobile": "2",
+        "enable_carousel": true,
+        "show_progress_indicator": true,
+        "content_alignment": "ta-center",
+        "enable_view_more": true,
+        "button_text": "View all",
+        "button_link": "shopify://collections/christmas"
+      }
+    },
+    "product_lists_EWrd7M": {
+      "type": "product-lists",
+      "blocks": {
+        "collection_ayCimC": {
+          "type": "collection",
+          "settings": {
+            "collection": "sweets",
+            "heading": "Collection"
+          }
+        }
+      },
+      "block_order": [
+        "collection_ayCimC"
+      ],
+      "name": "t:sections.product_lists.name",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "subheading": "",
+        "heading": "Chocolates",
+        "heading_size": "h5",
+        "description": "",
+        "items_to_show": 12,
+        "items_per_row_on_desktop": "6",
+        "items_per_row_on_mobile": "2",
+        "enable_carousel": true,
+        "show_progress_indicator": true,
+        "content_alignment": "ta-center",
+        "enable_view_more": true,
+        "button_text": "View all",
+        "button_link": "shopify://collections/sweets"
+      }
+    },
+    "product_lists_JEiRqW": {
+      "type": "product-lists",
+      "blocks": {
+        "collection_GFXW7B": {
+          "type": "collection",
+          "settings": {
+            "collection": "fruit-basket",
+            "heading": "Collection"
+          }
+        }
+      },
+      "block_order": [
+        "collection_GFXW7B"
+      ],
+      "name": "t:sections.product_lists.name",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "subheading": "",
+        "heading": "Fruit Baskets",
+        "heading_size": "h5",
+        "description": "",
+        "items_to_show": 12,
+        "items_per_row_on_desktop": "6",
+        "items_per_row_on_mobile": "2",
+        "enable_carousel": true,
+        "show_progress_indicator": true,
+        "content_alignment": "ta-center",
+        "enable_view_more": true,
+        "button_text": "View all",
+        "button_link": "shopify://collections/fruit-basket"
+      }
+    },
+    "image_banner_biYUTg": {
+      "type": "image-banner",
+      "name": "t:sections.image_banner.name",
+      "settings": {
+        "color_scheme": "",
+        "image_overlay_opacity": 0,
+        "color_mask_overlay": "",
+        "color_text_overlay": "",
+        "height_desktop": "adapt_img",
+        "content_position_desktop": "middle-md center-md ta-center-md",
+        "height_mobile": "adapt_img",
+        "content_position_mobile": "middle-xs center-xs ta-center",
+        "desktop_image": "shopify://shop_images/Berries_ab928794-eaa4-4e92-be20-aeb80cf729b9.jpg",
+        "mobile_image": "shopify://shop_images/berries-2.jpg",
+        "banner_link": "shopify://collections/berries"
+      }
+    },
+    "product_lists_JLUrtk": {
+      "type": "product-lists",
+      "blocks": {
+        "collection_fHEhkW": {
+          "type": "collection",
+          "settings": {
+            "collection": "fruit-cakes",
+            "heading": "Collection"
+          }
+        }
+      },
+      "block_order": [
+        "collection_fHEhkW"
+      ],
+      "name": "t:sections.product_lists.name",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "subheading": "",
+        "heading": "Fruit Cakes",
+        "heading_size": "h5",
+        "description": "",
+        "items_to_show": 12,
+        "items_per_row_on_desktop": "6",
+        "items_per_row_on_mobile": "2",
+        "enable_carousel": true,
+        "show_progress_indicator": true,
+        "content_alignment": "ta-center",
+        "enable_view_more": true,
+        "button_text": "View all",
+        "button_link": "shopify://collections/fruit-cakes"
+      }
+    },
+    "product_lists_kfrnB9": {
+      "type": "product-lists",
+      "blocks": {
+        "collection_JPVytT": {
+          "type": "collection",
+          "settings": {
+            "collection": "roots",
+            "heading": "Collection"
+          }
+        }
+      },
+      "block_order": [
+        "collection_JPVytT"
+      ],
+      "name": "t:sections.product_lists.name",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "subheading": "",
+        "heading": "Roots",
+        "heading_size": "h5",
+        "description": "",
+        "items_to_show": 12,
+        "items_per_row_on_desktop": "6",
+        "items_per_row_on_mobile": "2",
+        "enable_carousel": true,
+        "show_progress_indicator": false,
+        "content_alignment": "ta-center",
+        "enable_view_more": true,
+        "button_text": "View all",
+        "button_link": "shopify://collections/roots"
+      }
+    }
+  },
+  "order": [
+    "slideshow_cTbbDc",
+    "17592210973182803d",
+    "main",
+    "image_with_text_columns_QgQRrk",
+    "product_lists_Uc7xPR",
+    "product_lists_EWrd7M",
+    "product_lists_JEiRqW",
+    "image_banner_biYUTg",
+    "product_lists_JLUrtk",
+    "product_lists_kfrnB9"
+  ]
+}

@@ -1,0 +1,169 @@
+{% liquid
+  assign card_product_media_ratio = settings.product_card_image_ratio
+  assign limit = 8
+  assign no_results = true
+  assign card_search_item_class = 'card-search-result'
+  assign filtered_terms = predictive_search.terms
+  assign product_type = ''
+  assign placeholder = 'image' | placeholder_svg_tag: 'placeholder media'
+  if filtered_terms contains ' AND '
+    assign filtered_terms = filtered_terms | split: ' AND ' | first
+    assign product_type = filtered_terms | split: 'product_type:' | last
+  endif
+ %}
+{%- if predictive_search.performed -%}
+  <!-- Product -->
+  {% if predictive_search.resources.products.size > 0 %}
+    {% assign no_results = false %}
+    <div class="search__result__item search__product__list d-grid gap-24">
+      <div class="search__result__header d-flex middle-xs between-xs">
+        <span class="m-zero">
+          {% if product_type != '' %}
+            {{ 'general.search.products_in' | t: product_type: product_type }}
+          {% else %}
+            {{ 'general.search.total_products' | t }}
+          {% endif %}
+        </span>
+        <a href="{{ routes.search_url }}?type=product&q={{ predictive_search.terms | escape }}&{{ 'options[prefix]' | url_encode }}=last" class="btn btn-link btn-small">{{ 'general.search.view_all' | t }}</a>
+      </div>
+      <div class="search__result-type search__result--product">
+        <ul class="search__result--list rw ls-none" role="listbox">
+          {%- for product in predictive_search.resources.products limit: limit -%}
+            <li id="predictive-search-item-product-{{ forloop.index }}" class="search__result-item clm" style="--w-xs: 12; --w-md: 3;" role="option">
+              {% render 'card-product',
+                product: product,
+                show_vendor: true,
+                show_color_swatch: false,
+                show_sale_badge: false,
+                show_sold_out_badge: false,
+                enable_quick_view: false,
+                enable_quick_buy: false,
+                enable_product_card_desc: false,
+                item_per_row: 1,
+                ratio: card_product_media_ratio,
+                secondary_card_classes: card_search_item_class,
+                is_predective_search: true,
+                section: section
+              %}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    </div>
+  {% endif %}
+  <!-- Product -->
+  <!-- Collection -->
+  {% if predictive_search.resources.collections.size > 0 %}
+    {% assign no_results = false %}
+    <div class="search__result__item search__collection__list d-grid gap-24">
+      <div class="search__result__header d-flex middle-xs between-xs">
+        <span class="m-zero">
+          {{ 'general.collections.label' | t }}
+        </span>
+      </div>
+      <div class="search__result-type search__result--collection">
+        <ul class="search__result--list rw ls-none" role="listbox">
+          {%- for collection in predictive_search.resources.collections limit: 4 -%}
+            <li id="predictive-search-item-collection-{{ forloop.index }}" class="search__result-item clm" style="--w-xs: 12; --w-md: 3;" role="option">
+              {%- liquid
+                assign collection_image = 'collection-1' | placeholder_svg_tag: 'placeholder media of-cover w-100'
+                assign collection_image = collection.products.first.featured_image | image_url: width: section.settings.hero_image.width | image_tag: widths: '750, 950', sizes: '(min-width: 361px) calc(100vw/2), calc(100vw/3)', alt: collection.title, class: 'media of-cover w-100'
+                assign collection_image = collection.image | image_url: width: section.settings.hero_image.width | image_tag: widths: '750, 950', sizes: '(min-width: 361px) calc(100vw/2), calc(100vw/3)', alt: collection.title, class: 'media of-cover w-100'
+              -%}
+              <div class="card card-collection ta-start {{ card_search_item_class }}">
+                <div class="card__media p-relative mb-16 ">
+                  <a href="{{ collection.url }}" class="d-block p-absolute w-100 h-100 zi-1" tabindex="-1" aria-label="{{ collection.title }}"></a>
+                  {% render 'image', image_item: collection_image, src: collection_image.src, ratio: '3/2', image_wrap_classes: 'h-100', image_classes: 'h-100 w-100' %}
+                </div>
+                <div class="card__content wb-break-word">
+                  <h3 class="card__heading m-zero">
+                    <a href="{{ collection.url }}" class="d-block">{{ collection.title }}</a></h3>
+                </div>
+              </div>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    </div>
+  {% endif %}
+  <!-- Collection -->
+  <!-- Article -->
+  {% if predictive_search.resources.articles.size > 0 %}
+  {% assign no_results = false %}
+    <div class="search__result__item search__article__list d-grid gap-24">
+      <div class="search__result__header d-flex middle-xs between-xs">
+        <span class="m-zero">
+          {{ 'general.search.articles' | t }}
+        </span>
+        <a href="{{ routes.search_url }}?type=article&q={{ predictive_search.terms | escape }}&{{ 'options[prefix]' | url_encode }}=last" class="btn btn-link btn-small">{{ 'general.search.view_all' | t }}</a>
+      </div>
+      <div class="search__result-type search__result--collection">
+        <ul class="search__result--list rw ls-none" role="listbox">
+          {%- for article in predictive_search.resources.articles limit: 4 -%}
+            <li id="predictive-search-item-article-{{ forloop.index }}" class="search__result-item clm" style="--w-xs: 12; --w-md: 3;" role="option">
+              {% liquid
+                assign image_width = '750, 950, 1024'
+                assign sizes = "(min-width: 361px) calc(100vw/2), calc(100vw/3)"
+                assign article_placeholder = 'image' | placeholder_svg_tag: 'js-image-lazy placeholder media of-cover'
+                assign article_image = article_placeholder
+                assign article_image = article.image.src | image_url: width: article.image.width | image_tag: widths: image_width, sizes: sizes, alt: article.title, class: 'js-image-lazy media of-cover w-100'
+                assign show_blog_tag = show_blog_tag | default: false
+              %}
+              <div class="card w-100 {{ card_search_item_class }}">
+                <div class="card__media p-relative mb-16">
+                  <a href="{{ article.url }}" class="d-block p-absolute w-100 h-100 zi-1" tabindex="-1" aria-label="{{ article.title }}"></a>
+                  {% render 'image', ratio: image_ratio, image_item: article_image, ratio: '3/2' %}
+                </div>
+                <div class="card__content">
+                  <h3 class="card__heading m-zero">
+                    <a class="d-block" href="{{ article.url }}">{{ article.title }}</a>
+                  </h3>
+                </div>
+              </div>
+
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    </div>
+  {% endif %}
+  <!-- Article -->
+  <!-- Page-->
+  {% if predictive_search.resources.pages.size > 0 %}
+    {% assign no_results = false %}
+    <div class="search__result__item search__page__list d-grid gap-24">
+      <div class="search__result__header d-flex middle-xs between-xs">
+        <span class="m-zero">
+          {{ 'general.search.pages' | t }}
+        </span>
+        <a href="{{ routes.search_url }}?type=page&q={{ predictive_search.terms | escape }}&{{ 'options[prefix]' | url_encode }}=last" class="btn btn-link btn-small">{{ 'general.search.view_all' | t }}</a>
+      </div>
+      <div class="search__result-type search__result--list">
+        <ul class="search__result--list rw ls-none" role="listbox">
+          {%- for page in predictive_search.resources.pages limit: 4 -%}
+            <li id="predictive-search-item-page-{{ forloop.index }}" class="search__result-item clm" style="--w-xs: 12; --w-md: 3;" role="option">
+              <div class="card card-page p-relative h-100 w-100 card--content-inner">
+                <div class="card__media p-relative">
+                  <a href="{{ page.url }}" class="p-absolute w-100 h-100 zi-1" aria-label="{{ page.title }}"></a>
+                  {% render 'image', image_item: placeholder, ratio: '3/2', image_wrap_classes: 'corner-radius-s' %}
+                </div>
+                <div class="card__content card__content--inner p-absolute bottom-0 wb-break-word w-100">
+                  <h3 class="card__heading fw-700 m-zero mb-16">
+                    <a href="{{ page.url }}">{{ page.title }}</a>
+                  </h3>
+                  <a href="#" class="card__badge tag">{{- 'general.search.page' | t -}}</a>
+                </div>
+              </div>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    </div>
+  {% endif %}
+  <!-- Page-->
+  {% if no_results %}
+    <div class="d-block w-100 ta-center color-light no-result-message p-absolute center-middle">
+      {{ 'general.search.no_matching_results' | t }}
+    </div>
+  {% endif %}
+{%- endif -%}

@@ -1,0 +1,83 @@
+<div class="section section-index--{{section.index |  replace: '1', 'first' }} {% render 'sections-spacing' %} color-{{- section.settings.color_scheme }}" data-ui-component="Gift Card Section">
+  <div class="ctnr background corner-radius-m">
+  <div class="ta-center m-auto" style="--w-xs:12;--w-sm:10;--w-md:6;">
+    <div class="p-4x">
+      {% render 'header-logo', class: "m-auto" %}
+      <h1 class="h2 mt-32 mt-sm-48 mt-md-64 m-zero">{{ 'gift_cards.issued.subtext' | t }}</h1>
+    </div>
+
+    <div class="p-relative gift-card-img">
+      <span class="h3 price p-absolute icon--success fw-700 center-middle pt-4 pb-4 pr-20 pl-20">
+        {% if settings.currency_code_enabled %}
+          {{ gift_card.initial_value | money_with_currency }}
+        {% else %}
+          {{ gift_card.initial_value | money }}
+        {% endif %}
+      </span>
+      {%- if gift_card.enabled == false or gift_card.expired -%}
+        <span>{{ 'gift_cards.issued.expired' | t }}</span>
+      {%- endif -%}
+      <img class="w-100" src="{{ 'gift-card/card.svg' | shopify_asset_url }}" alt="{{ shop.name | escape }}" height="134" width="202" loading="lazy">
+    </div>
+
+    <div class="p-4x">
+      <p class="mb-24 mb-sm-48 mb-md-64">{{ 'gift_cards.issued.redeem' | t }}</p>
+
+      <input
+        type="text"
+        value="{{ gift_card.code | format_code }}"
+        aria-label="{{ 'gift_cards.issued.gift_card_code' | t }}"
+        readonly
+        class="gift-card__number h5 ta-center pt-8 pb-8 pl-12 pr-12 mb-8"
+      >
+
+      <div class="mb-24 mb-sm-48 mb-md-64">
+        <button class="gift-card-copy btn btn-link btn-large">{{ 'gift_cards.issued.copy_code' | t }}</button>
+        <div class="d-flex middle-xs center-xs mb-24 mb-sm-48 mb-md-64 gift-card__copy-success" role="status"></div>
+        <template>
+          <div class="icon icon--small icon--success fs-0">
+            {%- render 'icon-check-mark' , size: 16 -%}
+          </div>
+          <span class="ml-8 subtext">
+            {{ 'gift_cards.issued.copy_code_success' | t }}
+          </span>
+        </template>
+      </div>
+
+      {%- if gift_card.pass_url -%}
+        <a class="add-to-apple-wallet d-block" href="{{ gift_card.pass_url }}">
+          <img src="{{ 'gift-card/add-to-apple-wallet.svg' | shopify_asset_url }}" width="120" height="40" alt="{{ 'gift_cards.issued.add_to_apple_wallet' | t }}" loading="lazy">
+        </a>
+      {%- endif -%}
+
+      <div class="gift-card__qr-code p-relative d-flex center-xs mb-24 mb-sm-48 mb-md-64" data-identifier="{{ gift_card.qr_identifier }}"></div>
+
+      <div class="d-flex fd-column top-md middle-md">
+        <a href="{{ shop.url }}" class="btn btn-primary btn-large mb-12 w-100" target="_blank" rel="noopener" aria-describedby="a11y-new-window-message">
+          {{ 'gift_cards.issued.shop_link' | t }}
+        </a>
+        <button class="btn btn-link btn-large" onclick="window.print();">
+          {{ 'gift_cards.issued.print_gift_card' | t }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+{% schema %}
+{
+  "name": "t:sections.giftcard.name",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:general.settings.headers.header_general.content"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:general.settings.color_scheme.label",
+      "default": "scheme-1"
+    }
+  ]
+}
+
+{% endschema %}

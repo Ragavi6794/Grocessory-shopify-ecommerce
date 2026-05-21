@@ -1,0 +1,432 @@
+{% doc %}
+  @prompt
+    create a text content section for following content"Freshness with a Purpose
+    
+    At Gulf Fruits, we believe in delivering more than just fruits and vegetables — we deliver care, hope, and togetherness. This October, Breast Cancer Awareness Month, every box we send carries a message of strength and early detection.
+    
+    🌸 Why Breast Cancer Awareness Matters
+    
+    Breast cancer affects millions of women worldwide, and early detection can save lives. By spreading awareness, we stand united in supporting women, families, and communities in the fight against breast cancer." make it high standard design mobile responsive
+
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-text-content-{{ ai_gen_id }} {
+    padding: {{ block.settings.section_padding }}px 20px;
+    background-color: {{ block.settings.background_color }};
+    color: {{ block.settings.text_color }};
+    max-width: {{ block.settings.max_width }}px;
+    margin: 0 auto;
+  }
+
+  .ai-text-content-wrapper-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: {{ block.settings.content_spacing }}px;
+    text-align: {{ block.settings.text_alignment }};
+  }
+
+  .ai-text-content-heading-{{ ai_gen_id }} {
+    font-size: {{ block.settings.heading_size }}px;
+    font-weight: {{ block.settings.heading_weight }};
+    color: {{ block.settings.heading_color }};
+    line-height: 1.2;
+    margin: 0;
+    font-family: inherit;
+  }
+
+  .ai-text-content-subheading-{{ ai_gen_id }} {
+    font-size: {{ block.settings.subheading_size }}px;
+    font-weight: {{ block.settings.subheading_weight }};
+    color: {{ block.settings.subheading_color }};
+    line-height: 1.4;
+    margin: 0;
+    font-family: inherit;
+  }
+
+  .ai-text-content-body-{{ ai_gen_id }} {
+    font-size: {{ block.settings.body_size }}px;
+    line-height: {{ block.settings.line_height }};
+    color: {{ block.settings.text_color }};
+    margin: 0;
+  }
+
+  .ai-text-content-body-{{ ai_gen_id }} p {
+    margin: 0 0 {{ block.settings.paragraph_spacing }}px 0;
+  }
+
+  .ai-text-content-body-{{ ai_gen_id }} p:last-child {
+    margin-bottom: 0;
+  }
+
+  .ai-text-content-highlight-{{ ai_gen_id }} {
+    background-color: {{ block.settings.highlight_background }};
+    color: {{ block.settings.highlight_text_color }};
+    padding: {{ block.settings.highlight_padding }}px;
+    border-radius: {{ block.settings.highlight_border_radius }}px;
+    border-left: 4px solid {{ block.settings.highlight_accent_color }};
+    margin: {{ block.settings.content_spacing }}px 0;
+  }
+
+  .ai-text-content-highlight-icon-{{ ai_gen_id }} {
+    display: inline-block;
+    margin-right: 8px;
+    font-size: 1.2em;
+  }
+
+  @media screen and (max-width: 768px) {
+    .ai-text-content-{{ ai_gen_id }} {
+      padding: {{ block.settings.section_padding | times: 0.7 }}px 16px;
+    }
+
+    .ai-text-content-wrapper-{{ ai_gen_id }} {
+      gap: {{ block.settings.content_spacing | times: 0.8 }}px;
+    }
+
+    .ai-text-content-heading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_size | times: 0.85 }}px;
+    }
+
+    .ai-text-content-subheading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.subheading_size | times: 0.9 }}px;
+    }
+
+    .ai-text-content-body-{{ ai_gen_id }} {
+      font-size: {{ block.settings.body_size | times: 0.95 }}px;
+    }
+
+    .ai-text-content-highlight-{{ ai_gen_id }} {
+      padding: {{ block.settings.highlight_padding | times: 0.8 }}px;margin: {{ block.settings.content_spacing | times: 0.8 }}px 0;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .ai-text-content-{{ ai_gen_id }} {
+      padding: {{ block.settings.section_padding | times: 0.6 }}px 12px;
+    }
+
+    .ai-text-content-heading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_size | times: 0.75 }}px;
+    }
+
+    .ai-text-content-subheading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.subheading_size | times: 0.85 }}px;
+    }
+  }
+{% endstyle %}<div class="ai-text-content-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-text-content-wrapper-{{ ai_gen_id }}">
+    {% if block.settings.heading != blank %}
+      <h2 class="ai-text-content-heading-{{ ai_gen_id }}">
+        {{ block.settings.heading }}
+      </h2>
+    {% endif %}
+
+    {% if block.settings.body_text != blank %}
+      <div class="ai-text-content-body-{{ ai_gen_id }}">
+        {{ block.settings.body_text }}
+      </div>
+    {% endif %}
+
+    {% if block.settings.show_highlight and block.settings.highlight_text != blank %}
+      <div class="ai-text-content-highlight-{{ ai_gen_id }}">
+        {% if block.settings.highlight_icon != blank %}
+          <span class="ai-text-content-highlight-icon-{{ ai_gen_id }}">
+            {{ block.settings.highlight_icon }}
+          </span>
+        {% endif %}
+        {% if block.settings.highlight_subheading != blank %}
+          <h3 class="ai-text-content-subheading-{{ ai_gen_id }}">
+            {{ block.settings.highlight_subheading }}
+          </h3>
+        {% endif %}
+        <div class="ai-text-content-body-{{ ai_gen_id }}">
+          {{ block.settings.highlight_text }}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Text content section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "<p>Freshness with a Purpose</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "body_text",
+      "label": "Body text",
+      "default": "<p>At Gulf Fruits, we believe in delivering more than just fruits and vegetables — we deliver care, hope, and togetherness. This October, Breast Cancer Awareness Month, every box we send carries a message of strength and early detection.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Highlight section"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_highlight",
+      "label": "Show highlight section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "highlight_icon",
+      "label": "Highlight icon",
+      "default": "🌸"
+    },
+    {
+      "type": "richtext",
+      "id": "highlight_subheading",
+      "label": "Highlight subheading",
+      "default": "<p>Why Breast Cancer Awareness Matters</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "highlight_text",
+      "label": "Highlight text",
+      "default": "<p>Breast cancer affects millions of women worldwide, and early detection can save lives. By spreading awareness, we stand united in supporting women, families, and communities in the fight against breast cancer.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Maximum width",
+      "min": 600,
+      "max": 1200,
+      "step": 50,
+      "unit": "px",
+      "default": 800
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Section padding",
+      "min": 20,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "content_spacing",
+      "label": "Content spacing",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "paragraph_spacing",
+      "label": "Paragraph spacing",
+      "min": 10,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "select",
+      "id": "heading_weight",
+      "label": "Heading weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "range",
+      "id": "subheading_size",
+      "label": "Subheading size",
+      "min": 16,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 22
+    },
+    {
+      "type": "select",
+      "id": "subheading_weight",
+      "label": "Subheading weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "range",
+      "id": "body_size",
+      "label": "Body text size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "line_height",
+      "label": "Line height",
+      "min": 1.2,
+      "max": 2.0,
+      "step": 0.1,
+      "default": 1.6
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Highlight style"
+    },
+    {
+      "type": "color",
+      "id": "highlight_background",
+      "label": "Highlight background",
+      "default": "#f8f9fa"
+    },
+    {
+      "type": "color",
+      "id": "highlight_text_color",
+      "label": "Highlight text",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "highlight_accent_color",
+      "label": "Highlight accent",
+      "default": "#db325e"
+    },
+    {
+      "type": "range",
+      "id": "highlight_padding",
+      "label": "Highlight padding",
+      "min": 15,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "highlight_border_radius",
+      "label": "Highlight border radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    }
+  ],
+  "presets": [
+    {
+      "name": "Text content section"
+    }
+  ],
+  "tag": null
+}
+{% endschema %}

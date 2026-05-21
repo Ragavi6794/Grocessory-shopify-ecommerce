@@ -1,0 +1,256 @@
+{%- liquid
+	assign body_font_bold = settings.type_body_font | font_modify: 'weight', 'bold'
+	assign body_font_italic = settings.type_body_font | font_modify: 'style', 'italic'
+	assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+	assign heading_font_bold = settings.type_header_font | font_modify: 'weight', 'bold'
+-%}
+{%- unless settings.type_body_font.system? -%}
+	<link rel="preload" as="font" href="{{ settings.type_body_font | font_url }}" type="font/woff2" crossorigin>
+	{%- if body_font_bold != blank -%}
+		<link rel="preload" as="font" href="{{ body_font_bold | font_url }}" type="font/woff2" crossorigin>
+	{%- endif -%}
+	{%- if body_font_italic != blank -%}
+		<link rel="preload" as="font" href="{{ body_font_italic | font_url }}" type="font/woff2" crossorigin>
+	{%- endif -%}
+	{%- if body_font_bold_italic != blank -%}
+		<link rel="preload" as="font" href="{{ body_font_bold_italic | font_url }}" type="font/woff2" crossorigin>
+	{%- endif -%}
+{%- endunless -%}
+
+{%- unless settings.type_header_font.system? -%}
+	<link rel="preload" as="font" href="{{ settings.type_header_font | font_url }}" type="font/woff2" crossorigin>
+	{% if heading_font_bold != blank %}
+	<link rel="preload" as="font" href="{{ heading_font_bold | font_url }}" type="font/woff2" crossorigin>
+{% endif %}
+{%- endunless -%}
+
+<style>
+{{- settings.type_body_font | font_face: font_display: 'swap' -}}
+{{- settings.type_header_font | font_face: font_display: 'swap' -}}
+{{- body_font_bold | font_face: font_display: 'swap' -}}
+{{- body_font_italic | font_face: font_display: 'swap' -}}
+{{- body_font_bold_italic | font_face: font_display: 'swap' -}}
+{{- heading_font_bold | font_face: font_display: 'swap' -}}
+
+/*===== COLOR =====*/
+{% for scheme in settings.color_schemes -%}
+	{% assign scheme_classes = scheme_classes | append: ', .color-' | append: scheme.id %}
+	{% if forloop.index == 1 -%}
+		:root,
+	{%- endif %}
+	.color-{{ scheme.id }} {
+
+    --color-background-rgb: {{ scheme.settings.color_background.red }}, {{ scheme.settings.color_background.green }}, {{ scheme.settings.color_background.blue }};
+	--color-background: rgba(var(--color-background-rgb), {{ scheme.settings.color_background.alpha }});
+    --color-normal-text-rgb: {{ scheme.settings.color_body_text.red }}, {{ scheme.settings.color_body_text.green }}, {{ scheme.settings.color_body_text.blue }};
+    --color-normal-text: rgb(var(--color-normal-text-rgb));
+
+	--color-light-text: rgba(var(--color-normal-text-rgb),.6);
+	--color-disable-text: rgba(var(--color-normal-text-rgb),.4);
+	--color-disable-bg: rgba(var(--color-normal-text-rgb),.4);
+	--color-border: rgba(var(--color-normal-text-rgb), 0.12);
+
+	--color-accent-rgb: {{ scheme.settings.color_accent.red }}, {{ scheme.settings.color_accent.green }}, {{ scheme.settings.color_accent.blue }};
+    --color-accent: rgb(var(--color-accent-rgb));
+    --color-accent-gradient: {% if scheme.settings.color_accent_gradiant != blank %} {{ scheme.settings.color_accent_gradiant }}{% else %}var(--color-accent){% endif %};
+
+    --color-field-bg: {{ scheme.settings.color_field_background }};
+    --color-field-text-rgb : {{ scheme.settings.color_field_text.red }}, {{ scheme.settings.color_field_text.green }}, {{ scheme.settings.color_field_text.blue }};
+    --color-field-text: rgb(var(--color-field-text-rgb));
+    --color-light-field-text: rgb(var(--color-field-text-rgb), 0.6);
+
+	--color-button-text: {{ scheme.settings.color_solid_button }};
+	--color-button-bg-rgb: {{ scheme.settings.background_solid_button.red }},{{ scheme.settings.background_solid_button.green }},{{ scheme.settings.background_solid_button.blue }};
+    --color-button-bg: rgb(var(--color-button-bg-rgb));
+	--color-button-bg-gradient: {% if scheme.settings.background_solid_gradient != blank %}{{ scheme.settings.background_solid_gradient }}{% else %}var(--color-button-bg){% endif %};
+
+    --color-button-outline-rgb: {{ scheme.settings.color_outline_button.red }},{{ scheme.settings.color_outline_button.green }},{{ scheme.settings.color_outline_button.blue }};
+	--color-button-outline: rgb(var(--color-button-outline-rgb));
+    --color-button-outline-bg: {{ scheme.settings.background_outline_button }};
+    --color-mask-overlay: var(--color-background-rgb);
+  }
+
+{% endfor %}
+
+{{ scheme_classes | prepend: 'body' }} {
+	color: rgb(var(--color-normal-text-rgb));
+}
+body {
+	background-color: {{ settings.page_background }};
+}
+
+:root {
+  /* =====COLOR===== */
+  	--color-card-shadow: {{ settings.color_card_shadow.red }}, {{ settings.color_card_shadow.green }}, {{ settings.color_card_shadow.blue }};
+	--popup-shadow: 0px 1px 4px 0px rgba(var(--color-card-shadow), 0.1), 0px 4px 15px 1px rgba(var(--color-card-shadow), 0.05);
+	--color-error: #EB544A;
+	--color-success: #1CB859;
+	--color-warning: #e38c09;
+
+	/*===== Typography ===== */
+	--font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+	--font-body-weight: {{ settings.type_body_font.weight }};
+	--font-body-size: {{ settings.body_font_base | times: '0.1' | append: 'rem' }};
+
+	--font-heading-family: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
+	--font-heading-style: {{ settings.type_header_font.style }};
+	--font-heading-weight: {{ settings.type_header_font.weight }};
+	--font-heading-size: {{ settings.heading_font_size }};
+
+	--font-heading-scale: 1.125;
+	--headline:  calc(var(--heading-1) * var(--font-heading-size) * var(--font-heading-scale));
+	--heading-1: calc(var(--heading-2) * var(--font-heading-size) * var(--font-heading-scale));
+	--heading-2: calc(var(--heading-3) * var(--font-heading-size) * var(--font-heading-scale));
+	--heading-3: calc(var(--heading-4) * var(--font-heading-size) * var(--font-heading-scale));
+	--heading-4: calc(var(--heading-5) * var(--font-heading-size) * var(--font-heading-scale));
+	--heading-5: calc(var(--font-body-size) * var(--font-heading-size) * var(--font-heading-scale));
+	--heading-6: calc(var(--font-body-size) * var(--font-heading-size) * var(--heading-6-type-scale, 1.067));
+
+	--font-button-family: var(--font-{{- settings.button_font_style -}}-family);
+	--font-button-style: var(--font-{{- settings.button_font_style -}}-style);
+	--font-button-size: calc(var(--font-body-size) * {{ settings.button_font_size }});
+
+	--font-subheading-family: var(--font-{{- settings.subheading_font_style -}}-family);
+	--font-subheading-style: var(--font-{{- settings.subheading_font_style -}}-style);
+
+	--font-menu-item-family: var(--font-{{- settings.menu_item_font_style -}}-family);
+	--font-menu-item-style: var(--font-{{- settings.menu_item_font_style -}}-style);
+	--font-menu-item-size: calc(var(--font-body-size) * {{ settings.menu_item_font_size }});
+
+	--font-tabs-heading-family: var(--font-{{- settings.tabs_heading_font_style -}}-family);
+	--font-tabs-heading-style: var(--font-{{- settings.tabs_heading_font_style -}}-style);
+	--font-tabs-heading-size: calc(var(--font-body-size) * {{ settings.tabs_heading_font_size }});
+
+	--font-card-heading-family: var(--font-{{- settings.card_heading_font_style -}}-family);
+	--font-card-heading-style: var(--font-{{- settings.card_heading_font_style -}}-style);
+	--font-card-heading-size: calc(var(--font-body-size) * {{ settings.card_heading_font_size }});
+
+	/*===== End Typography ===== */
+	--page-width: {{ settings.page_width -}}px;
+	--gutter-base: 0.8rem;
+	--gutter: var(--gutter-base);
+	--gutter-container: var(--s-inner-p-x);
+	--form-field-lg: 44px;
+	--form-field-sm: 36px;
+
+	--corner-radius-xs: calc(var(--font-body-size) * 0.375);
+	--corner-radius-s: calc(var(--font-body-size) * 0.75);
+	--corner-radius-m: calc(var(--font-body-size) * 1.5);
+	--corner-radius-l: calc(var(--font-body-size) * 5);
+
+	--timing-function-on: cubic-bezier(.2,.7,.1,1);
+	--timing-function-off: cubic-bezier(.1,.4,.5,1);
+	--lazy-load: cubic-bezier(.17,.84,.4,1);
+	--progress-indicator-height: 4px;
+
+
+	/*------------------------------------*\
+		#SECTION SPACING SYSTEM
+	\*------------------------------------*/
+	--s-outer-p-x: 0;
+	--s-outer-p-y: 0;
+	--s-banner-outer-p-x: calc(2 * var(--gutter-base));
+	--s-banner-outer-p-y: calc(6 * var(--gutter-base));
+	--s-outer-small-p-x: 0;
+	--s-outer-small-p-y: 0;
+
+	--s-inner-p-x: calc(2.5 * var(--gutter-base));
+	--s-inner-p-y: calc(6 * var(--gutter-base));
+	--s-inner-small-p-x: calc(2.5 * var(--gutter-base));
+	--s-inner-small-p-y: calc(2.5 * var(--gutter-base));
+
+	--popup-outer-p-x: calc(2 * var(--gutter-base));
+	--popup-outer-p-y: calc(2 * var(--gutter-base));
+	--popup-inner-p-x: 2rem;
+	--popup-inner-p-y: 2rem;
+	/* --gutter-listing: calc(2 * var(--gutter)); */
+	--gutter-listing: 10px;
+	--card-item-gap: 1.6rem;
+
+	--s-subheading-mb: calc(var(--font-body-size) * 0.75);
+	--s-heading-mb: calc(var(--font-body-size) / 2 );
+	--s-description-mb: calc(var(--font-body-size) * 1.5 );
+}
+@media (min-width: 459px) {
+	:root {
+    --gutter-base: 1.2rem;
+    --progress-indicator-height: 6px;
+	--font-heading-scale: 1.2;
+	--heading-6-type-scale: 1.125;
+
+
+	/*------------------------------------*\
+		#SECTION SPACING SYSTEM
+	\*------------------------------------*/
+	--s-outer-p-x: calc(2 * var(--gutter-base));
+	--s-outer-p-y: calc(4 * var(--gutter-base));
+	--s-banner-outer-p-x: calc(2 * var(--gutter-base));
+	--s-banner-outer-p-y: calc(4 * var(--gutter-base));
+	--s-outer-small-p-x: calc(2 * var(--gutter-base));
+	--s-outer-small-p-y: var(--gutter-base);
+
+	--s-inner-p-x: calc(2.5 * var(--gutter-base));
+	--s-inner-p-y: calc(4.5 * var(--gutter-base));
+	--s-inner-small-p-x: calc(2.5 * var(--gutter-base));
+	--s-inner-small-p-y: calc(2.5 * var(--gutter-base));
+
+	--popup-outer-p-x: calc(2 * var(--gutter-base));
+	--popup-outer-p-y: calc(2 * var(--gutter-base));
+	--popup-inner-p-x: 2rem;
+	--popup-inner-p-y: 2rem;
+	--gutter-container: calc(var(--gutter-base) * 2);
+	}
+
+}
+@media (min-width: 769px) {
+	:root {
+		--gutter-base: 1.6rem;
+    --progress-indicator-height: 8px;
+    /* --gutter-listing: calc(1.5 * var(--gutter)); */
+    --gutter-listing: 10px;
+
+	}
+}
+@media (min-width: 1025px) {
+	:root {
+		/*------------------------------------*\
+		#SECTION SPACING SYSTEM
+		\*------------------------------------*/
+		--s-outer-p-x: calc(2 * var(--gutter-base));
+		--s-outer-p-y: calc(4 * var(--gutter-base));
+		--s-banner-outer-p-x: calc(2 * var(--gutter-base));
+		--s-banner-outer-p-y: calc(4 * var(--gutter-base));
+
+		--s-inner-p-x: calc(4.5 * var(--gutter-base));
+		--s-inner-p-y: calc(4.5 * var(--gutter-base));
+		--s-inner-small-p-x: calc(4.5 * var(--gutter-base));
+		--s-inner-small-p-y: calc(1.5 * var(--gutter-base));
+
+		--popup-outer-p-x: calc(2 * var(--gutter-base));
+		--popup-outer-p-y: calc(2 * var(--gutter-base));
+		--popup-inner-p-x: 2rem;
+		--popup-inner-p-y: 2rem;
+		--card-item-gap: 2.4rem;
+
+
+		--s-heading-mb: var(--font-body-size);
+		--s-description-mb: calc(var(--font-body-size) * 3 );
+
+	}
+}
+@media (min-width: 1681px) {
+	:root {
+		--gutter-base: 2rem;
+		--font-heading-scale: 1.25;
+		--heading-6-type-scale: 1.2;
+	}
+}
+
+@media(max-width: {{ settings.page_width -}}px) and (min-width: 459px){
+.header--sticky .section-header--transparent{
+    padding-inline: var(--s-outer-p-x);
+  }
+  }
+</style>
+
+

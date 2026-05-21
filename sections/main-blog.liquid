@@ -1,0 +1,185 @@
+{% liquid
+  assign show_image = settings.blog_post_card_show_featured_image
+  assign image_ratio = settings.blog_post_card_featured_image_ratio
+  assign show_blog_tag = settings.blog_post_card_show_blog_tag
+  assign show_excerpt = settings.blog_post_card_show_excerpt
+  assign show_published_date = settings.blog_post_card_show_published_date
+  assign show_author = settings.blog_post_card_show_author
+  assign show_read_more = settings.blog_post_card_show_read_more
+  assign column_desktop = 12.0 | divided_by: section.settings.items_per_row_on_desktop
+
+ %}
+
+{%- paginate blog.articles by section.settings.items_per_page -%}
+  <div class="section section-index--{{section.index |  replace: '1', 'first' }} {% render 'sections-spacing' %} color-{{- section.settings.color_scheme }}">
+  <div class="ctnr color-{{ section.settings.color_scheme }} background js-animate" data-ui-component="Section Main Blog">
+      <div class="s-header anm anm-fadeInUpSmall {{ section.settings.content_alignment }}" style="--duration: .6s;">
+        <h1 class="{{ section.settings.heading_size }} d-inline-flex middle-xs m-zero">
+          {{ blog.title | escape }}
+          <a class="btn btn-icon btn-small ml-8 {{ section.settings.show_rss | default: 'd-none-important' | replace: 'true', '' }}" href="{{ shop.url }}{{ blog.url }}.atom" title="RSS">
+            {% render 'icon-rss' %}
+          </a>
+        </h1>
+      </div>
+      <div class="s-content">
+        <ul class="tab__header pb-3x p-relative ox-auto disable-scrollbars ls-none ws-nowrap gap-2x anm anm-fadeInUpLarge {{ section.settings.show_tags_filter | default: 'd-none' | replace: 'true', 'd-flex' }}" style="--duration: .7s; --delay: .15s">
+          <li class="tab__item">
+            <a href="{{ blog.url }}" class="tab__link {% if current_tags.first == blank %}tab__link--active{% endif %} fw-700 d-block p-relative m-zero">
+              {{ 'blogs.all' | t }}
+            </a>
+          </li>
+          {%- for tag in blog.all_tags -%}
+            <li class="tab__item">
+              {%- liquid
+                assign class = '<a class="tab__link fw-700 d-block p-relative m-zero"'
+                if current_tags.first contains tag.title
+                  assign class = '<a class="tab__link fw-700 d-block p-relative tab__link--active h6 m-zero"'
+                endif
+                echo tag | link_to_tag: tag | replace: '<a', class
+              -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+        <div class="rw">
+          {%- for article in blog.articles -%}
+            <div class="clm anm anm-fadeInUpLarge" style="--w-xs: 12; --w-sm: 6; --w-md: {{ column_desktop }}; --delay: {{ forloop.index | plus: 2 | times: 0.05 -}}s; --duration: .7s">
+              {% render 'card-article',
+                article: article,
+                blog: blog,
+                show_image: show_image,
+                image_ratio: image_ratio,
+                show_blog_tag: show_blog_tag,
+                show_excerpt: show_excerpt,
+                show_published_date: show_published_date,
+                show_author: show_author,
+                show_read_more: show_read_more %}
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+      {%- if paginate.pages > 1 -%}
+        <div class="s-footer anm anm-fadeInUpLarge" style="--duration: .7s; --delay: .15s">
+          {%- render 'pagination', paginate: paginate -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "t:sections.main_blog.name",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:general.settings.headers.header_general.content"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:general.settings.color_scheme.label",
+      "default": "scheme-3"
+    },
+    {
+      "type": "header",
+      "content": "t:general.settings.headers.header_layout.content"
+    },
+    {
+      "type": "select",
+      "id": "items_per_page",
+      "default": "24",
+      "label": "t:general.settings.items_per_page.label",
+      "options": [
+        {
+          "value": "12",
+          "label": "12"
+        },
+        {
+          "value": "24",
+          "label": "24"
+        },
+        {
+          "value": "36",
+          "label": "36"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "items_per_row_on_desktop",
+      "label": "t:general.settings.items_per_row_on_desktop.label",
+      "default": "4",
+      "options": [
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        },
+        {
+          "value": "5",
+          "label": "5"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "t:general.settings.content_alignment.label",
+      "default": "ta-left",
+      "options": [
+        {
+          "value": "ta-left",
+          "label": "t:general.settings.option_left.label"
+        },
+        {
+          "value": "ta-center",
+          "label": "t:general.settings.option_center.label"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "t:sections.main_blog.settings.headers.header_blog_post.content"
+    },
+    {
+      "type": "select",
+      "label": "t:general.settings.heading_size.label",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "headline",
+          "label": "t:general.settings.heading_size.options.headline.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:general.settings.heading_size.options.h1.label"
+        },
+        {
+          "value": "h2",
+          "label": "t:general.settings.heading_size.options.h2.label"
+        },
+        {
+          "value": "h3",
+          "label": "t:general.settings.heading_size.options.h3.label"
+        }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rss",
+      "label": "t:sections.main_blog.settings.show_rss.label",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tags_filter",
+      "label": "t:sections.main_blog.settings.show_tags_filter.label",
+      "default": false
+    }
+  ]
+}
+{% endschema %}

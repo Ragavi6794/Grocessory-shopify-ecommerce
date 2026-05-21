@@ -1,0 +1,31 @@
+<div class="product-comparison-item anm anm-fadeInUpLarge p-relative flex-1" style=" --duration: .7s; --delay: {{ forloop.index | plus: 2 | times: 0.05 -}}s; {{ product_info_style }}">
+  <sht-prd-slideshow class="d-flex fd-column gap-24 p-relative corner-radius-s o-hidden" data-hide-variant-image="true" data-section="{{ sectionID }}" data-block="{{ blockID }}">
+    <div class="product-slideshow__slider">
+      {% render 'product-comparison-gallery', product: product, section: section, place_holder: place_holder, sectionID: sectionID, hide_variant_image: true, is_first_image: false, ratio: settings.product_comparison_image_ratio, blockID: blockID %}
+    </div>
+    {%- if product.id == productID and request.page_type == 'product'-%}
+      <div class="current__card color-accent subtext p-absolute zi-1 fw-700 tt-up w-100 d-flex gap-8 center-xs middle-xs" style="{{ bgc_card_current }}; {{ color_card_current }}">
+        {% render 'icon-star', size: 16 %}
+        <span class="d-none d-block-md">{{ 'products.product.card.current_product' | t }}</span>
+        <span class="d-block d-none-md">{{ 'products.product.card.current' | t }}</span>
+      </div>
+    {%- endif -%}
+  </sht-prd-slideshow>
+  <div class="product-comparison-info mt-md-24 mt-16 wb-break-word">
+    <div class="color-light subtext mb-4 {{ settings.product_comparison_show_vendor | default: 'd-none' | replace: 'true', '' }}">
+      <span class="visually-hidden">{{- 'accessibility.vendor' | t -}}</span>
+      <span>{{- product.vendor -}}</span>
+    </div>
+    <h3 class="card__heading fw-700 m-zero mb-4">
+      <a href="{{ product.url | default: '#' }}" class="pe-no-link">
+        {{ product.title | escape }}
+      </a>
+    </h3>
+    <div class="d-flex fw-wrap gap-8" id="productComparisonPrice-{{ sectionID }}-{{ blockID }}" role="status">
+      {% render 'product-price', product: product, target: product.selected_or_first_available_variant %}
+    </div>
+    <div class="product-comparison-attributes mt-16 color-{{ settings.color_scheme_product_attributes }} {{ settings.product_comparison_show_attributes | default: 'd-none' | replace: 'true', '' }}">
+      {%- render 'product-attributes', product: product, namespace_keys: settings.product_attributes_metafield_namespace, att_style: 'mb-0' -%}
+    </div>
+  </div>
+</div>

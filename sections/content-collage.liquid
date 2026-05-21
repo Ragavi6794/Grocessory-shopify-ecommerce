@@ -1,0 +1,456 @@
+{%- liquid
+  unless section.settings.items_ordering == 'equal'
+    if section.blocks.size == 2
+      assign stacked_class = ' unstacked-2'
+    endif
+
+    if section.blocks.size == 3
+      if section.settings.enable_stacked_layout
+        assign stacked_class = ' stacked'
+      else
+        assign stacked_class = ' unstacked'
+      endif
+    endif
+  else
+    assign size_style = section.blocks.size | prepend: '--size:' | prepend: 'style="' | append: '"'
+  endunless
+
+  assign media_height = ''
+  if section.blocks.size < 3
+    assign media_height = 'mah-100v'
+  endif
+
+  assign item_heading_size = section.settings.item_heading_size
+-%}
+<div class="section section-index--{{section.index |  replace: '1', 'first' }} {% render 'sections-spacing' %} color-{{- section.settings.color_scheme }}" data-ui-component="Content Collage Section" role="region" aria-labelledby="sectionHeading-{{ section.id | md5 | truncate: 12, "" }}">
+  <div class="ctnr background"  style="--overlay: {{ section.settings.image_overlay_opacity }}">
+      {% render 'section-header',
+        content_align: section.settings.content_alignment,
+        subheading: section.settings.subheading,
+        heading: section.settings.heading,
+        heading_size: section.settings.heading_size,
+        description: section.settings.description,
+        section: section
+      %}
+      <div class="s-content pb-0 d-grid gap-1x corner-radius-s js-animate ctclg--{{ section.settings.items_ordering }}{{ stacked_class }}" {{ size_style }}>
+        {%- for block in section.blocks -%}
+          {% case block.type %}
+            {% when 'collection' %}
+              {% liquid
+                assign collection_title = 'sections.content_collage.collection.collection_title' | t
+                assign collection = block.settings.collection
+                assign collection_image = 'collection-1' | placeholder_svg_tag: 'js-image-lazy placeholder media w-100 h-100'
+                assign collection_image = collection.featured_image | image_url: width: collection.featured_image.width | image_tag: widths: '750, 950, 1024', sizes: "(min-width: 361px) calc(100vw/2), calc(100vw/3)", alt: collection.featured_image.alt, class: 'js-image-lazy media of-cover w-100 h-100'
+                assign view_details_btn = 'sections.content_collage.collection.view_product' | t
+                if block.settings.show_number_of_products
+                  assign view_details_btn = 'sections.content_collage.collection.view_count_product' | t: count: collection.products.size
+                endif
+                assign overlay_color = ''
+                assign content_color = ''
+                unless block.settings.color_mask_overlay.alpha == 0.0 or block.settings.color_mask_overlay == blank
+                  assign overlay_color = '--color-mask-overlay:' | append: block.settings.color_mask_overlay.red | append: ',' | append: block.settings.color_mask_overlay.green | append: ',' | append: block.settings.color_mask_overlay.blue | append: ';'
+                endunless
+                unless block.settings.color_text_overlay.alpha == 0.0 or block.settings.color_text_overlay == blank
+                  assign content_color = 'color:' | append: block.settings.color_text_overlay | append: ';'
+                endunless
+              %}
+              <div class="card--card p-relative o-hidden sht-mask {{ media_height }} sht-mask--bottom index-{{ forloop.index }} anm anm-fadeInUpLarge" style="--delay: {{ forloop.index | plus: 2 | times: 0.05 -}}s; --duration: .7s; --overlay: {{ block.settings.color_collection_opacity }}; {{ overlay_color }}"  {{ block.shopify_attributes }} >
+                <a aria-label="{{ collection.title | escape }}" href="{{ collection.url | default: '#' }}" class="content-collage__link pe-no-link d-block h-100 w-100 p-absolute zi-1"></a>
+                {% render 'image', image_item: collection_image, ratio: section.settings.image_ratio, image_wrap_classes: 'h-100 ', image_classes: 'h-100 w-100' %}
+                <div class="card__content card__content--inner wb-break-word zi-1 bottom-0 p-absolute pe-none w-100 {{ section.settings.content_alignment }}" style="{{ content_color }}">
+                  <h3 class="{{ item_heading_size }} mb-8 card__heading">{{ collection.title | default: collection_title }}</h3>
+                  <a href="{{ collection.url | default: '#' }}" class="{{ section.settings.show_items_button | default: 'd-none' | replace: 'true', 'td-underline btn btn-link btn-small' }}">{{ view_details_btn }}</a>
+                </div>
+              </div>
+            {% when 'product' %}
+              {% liquid
+                assign product_title = "sections.content_collage.collection.view_product" | t
+                assign product = block.settings.product
+                assign product_featured_image = 'product-1' | placeholder_svg_tag: 'js-image-lazy placeholder w-100 h-100 media'
+                assign product_featured_image = product.featured_image | image_url: width: product.featured_image.image.width | image_tag: widths: '750, 950, 1024', sizes: "(min-width: 361px) calc(100vw/2), calc(100vw/3)", alt: product.title, class: 'js-image-lazy media of-cover w-100 h-100'
+                assign product_title = product.title | default: product_title
+
+                assign money_price = 5000 | money
+                assign money_price_sale = 10000 | money
+                if settings.currency_code_enabled
+                  assign money_price = 5000 | money_with_currency
+                  assign money_price_sale = 10000 | money_with_currency
+                endif
+                assign align_price = section.settings.content_alignment | replace: 'ta-center', 'center-xs' | replace: 'ta-left', ''
+                assign overlay_color = ''
+                assign content_color = ''
+                unless block.settings.color_mask_overlay.alpha == 0.0 or block.settings.color_mask_overlay == blank
+                  assign overlay_color = '--color-mask-overlay:' | append: block.settings.color_mask_overlay.red | append: ',' | append: block.settings.color_mask_overlay.green | append: ',' | append: block.settings.color_mask_overlay.blue | append: ';'
+                endunless
+                unless block.settings.color_text_overlay.alpha == 0.0 or block.settings.color_text_overlay == blank
+                  assign content_color = 'color:' | append: block.settings.color_text_overlay | append: ';'
+                endunless
+              %}
+              <div class="card--card p-relative o-hidden sht-mask {{ media_height }} sht-mask--bottom index-{{ forloop.index }} anm anm-fadeInUpLarge" style="--delay: {{ forloop.index | plus: 2 | times: 0.05 -}}s; --duration: .7s; --overlay: {{ block.settings.color_product_opacity }}; {{ overlay_color }}" {{ block.shopify_attributes }}>
+                <a aria-label="{{ product.title | escape }}" href="{{ product.url | default: '#' }}" class="content-collage__link pe-no-link d-block p-absolute w-100 h-100 zi-1"></a>
+                {% render 'image', image_item: product_featured_image, ratio: section.settings.image_ratio, image_wrap_classes: 'h-100', image_classes: 'h-100 w-100' %}
+                <div class="card__content card__content--inner wb-break-word zi-1 bottom-0 p-absolute pe-none w-100 {{ section.settings.content_alignment }}" style="{{ content_color }}">
+                  <h3 class="{{ item_heading_size }} mb-8 card__heading hide-empty">{{- product_title -}}</h3>
+                  {% if product != blank %}
+                    {% render 'product-price' product: product, target: product, content_align: align_price, unit_price: 'd-none-important' %}
+                  {% else %}
+                    <div class="price d-flex middle-xs {{ align_price }}">
+                      <span class="visually-hidden">{{ 'products.product.price.sale_price' | t }}</span>
+                      <span class="d-inline-block mr-8">{{ money_price }}</span>
+                      <span class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>
+                      <span class="d-inline-block"><s class="color-light">{{ money_price_sale }}</s></span>
+                    </div>
+                  {% endif %}
+                  <a href="{{ product.url | default: '#' }}" class="{{ section.settings.show_items_button | default: 'd-none' | replace: 'true', 'td-underline btn btn-link btn-small' }}">
+                    {{ "sections.content_collage.collection.view_product" | t }}
+                  </a>
+                </div>
+              </div>
+            {% when 'image' %}
+              {% liquid
+                  assign collage_image = 'image' | placeholder_svg_tag: 'placeholder w-100 h-100 media'
+                  assign collage_image_alt  = block.settings.heading | default: block.settings.image.image | split: '/' | last
+                  assign collage_image = block.settings.image | image_url: width: block.settings.image.width | image_tag: widths: '750, 950, 1024', sizes: "(min-width: 361px) calc(100vw/2), calc(100vw/3)", alt: collage_image_alt , class: 'js-image-lazy media of-cover w-100 h-100'
+                  assign overlay_color = ''
+                  assign content_color = ''
+                  unless block.settings.color_mask_overlay.alpha == 0.0 or block.settings.color_mask_overlay == blank
+                    assign overlay_color = '--color-mask-overlay:' | append: block.settings.color_mask_overlay.red | append: ',' | append: block.settings.color_mask_overlay.green | append: ',' | append: block.settings.color_mask_overlay.blue | append: ';'
+                  endunless
+                  unless block.settings.color_text_overlay.alpha == 0.0 or block.settings.color_text_overlay == blank
+                    assign content_color = 'color:' | append: block.settings.color_text_overlay | append: ';'
+                  endunless
+                  %}
+              <div class="card--card p-relative o-hidden sht-mask {{ media_height }} sht-mask--bottom index-{{ forloop.index }} anm anm-fadeInUpLarge" style="--delay: {{ forloop.index | plus: 2 | times: 0.05 -}}s; --duration: .7s; --overlay: {{ block.settings.color_image_opacity }}; {{ overlay_color }}" {{ block.shopify_attributes }}>
+                <a aria-label="{{ collage_image_alt }}" href="{{ block.settings.button_link | default: '#' }}" class="content-collage__link pe-no-link d-block p-absolute h-100 w-100 zi-1"></a>
+                {% render 'image', image_item: collage_image, ratio: section.settings.image_ratio, image_wrap_classes: 'h-100', image_classes: 'h-100 w-100' %}
+                <div class="card__content card__content--inner wb-break-word zi-1 bottom-0 p-absolute pe-none w-100 {{ section.settings.content_alignment }}" style="{{ content_color }}">
+                  <h3 class="{{ item_heading_size }} mb-8 card__heading hide-empty">{{- block.settings.heading -}}</h3>
+                  <a href="{{ block.settings.button_link | default: '#' }}" class="{{ section.settings.show_items_button | default: 'd-none' | replace: 'true', 'td-underline btn btn-link btn-small hide-empty' }}">
+                    {{- block.settings.button_text -}}
+                  </a>
+                </div>
+              </div>
+          {% endcase %}
+        {%- endfor -%}
+      </div>
+
+
+  </div>
+  {%- render 'section-id', section: section -%}
+</div>
+{% schema %}
+{
+  "name": "t:sections.content_collage.name",
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer"
+    ]
+  },
+  "max_blocks": 3,
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:general.settings.headers.header_general.content"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:general.settings.color_scheme.label",
+      "default": "scheme-3"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "t:general.settings.subheading.label",
+      "default": "Add a tagline"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:general.settings.heading.label",
+      "default": "Our core values"
+    },
+    {
+      "type": "select",
+      "label": "t:general.settings.heading_size.label",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:general.settings.heading_size.options.h2.label"
+        },
+        {
+          "value": "h3",
+          "label": "t:general.settings.heading_size.options.h3.label"
+        },
+        {
+          "value": "h4",
+          "label": "t:general.settings.heading_size.options.h4.label"
+        },
+        {
+          "value": "h5",
+          "label": "t:general.settings.heading_size.options.h5.label"
+        }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "text",
+      "id": "description",
+      "label": "t:general.settings.description.label"
+    },
+    {
+      "type": "header",
+      "content": "t:general.settings.headers.header_layout.content"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "t:general.settings.content_alignment.label",
+      "default": "ta-center",
+      "options": [
+        {
+          "value": "ta-left",
+          "label": "t:general.settings.option_left.label"
+        },
+        {
+          "value": "ta-center",
+          "label": "t:general.settings.option_center.label"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "items_ordering",
+      "label": "t:sections.content_collage.settings.items_ordering.label",
+      "default": "equal",
+      "options": [
+        {
+          "value": "equal",
+          "label": "t:sections.content_collage.settings.items_ordering.options.option_equal.label"
+        },
+        {
+          "value": "big-first",
+          "label": "t:sections.content_collage.settings.items_ordering.options.option_main_item_first.label"
+        },
+        {
+          "value": "big-last",
+          "label": "t:sections.content_collage.settings.items_ordering.options.option_main_item_last.label"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_stacked_layout",
+      "label": "t:sections.content_collage.settings.enable_stacked_layout.label",
+      "info": "t:sections.content_collage.settings.enable_stacked_layout.info",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:sections.content_collage.settings.headers.header_items.content"
+    },
+    {
+      "type": "select",
+      "label": "t:sections.content_collage.settings.item_heading_size.label",
+      "id": "item_heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:general.settings.heading_size.options.h2.label"
+        },
+        {
+          "value": "h3",
+          "label": "t:general.settings.heading_size.options.h3.label"
+        },
+        {
+          "value": "h4",
+          "label": "t:general.settings.heading_size.options.h4.label"
+        },
+        {
+          "value": "h5",
+          "label": "t:general.settings.heading_size.options.h5.label"
+        },
+        {
+          "value": "h6",
+          "label": "t:general.settings.heading_size.options.h6.label"
+        }
+      ],
+      "default": "h5"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "t:general.settings.image_ratio.label",
+      "info": "t:general.settings.image_ratio.info",
+      "default": "4/5",
+      "options": [
+        {
+          "value": "1/1",
+          "label": "t:general.settings.image_ratio.options.option_square.label"
+        },
+        {
+          "value": "4/5",
+          "label": "t:general.settings.image_ratio.options.option_portrait_1.label"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_items_button",
+      "label": "t:sections.content_collage.settings.show_items_button.label",
+      "info": "t:sections.content_collage.settings.show_items_button.info",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "t:sections.content_collage.blocks.collection.name",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "t:general.settings.collection.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_number_of_products",
+          "label": "t:sections.content_collage.blocks.collection.settings.show_number_of_products.label",
+          "default": false
+        },
+        {
+          "type": "range",
+          "unit": "%",
+          "max": 90,
+          "min": 0,
+          "step": 1,
+          "default": 30,
+          "id": "color_collection_opacity",
+          "label": "t:general.settings.overlay_opacity.label"
+        },
+        {
+          "type": "color",
+          "id": "color_mask_overlay",
+          "label": "t:general.settings.custom_mask_overlay.label"
+        },
+        {
+          "type": "color",
+          "id": "color_text_overlay",
+          "label": "t:general.settings.custom_text_overlay.label"
+        }
+      ]
+    },
+    {
+      "type": "product",
+      "name": "t:sections.content_collage.blocks.product.name",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "t:general.settings.product.label"
+        },
+        {
+          "type": "range",
+          "unit": "%",
+          "max": 90,
+          "min": 0,
+          "step": 1,
+          "default": 30,
+          "id": "color_product_opacity",
+          "label": "t:general.settings.overlay_opacity.label"
+        },
+        {
+          "type": "color",
+          "id": "color_mask_overlay",
+          "label": "t:general.settings.custom_mask_overlay.label"
+        },
+        {
+          "type": "color",
+          "id": "color_text_overlay",
+          "label": "t:general.settings.custom_text_overlay.label"
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "t:sections.content_collage.blocks.image.name",
+      "settings": [
+        {
+          "type": "header",
+          "content": "t:general.settings.headers.header_general.content"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:general.settings.image.label",
+          "info": "t:sections.content_collage.blocks.image.settings.image.info"
+        },
+        {
+          "type": "range",
+          "unit": "%",
+          "max": 90,
+          "min": 0,
+          "step": 1,
+          "default": 30,
+          "id": "color_image_opacity",
+          "label": "t:general.settings.overlay_opacity.label"
+        },
+        {
+          "type": "color",
+          "id": "color_mask_overlay",
+          "label": "t:general.settings.custom_mask_overlay.label"
+        },
+        {
+          "type": "color",
+          "id": "color_text_overlay",
+          "label": "t:general.settings.custom_text_overlay.label"
+        },
+        {
+          "type": "header",
+          "content": "t:general.settings.headers.header_content.content"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "t:general.settings.heading.label",
+          "default": "Heading"
+        },
+        {
+          "type": "header",
+          "content": "t:general.settings.headers.header_button.content"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "t:general.settings.label.label",
+          "info": "t:general.settings.button_label.info",
+          "default": "Check now"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "t:general.settings.link.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.content_collage.name",
+      "blocks": [
+        {
+          "type": "collection"
+        },
+        {
+          "type": "product"
+        },
+        {
+          "type": "image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

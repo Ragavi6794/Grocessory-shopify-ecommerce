@@ -1,0 +1,9 @@
+{%- comment -%}
+  Storefront API access token for cart metafield writes.
+  This is a public Storefront token — safe to include in frontend code.
+{%- endcomment -%}
+<script>
+  window.__storefrontToken = '8d0573b106fc9e05d41698079fbc3f05';
+  window.Shopify = window.Shopify || {};
+  window.Shopify.shop = window.Shopify.shop || '{{ shop.permanent_domain }}';
+</script>

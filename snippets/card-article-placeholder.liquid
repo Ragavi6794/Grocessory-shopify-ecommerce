@@ -1,0 +1,33 @@
+{% liquid
+    assign article_placeholder = 'collection-1' | placeholder_svg_tag: 'placeholder media of-cover w-100 h-100'
+  if settings.blog_card_style == 'card'
+      assign article_card_scheme = 'card--border corner-radius-s background color-' | append: settings.blog_color_scheme
+  endif
+%}
+<div class="card w-100 h-100 {{ article_card_scheme }} card--{{ settings.blog_card_style }} p-relative">
+    <div class="card__media p-relative {{ settings.blog_post_card_show_featured_image | default: 'd-none' | replace: true, 'd-block' }}" style="--ratio: {{ settings.blog_post_card_featured_image_ratio }}">
+      <a aria-label="{{ 'sections.featured_blog.article.title' | t }}" href="#" class="pe-no-link p-absolute w-100 h-100"></a>
+      {% render 'image', image_item: article_placeholder, image_wrap_classes: 'h-100', image_classes: 'h-100 w-100' %}
+    </div>
+    <div class="card__content wb-break-word">
+      <a href="#" class="pe-no-link td-none mb-16 tag {{ settings.blog_post_card_show_blog_tag | default: 'd-none-important' | replace: 'true', d-inline-block }}" >{{ 'sections.featured_blog.article.tag' | t }}</a>
+      <h3 class="mb-12 card__heading fw-700">
+        <a href="#" class="pe-no-link td-none d-inline-block link--hover">{{ 'sections.featured_blog.article.title' | t }}</a>
+      </h3>
+      <p class="card__excerpt mb-12 o-hidden {{ settings.blog_post_card_show_excerpt | default: 'd-none-important' | replace: 'true', '' }}">
+        {{- 'sections.featured_blog.article.excerpt' | t | strip_html | truncatewords: 30 -}}
+      </p>
+      <div class="hide-empty mb-8 subtext color-light">
+        <span class="d-none {{ settings.blog_post_card_show_author | replace: true, 'd-inline-block' }}">{{ 'sections.featured_blog.article.lorem_author' | t }}</span>
+        {% if settings.blog_post_card_show_author and settings.blog_post_card_show_published_date %}
+          {{ 'sections.featured_blog.article.in_date' | t }}
+        {% endif %}
+        <span class="d-none {{ settings.blog_post_card_show_published_date | replace: true, 'd-inline-block' }}">
+          {{ 'sections.featured_blog.article.lorem_date' | t }}
+        </span>
+      </div>
+      <a class="btn btn-small btn-link {{ settings.blog_post_card_show_read_more | default: 'd-none-important' | replace: 'true', '' }}" href="{{ article.url | default: '#' }}">
+        {{- 'blogs.article.read_more' | t -}}
+      </a>
+    </div>
+</div>

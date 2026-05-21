@@ -1,0 +1,40 @@
+{% liquid
+  assign section_id = section.id | md5 | truncate: 12, ""
+  assign form_id = 'CountrySwitcher-' | append: section_id
+  capture check_mark
+    render 'icon-check-mark', size: 16
+  endcapture
+%}
+<sht-country-switcher class="fg-1">
+  {%- form 'localization', id: form_id, class: 'country-switcher__form js-country-switcher-form' -%}
+    <div class="country-switcher__container no-js-hidden">
+      <div class="visually-hidden" id="CountrySwitcherLabel-{{ section_id }}">{{ 'localization.country_label' | t }}</div>
+      <div class="country-switcher__wrapper p-relative">
+        <button type="button" class="js-country-switcher-btn btn-localization fs-body d-flex between-xs middle-xs w-100 ta-left field__text field--focus field--hover c-pointer" aria-expanded="false" aria-controls="CountrySwitcherCountryList-{{ section_id }}" aria-describedby="CountrySwitcherLabel-{{ section_id }}">
+          {{ localization.country.name }} ({{ localization.country.currency.iso_code }}
+          {{ localization.country.currency.symbol }})
+          {% render 'icon-chevron-down', size: '20px', class: 'icon-chevron-down' %}
+        </button>
+        <ul role="list" id="CountrySwitcherCountryList-{{ section_id }}" class="background color-{{ settings.color_scheme_drawer_popover }} country-switcher__country-list field__dropdown-switcher js-country-switcher-country-list localization-list ls-none zi-9 p-absolute oy-scroll right-0">
+          {%- for country in localization.available_countries -%}
+            {% liquid
+              assign active_class = ''
+              assign active_attrs = ''
+              if country.iso_code == localization.country.iso_code
+                assign active_class = 'link--active fw-700'
+                assign active_attrs = 'aria-current="true"'
+              endif
+            %}
+            <li class="field__dropdown__item" tabindex="-1">
+              <a class="js-country-switcher-country-item-link field__dropdown__link d-block {{ active_class }}" href="#" {{ active_attrs }} data-value="{{ country.iso_code }}">
+                {{ country.name }}
+                <span>({{ country.currency.iso_code }}{{ country.currency.symbol }})</span>
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+      <input type="hidden" class="js-country-switcher-country-code-field" name="country_code" value="{{ localization.country.iso_code }}">
+    </div>
+  {%- endform -%}
+</sht-country-switcher>

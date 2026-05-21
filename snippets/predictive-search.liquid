@@ -1,0 +1,81 @@
+<style>
+  .search-icon-click {
+    border: none;
+    background: transparent;
+  }
+</style>
+{% liquid
+  assign search_results_types = ''
+
+  if settings.predictive_search_article
+    assign search_results_types = search_results_types | append: ',article'
+  endif
+  if settings.predictive_search_page
+    assign search_results_types = search_results_types | append: ',page'
+  endif
+  if settings.predictive_search_collection
+    assign search_results_types = search_results_types | append: ',collection'
+  endif
+
+  assign search_results_types = search_results_types | replace_first: ',', ""
+%}
+{% if settings.predictive_search_show_search_filter %}
+  {% assign enable_search_filter = 'search__filter' %}
+  {% capture search_filter %}
+    <div class="search__field__category d-flex-sm middle">
+      <span  class="js-predictive-search-btn-open-product-type open-product-type btn-plain d-none-md d-flex middle-xs center-xs">
+        {% render 'icon-filter', size: '16', class: 'd-none-md' %}
+      </span>
+      <select class="js-predictive-search-product-type field__search_category search__field field__text">
+        <option value="" selected="selected">{{ 'sections.header.search.all_categories' | t }}</option>
+        {%- for product_type in shop.types -%}
+          {%- if product_type != blank -%}
+            <option value="{{ product_type | escape }}">{{ product_type | escape }}</option>
+          {%- endif -%}
+        {%- endfor -%}
+      </select>
+      {% render 'icon-chevron-down', size: '20', class: 'd-none d-block-md p-absolute pe-none middle-y' %}
+    </div>
+  {% endcapture %}
+{% endif %}
+<sht-predictive-srch role="dialog" aria-modal="true" class="js-predictive-search {{ class }}" data-search-type="{{- search_results_types -}}" data-show-search-filter="{{- settings.predictive_search_show_search_filter -}}">
+  <search class="search__wrap w-100 d-block" role="search">
+    <form action="{{ routes.search_url }}" method="get"  class="predictive-search-form w-100 {{ form_search_style }} js-predictive-search-form zi-1">
+      <input type="hidden" name="type" value="{%- if search_results_types == blank -%}product{%- else -%}{{ search_results_types | prepend: 'product,' }}{%- endif -%}">
+      <input id="search__product-type" class="js-search-product-type" name="filter.p.product_type" type="hidden" value="">
+      <input name="options[prefix]" type="hidden" value="last">
+      <div class="search__field__wrapper d-flex middle-xs">
+        <div class="{{ enable_search_filter }} d-flex flex-1 middle-xs p-relative">
+            {{ search_filter }}
+            <input id="predictiveSearch_Input" class="search__field field__text search__field-input flex-1 js-predictive-search-input w-100" type="search" name="q" aria-label="{{ 'accessibility.search' | t }}" value="" placeholder="{{ 'general.search.input_placeholder' | t }}" role="combobox" aria-expanded="false" aria-owns="predictive-search-results-list" aria-controls="predictive-search-results-list" aria-haspopup="listbox" aria-autocomplete="list" autocorrect="off" autocomplete="off" autocapitalize="off" spellcheck="false" style="cursor:text !important;">
+             {% comment %}
+             <span class="icon--default d-flex middle-xs center-xs mr-8 p-absolute right-0 pe-none">
+              {% render 'icon-search', size: '20' %}
+            </span>
+            {% endcomment %}
+            <button type="submit" class="icon--default d-flex middle-xs center-xs mr-8 p-absolute right-0 c-pointer search-icon-click">
+              {% render 'icon-search', size: '20' %}
+            </button>
+            <label class="field__label visually-hidden" for="predictiveSearch_Input">{{ 'general.search.search' | t }}</label>
+          </div>
+          <button aria-label="{{ 'accessibility.close' | t }}" class="search--close btn-plain icon--default js-predictive-search-close-trigger c-pointer" type="button">
+            {% render 'icon-close' %}
+          </button>
+      </div>
+      <div class="search__result zi-3 p-absolute js-predictive-search-results ctnr pt-24 pb-24 w-100 background " tabindex="-1" hidden>
+        <div class="js-predictive-search-loading search-loading ta-center" hidden>
+          {% render 'icon-spinner' %}
+        </div>
+        <div class="search__result-empty d-block js-predictive-search-message-placeholder ta-center" hidden>
+          {{ 'general.search.search_message_placeholder' | t }}
+        </div>
+        <div class="js-predictive-search-results-panel">
+          <div class="search__result-contents" id="predictive-search-results-list">
+            <div class="search__result-items js-predictive-search-result-items o-hidden opacity-0">
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </search>
+</sht-predictive-srch>

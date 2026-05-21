@@ -1,0 +1,99 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "header",
+  "name": "Header Group",
+  "sections": {
+    "top-bar": {
+      "type": "top-bar",
+      "blocks": {
+        "message": {
+          "type": "message",
+          "settings": {
+            "text": "<p><strong>ORDER BY 1 PM FOR SAME-DAY DELIVERY IN DUBAI.</strong></p>"
+          }
+        },
+        "store_info": {
+          "type": "store_info",
+          "disabled": true,
+          "settings": {
+            "content_ordering": "link-first",
+            "show_quick_links": true,
+            "show_info": true
+          }
+        }
+      },
+      "block_order": [
+        "message",
+        "store_info"
+      ],
+      "disabled": true,
+      "settings": {
+        "color_scheme": "scheme-3"
+      }
+    },
+    "country-flags-header": {
+      "type": "country-flags-header",
+      "blocks": {
+        "country_flag_R8PKtr": {
+          "type": "country_flag",
+          "settings": {
+            "country_name": "UAE",
+            "flag_image": "shopify://shop_images/Flag_of_the_United_Arab_Emirates_svg.png",
+            "country_link": "",
+            "show_country_name": true
+          }
+        },
+        "country_flag_jrM9cP": {
+          "type": "country_flag",
+          "settings": {
+            "country_name": "United Arab Emirates",
+            "flag_image": "shopify://shop_images/Flag_of_the_United_Arab_Emirates_svg.png",
+            "country_link": "",
+            "show_country_name": true
+          }
+        }
+      },
+      "block_order": [
+        "country_flag_R8PKtr",
+        "country_flag_jrM9cP"
+      ],
+      "settings": {}
+    },
+    "header": {
+      "type": "header",
+      "settings": {
+        "color_scheme-3": "scheme-3",
+        "text_1": "<p>Flat AED 25 OFF on First Order! Use Code: <strong>WELCOME</strong></p>",
+        "text_2": "<p>Order before 3 PM for same-day delivery in Dubai!</p>",
+        "text_3": "",
+        "enable_drawer": false,
+        "header_sticky": "true",
+        "color_scheme": "scheme-2",
+        "logo": "shopify://shop_images/Gulffruits_Trade_Co_LLC.svg",
+        "logo_width": 100,
+        "logo_width_mobile": 60,
+        "button_text": "Office Order",
+        "button_link": "shopify://pages/office-subscription-wellness-fresh-fruits-gifts",
+        "menu": "navigation-menu",
+        "show_currency_selector": true,
+        "enable_search_full": true,
+        "enable_quick_links": false,
+        "enable_contact": false,
+        "show_language_selector": true
+      }
+    }
+  },
+  "order": [
+    "top-bar",
+    "country-flags-header",
+    "header"
+  ]
+}

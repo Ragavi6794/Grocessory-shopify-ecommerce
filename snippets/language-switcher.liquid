@@ -1,0 +1,36 @@
+{% liquid
+  assign section_id = section.id | md5 | truncate: 12, ""
+  assign form_id = 'LanguageSwitcher-' | append: section_id
+%}
+<sht-language-switcher class="fg-1">
+  {%- form 'localization', id: form_id, class: 'js-language-switcher-form' -%}
+    <div class="language-switcher__container no-js-hidden">
+      <div class="visually-hidden" id="LanguageSwitcherLabel-{{ section_id }}">{{ 'localization.language_label' | t }}</div>
+      <div class="language-switcher__wrapper p-relative">
+        <button type="button" class="js-language-switcher-btn btn-localization fs-body d-flex between-xs middle-xs w-100 ta-left field__text field--focus field--hover c-pointer" aria-expanded="false" aria-controls="LanguageSwitcherLanguageList-{{ section_id }}" aria-describedby="LanguageSwitcherLabel-{{ section_id }}">
+          {{ localization.language.endonym_name | capitalize }}
+          {% render 'icon-chevron-down', size: '20px', class: 'icon-chevron-down' %}
+        </button>
+        <ul role="list" id="LanguageSwitcherLanguageList-{{ section_id }}" class="background color-{{ settings.color_scheme_drawer_popover }} js-language-switcher-language-list localization-list field__dropdown-switcher ls-none o-hidden w-100 p-absolute oy-scroll right-0 left-0 zi-9">
+          {%- for language in localization.available_languages -%}
+            {% liquid
+              assign active_class = ''
+              assign active_attrs = ''
+
+              if language.iso_code == localization.language.iso_code
+                assign active_class = 'link--active fw-700'
+                assign active_attrs = 'aria-current="true"'
+              endif
+            %}
+            <li class="field__dropdown__item" tabindex="-1">
+              <a class="js-language-switcher-language-item-link field__dropdown__link link d-block {{ active_class }}" href="#" {{ active_attrs }} data-value="{{ language.iso_code }}">
+                {{ language.endonym_name | capitalize }}
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+      <input type="hidden" class="js-language-switcher-language-code-field" name="locale_code" value="{{ localization.language.iso_code }}">
+    </div>
+  {%- endform -%}
+</sht-language-switcher>

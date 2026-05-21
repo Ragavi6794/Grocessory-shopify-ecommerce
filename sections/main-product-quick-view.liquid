@@ -1,0 +1,336 @@
+{%- liquid
+  layout none
+  assign variant_label = settings.variant_swatches_option | downcase
+  assign place_holder = 'product-1' | placeholder_svg_tag: 'placeholder w-100 h-100'
+  assign product_form_id = 'productQuickViewForm-' | append: section.id | append: '-' | append: product.id
+  assign first_3d_model = product.media | where: 'media_type', 'model' | first
+-%}
+{%- if first_3d_model -%}
+  <script type="application/json" id="ProductJSON-{{ product.id }}">
+    {{ product.media | where: 'media_type', 'model' | json }}
+  </script>
+{%- endif -%}
+<div class="product__quickview d-flex fd-column h-100" data-ui-component="Product Quick View Section">
+  <div class="product__info d-flex fd-column fd-row-md flex-1">
+    <div class="product__media" style="--w-md: 6;">
+      <sht-prd-slideshow role="status" class="product__media h-100 d-block" data-hide-variant-image="false" data-section="{{ section.id }}">
+        <div class="product-slideshow__slider p-relative h-100">
+          <sht-carousel class="sht-carousel p-relative d-block h-100" id="productGalleryCarousel-{{ section.id }}" data-section-id="{{ section.id }}">
+            <div class="product-slideshow__items h-100 d-flex fw-nowrap ox-auto oy-hidden p-relative scrollable scrollable-x disable-scrollbars js-product-slideshow js-carousel-items" role="list" aria-label="{{ 'accessibility.slider' | t }}">
+              {%-liquid
+                assign product_media_index = 1
+                assign featured_media = 'image' | placeholder_svg_tag: 'placeholder media d-block w-100 h-100 of-cover'
+                if product.selected_or_first_available_variant.featured_media != null
+                  assign featured_media = product.selected_or_first_available_variant.featured_media
+                  assign is_first_image = true
+                  render 'product-slideshow-image', xr_button: true, section: section, media: featured_media, is_first_image: is_first_image, product: product, place_holder: place_holder, product_media_index: product_media_index, is_first_item: true, ratio: settings.quickview_media_ratio, ratio_md: 'auto', media_style: '--ratio-md: auto'
+                else
+                  render 'image', image_item: featured_media, image_wrap_classes: "w-100", image_classes: "h-100 w-100", ratio: settings.quickview_media_ratio
+                endif
+                for media in product.media
+                  unless media.id == product.selected_or_first_available_variant.featured_media.id
+                    if forloop.first and is_first_image == false
+                      assign is_first_image = true
+                    else
+                      assign is_first_image = false
+                    endif
+                    assign product_media_index = product_media_index | plus: 1
+                    render 'product-slideshow-image', xr_button: true, section: section, media: media, is_first_image: is_first_image, product: product, place_holder: place_holder, product_media_index: product_media_index, is_first_item: forloop.first, ratio: settings.quickview_media_ratio, ratio_md: 'auto', media_style: '--ratio-md: auto'
+                  endunless
+                endfor
+              -%}
+            </div>
+            <div class="carousel-pagination js-carousel-pagination center-xs no-js-hidden">
+              <div class="p-absolute middle-y zi-1 left-0 ml-16">
+                <button type="button" data-step="1" class="quickshop-carousel__btn js-carousel-prev-btn btn btn-outline btn-icon icon btn-small btn-secondary" aria-label="{{ 'accessibility.previous_slide' | t }}" name="previous" disabled>
+                  {% render 'icon-chevron-left' %}
+                </button>
+              </div>
+              <div class="p-absolute middle-y zi-1 right-0 mr-16">
+                <button type="button" data-step="1" class="quickshop-carousel__btn js-carousel-next-btn btn btn-outline  btn-icon icon btn-small btn-secondary" aria-label="{{ 'accessibility.next_slide' | t }}" name="next">
+                  {% render 'icon-chevron-right' %}
+                </button>
+              </div>
+            </div>
+          </sht-carousel>
+        </div>
+    </sht-prd-slideshow>
+    </div>
+    <div class="p-relative-md" style="--w-md: 6;">
+      <div class="product__details p-absolute-md top-0 h-100 w-100 oy-scroll disable-scrollbars d-flex fd-column gap-20">
+        <div class="">
+          {% if settings.quick_buy_show_product_vendor %}
+            <div class="product__vendor subtext color-light wb-break-word mb-8">{{ product.vendor }}</div>
+          {% endif %}
+          <div class="product__title h4 m-zero mb-16">
+            {{ product.title | escape }}
+          </div>
+          {% if settings.quick_buy_show_product_attributes %}
+            <div class="color-{{ settings.color_scheme_product_attributes }} mb-16">
+              {% render 'product-attributes', product: product, namespace_keys: settings.product_attributes_metafield_namespace, att_style: 'mb-0' %}
+            </div>
+          {% endif %}
+          <span class="color-light d-none" id="productQuickViewSelectedVariant-{{- section.id -}}"></span>
+          <div class="d-flex fw-wrap gap-8" id="productQuickViewPrice-{{- section.id -}}" role="status">
+            {%- render 'product-price', product: product, target: product.selected_or_first_available_variant, price_class: 'price--large' -%}
+            {% if settings.quick_buy_show_sale_badge %}
+              {% liquid
+                if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price
+                  assign on_sale = true
+                  assign discount_cost = product.selected_or_first_available_variant.compare_at_price | minus: product.selected_or_first_available_variant.price
+                  assign discount_percent = discount_cost | times: 100.0 | divided_by: product.selected_or_first_available_variant.compare_at_price | round: 2
+                endif
+              -%}
+              {% if on_sale %}
+              <div class="product__badge">
+                <span class="badge badge--sale subtext d-inline-block p-relative fw-700 color-{{ settings.color_scheme_sale_badge }}">
+                  <span class="p-relative zi-1 tt-up">
+                    {{- 'products.product.on_sale' | t }}
+                      {{ discount_percent }}%
+                    <span class="d-none-important">
+                    {% if settings.currency_code_enabled %}
+                      {{- discount_cost | money_with_currency -}}
+                    {% else %}
+                      {{- discount_cost | money -}}
+                    {% endif %}
+                      ({{ discount_percent }}%)
+                    </span>
+                  </span>
+                </span>
+              </div>
+              {% endif %}
+            {% endif %}
+          </div>
+        </div>
+        {% if settings.show_shipping_policy %}
+          <div class="hide-empty subtext m-zero">
+            {%- if cart.taxes_included -%}
+              <span>{{- 'products.product.include_taxes' | t -}} </span>
+            {%- endif -%}
+            {%- if shop.shipping_policy.body != blank -%}
+              <span class="product__shipping-policy-info text-block">
+                {{ 'products.product.shipping_policy_html' | t: link: shop.shipping_policy.url }}
+              </span>
+            {%- endif -%}
+          </div>
+        {% endif %}
+        {%- unless product.has_only_default_variant -%}
+          {%- if settings.quick_buy_variant_picker_type == 'button' -%}
+            <div class="product__variants" id="productQuickViewVariantPicker-{{ section.id }}">
+              <sht-prd-qck-vw-variant-radios class="product__variants--radios d-flex fd-column gap-16 no-js-hidden" data-section="{{ section.id }}" data-url="{{ product.url }}">
+                {%- for option in product.options_with_values -%}
+                  {% assign index = forloop.index | minus: 1 %}
+                  <fieldset class="js-variant-radio-container form__fields product-option d-flex fw-wrap p-zero m-zero b-zero">
+                    <legend class="p-zero product-option__name mb-12">
+                      <span class="fw-700 mr-8">{{ option.name }}</span>
+                      <span class="js-variant-radio-option-name hide-empty" data-option-name="{{ option.name }}">
+                        {{ product.selected_or_first_available_variant.options[index] }}
+                      </span>
+                    </legend>
+                    {%- assign variant_name = option.name | downcase -%}
+                    {%- if variant_label contains variant_name and settings.enable_variant_swatches -%}
+                      {% render 'card-product-quick-view-color-swatch', product: product, option: option, section: section, product_form_id: product_form_id, index: index %}
+                    {%- else -%}
+                      <ul class="ls-none d-flex fw-wrap gap-8">
+                        {%- for value in option.values -%}
+                          <li class="form__field js-variant-option-value product-option__value {% if product.selected_or_first_available_variant.available == false and option.selected_value == value %}product-option--sold-out{% endif %}" data-value="{{ value | escape }}-{{ index }}" data-option-index="{{ index }}">
+                            <input
+                              type="radio"
+                              class="js-variant-radio-item js-variant-item form__control input--variant js-variant-radio-option-name visually-hidden"
+                              id="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
+                              name="{{ option.name }}"
+                              value="{{ value | escape }}"
+                              data-variant-value="{{ value | escape }}-{{ index }}"
+                              form="{{ product_form_id }}"
+                              {% if option.selected_value == value %}
+                                checked
+                              {% endif %}
+                            >
+                            <label class="form__label product-option__label d-block" for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}">{{ value }}</label>
+                          </li>
+                        {%- endfor -%}
+                      </ul>
+                    {%- endif -%}
+                  </fieldset>
+                {%- endfor -%}
+                <script type="application/json">
+                  {{ product.variants | json }}
+                </script>
+              </sht-prd-qck-vw-variant-radios>
+            </div>
+            {%- else -%}
+          <div class="product__variants" id="productQuickViewVariantPicker-{{ section.id }}">
+            <sht-prd-qck-vw-variant-selects data-product-id="{{ product.id }}" class="product__variants--selects d-flex fd-column gap-32 no-js-hidden" data-section="{{ section.id }}" data-url="{{ product.url }}">
+              {%- for option in product.options_with_values -%}
+                {%- liquid
+                  assign index = forloop.index | minus: 1
+                  assign variant_name = option.name | downcase
+                  assign hide_select = ''
+                -%}
+              <div class="product-form__input product-form__input--dropdown js-selectbox-wrapper">
+                  <label class="form__label d-inline-block p-zero m-zero product-option__name mb-8" for="Option-{{ section.id }}-{{ forloop.index0 }}">
+                      <span class="h6 mr-8">{{ option.name }}</span>
+                      <span class="js-variant-select-option-name color-light hide-empty" data-option-index="{{ index }}" data-option-name="{{ option.name }}">
+                          {{ product.selected_or_first_available_variant.options[index] }}
+                      </span>
+                  </label>
+                  {%- if variant_label == variant_name -%}
+                    <fieldset class="form__fields product-option js-variant-radio-container d-flex fw-wrap p-zero m-zero b-zero">
+                      {% render 'quick-view-color-swatch-w-select', product: product, option: option, section: section, product_form_id: product_form_id, index: index %}
+                    </fieldset>
+                    {%- assign hide_select = "d-none-important" -%}
+                  {%- endif -%}
+                  <div class="{{ hide_select }} field__select p-relative p-zero">
+                    <select id="Option-{{ section.id }}-{{ forloop.index0 }}" class="form__control w-100 h-100 field__text field--large field--hover js-variant-select-item" name="options[{{ option.name | escape }}]" form="{{ product_form_id }}">
+                      {% render 'product-variant-options', product: product, option: option, index: index %}
+                    </select>
+                    <span class="p-absolute right-0 top-0 pe-none middle-y">
+                      <span class="btn btn--medium btn-icon btn-plain">
+                      {% render 'icon-chevron-down' %}
+                    </span>
+                    </span>
+                  </div>
+                </div>
+              {%- endfor -%}
+              <script type="application/json">{{ product.variants | json }}</script>
+            </sht-prd-qck-vw-variant-selects>
+          </div>
+        {%- endif -%}
+        {%- endunless -%}
+        <div class="hide-empty fw-700" id="productQuickViewInventoryTracking-{{ section.id }}">
+          {%- if product.selected_or_first_available_variant.inventory_quantity > 0 -%}
+            {%- liquid
+              assign stock_status = 'product--instock color-success'
+              if settings.product_information_low_stock_threshold > 0 and settings.product_information_low_stock_threshold >= product.selected_or_first_available_variant.inventory_quantity
+                assign stock_status = 'product--lowstock color-warning'
+              endif
+            -%}
+            <span class="product-inventory-tracking icon-dot-shadow {{ stock_status }} p-relative">
+              {%- if settings.quick_buy_show_stock_number and settings.product_information_low_stock_threshold -%}
+                {{ 'products.product.in_stock_html' | t: stock: product.selected_or_first_available_variant.inventory_quantity }}
+              {%- else -%}
+                {{ 'products.product.in_stock' | t }}
+              {%- endif -%}
+            </span>
+          {%- else -%}
+            {%- if product.selected_or_first_available_variant.inventory_policy != 'continue' and product.selected_or_first_available_variant.inventory_management != blank -%}
+              <span class="product-inventory-tracking icon-dot-shadow product--outstock p-relative color-error">{{ 'products.product.out_of_stock' | t }}</span>
+            {% else %}
+              <span class="product-inventory-tracking icon-dot-shadow product--instock color-success p-relative">
+                {{ 'products.product.in_stock' | t }}
+              </span>
+            {%- endif -%}
+          {%- endif -%}
+        </div>
+        <div class="product__purchase p-zero d-flex fd-row-sm fd-column gap-12">
+          <sht-prd-qck-vw-frm class="product__form flex-1">
+            {%- form 'product', product, id: product_form_id, class: 'form form__fields', novalidate: 'novalidate' -%}
+              <div class="form__field">
+                <input type="hidden" class="form__control" name="id" value="{{ product.selected_or_first_available_variant.id }}" disabled>
+              </div>
+              <div class="d-flex fd-column">
+                <div class="js-product-form-error-wrapper" data-type="error-wrapper" role="alert" hidden>
+                  <span class="d-flex middle-xs mb-12">
+                    <span class="icon--error icon icon--small mr-8 fs-0">
+                      {%- render 'icon-error', size: 16 -%}
+                    </span>
+                    <span class="js-product-form-error-message" data-type="error-message"></span>
+                  </span>
+                </div>
+                <div class="d-flex gap-12">
+                  <div class="product__quantity {% unless settings.quick_buy_show_product_quantity %} d-none {% endunless %}" id="productQuickViewQuantity-{{ section.id }}">
+                    <label class="field__label d-none" for="productQuickViewQuantityInput-{{ section.id }}">{{ 'products.product.quantity.label' | t }}:</label>
+                    <sht-qty-inp class="field_quantity d-inline-flex middle-xs center-xs">
+                      <button class="no-js-hidden js-quantity-btn js-quantity-btn-minus btn btn-icon btn-large btn-plain" aria-label="{{ 'accessibility.minus' | t }}" name="minus" data-name="minus" type="button">
+                        {%- render 'icon-minus', size: 20 -%}
+                      </button>
+                      <input
+                        class="js-quantity-input qty-element input-number btn-plain b-zero ta-center"
+                        type="number"
+                        name="quantity"
+                        aria-label="{{ 'products.product.quantity.input_label' | t: product: product.title | escape }}"
+                        id="productQuickViewQuantityInput-{{ section.id }}"
+                        min="1"
+                        {%- if product.selected_or_first_available_variant.inventory_quantity > 1 and product.selected_or_first_available_variant.inventory_policy != 'continue' and product.selected_or_first_available_variant.inventory_management != blank -%}
+                          max="{{- product.selected_or_first_available_variant.inventory_quantity -}}"
+                        {%- endif -%}
+                        value="1"
+                        form="{{ product_form_id }}"
+                      >
+                      <button class="no-js-hidden js-quantity-btn js-quantity-btn-plus btn btn-icon btn-large btn-plain" aria-label="{{ 'accessibility.plus' | t }}" name="plus" data-name="plus" type="button">
+                        {%- render 'icon-plus', size: 20 -%}
+                      </button>
+                    </sht-qty-inp>
+                  </div>
+                  <div class="quickview-form__buttons w-100">
+                    <button
+                      type="submit"
+                      name="add"
+                      class="js-product-form-submit-btn w-100 btn btn-large {% if settings.quick_buy_show_dynamic_checkout_buttons %} btn-secondary {% else %} btn-primary {% endif %}"
+                      {% if product.selected_or_first_available_variant.available == false %}
+                        disabled
+                      {% endif %}
+                    >
+                      <span class="p-relative d-flex middle-xs center-xs ta-center">
+                        <span class="hidden js-product-form-spinner product-form-spinner">
+                          {% render 'icon-spinner' %}
+                        </span>
+                        <span class="js-product-form-submit-btn-text">
+                          {%- if product.selected_or_first_available_variant.available -%}
+                            {{ 'products.product.add_to_cart' | t }}
+                          {%- else -%}
+                            {{ 'products.product.sold_out' | t }}
+                          {%- endif -%}
+                        </span>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+                {% if settings.quick_buy_show_dynamic_checkout_buttons %}
+                  <sht-prd-qck-vw-load-dyn-co-btn>
+                    <template>
+                      {{ form | payment_button }}
+                    </template>
+                  </sht-prd-qck-vw-load-dyn-co-btn>
+                {% endif %}
+              </div>
+            {%- endform -%}
+          </sht-prd-qck-vw-frm>
+        </div>
+        <div class="rte {{ settings.quick_buy_show_product_description | default: ' d-none' | replace: 'true', '' }}">{{ product.description }}</div>
+      </div>
+      <div class="product__view-details p-absolute bottom-0 right-0 left-0 zi-1 d-none d-flex-md middle-md">
+        <a href="{{ product.url }}" class="btn btn-link">{{ 'products.product.view_full_details' | t }}
+          {% render 'icon-arrow-right', size: 16, class: 'ml-8' %}
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="product__view-details p-sticky zi-2 bottom-0 d-flex middle-xs center-xs d-none-md">
+    <a href="{{ product.url }}" class="btn btn-link">{{ 'products.product.view_full_details' | t }}
+      {% render 'icon-arrow-right', size: 16, class: 'ml-8' %}
+    </a>
+  </div>
+</div>
+{%- assign files = 'component-quickview.js' | split: ', ' -%}
+<script>
+
+  {%- for file in files -%}
+    {%- assign id = file | replace: ".js", "-js" | strip | append: "-file" -%}
+    {%- assign fileName = id | replace: "-", "_" -%}
+    if (!SHTHelper.qs(`#{{ id }}`)) {
+        let {{ fileName }} = document.createElement("script");
+        {{ fileName }}.setAttribute('src', `{{ file | asset_url }}`);
+        {{ fileName }}.setAttribute('id', '{{ id }}');
+        document.body.appendChild({{ fileName }});
+    }
+  {%- endfor -%}
+</script>
+
+{% schema %}
+{
+  "name": "t:sections.main_product.name",
+  "tag": "section",
+  "class": "section-product-quick-view"
+}
+{% endschema %}

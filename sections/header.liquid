@@ -1,0 +1,1440 @@
+{%- liquid
+  assign menu_style = ' header--menu-horizontal '
+  assign popup_scheme = settings.color_scheme_drawer_popover
+  if section.settings.enable_drawer
+    assign menu_style = ' menu--drawer '
+  endif
+
+  assign search_style = 'header--search-simple'
+  if section.settings.enable_search_full
+    assign search_style = ' header--search-full-box '
+  else
+    assign form_search_style = popup_scheme
+  endif
+
+  capture icon_search
+    render 'icon-search', size: '24'
+  endcapture
+
+  capture icon_chevron_down
+    render 'icon-chevron-down', size: '20', class: 'icon icon-chevron-down'
+  endcapture
+
+  capture icon_chevron_left
+    render 'icon-chevron-left', size: '20', class: 'icon icon-chevron-left mr-12'
+  endcapture
+  capture icon_user
+     render 'icon-user', size: '24'
+  endcapture
+  assign section_style = 'section-header--solid'
+    assign page_background_color = settings.page_background | downcase
+    assign section_background_color = section.settings.color_scheme.settings.color_background | downcase
+    assign container_rounded = 'corner-radius-m'
+    if page_background_color == section_background_color or section.settings.color_scheme.settings.color_background.alpha == 0.0
+      assign section_style = 'section-header--transparent'
+      assign container_rounded = ''
+    endif
+-%}
+<!-- Top bar -->
+<div class="section top-bar-padding color-{{ section.settings.color_scheme-3 }}">
+  <div class="ctnr js-top-bar subtext background" data-ui-component="Top Bar Section" role="region" aria-label="{{ 'accessibility.top_bar' | t }}">
+    <div class="d-flex middle-xs SHT_TOP_BAR_BLOCK_MAX_WIDTH SHT_TOP_BAR_BLOCK_POSITION center-xs">
+      <div class="tpbr__slider ta-center text-block SHT_TOP_BAR_CONTENT_ALIGN" {{ section.shopify_attributes }}>
+        <div class="tpbr__message" id="tpbrMessage">{{ section.settings.text_1 }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Top bar ends here -->
+{%- if shop.customer_accounts_enabled -%}
+  {%- capture user_account -%}
+    <div class="wk_wallet_amount" customer_id="{{ customer.id }}" customer_email = "{{ customer.email }}"></div>
+    <div class="header__icon header__icon--account d-none d-block-md">
+      {%- if customer -%}
+        <a aria-label="{{ 'customer.account_fallback' | t }}" href="{{ routes.account_url }}" class="btn btn-plain btn-large btn-icon header__account header__link" aria-label="{{ customer.first_name }}" title="{{ customer.first_name }}">
+          {{ icon_user }}
+        </a>
+        {%- capture user_account_drawer_customer -%}
+          <span class="customer_info">{{ customer.name }}</span>
+          <a aria-label="{{ 'customer.account_fallback' | t }}" href="{{ routes.account_url }}" class="btn btn-link btn-small ml-16" title="{{ customer.name }}">
+            {{ 'customer.account.view_account' | t }}
+          </a>
+        {%- endcapture -%}
+      {%- else -%}
+        <a aria-label="{{ 'customer.log_in' | t }}" href="{{ routes.account_login_url }}"
+          class="btn btn-plain btn-large btn-icon header__link userbtn">
+          {%- render 'icon-user' -%}
+        </a>
+        {%- capture user_account_drawer_guest -%}
+          {{ icon_user }}
+          <a aria-label="{{ 'customer.log_in' | t }}" href="{{ routes.account_login_url }}" class="btn btn-link btn-small ml-8">
+            {{ 'customer.log_in' | t }}
+          </a>
+        {%- endcapture -%}
+      {%- endif -%}
+    </div>
+  {%- endcapture -%}
+  
+  {%- capture user_account_drawer -%}
+    
+    <div class="header__icon--account d-flex middle-xs mb-16 mt-16 d-none-md">
+      {{ user_account_drawer_guest }}
+      {{ user_account_drawer_customer }}
+    </div>
+  {%- endcapture -%}
+{%- endif -%}
+{%- capture header_currency -%}
+  {%- if section.settings.show_currency_selector and localization.available_countries.size > 1 -%}
+    <sht-localization class="d-flex fg-1" data-js-file-id="component-country-switcher-js-file" data-js-file="{{ 'component-country-switcher.js' | asset_url }}" data-section-id="shopify-section-country-switcher-header" data-url="{{ routes.root_url }}?section_id=country-switcher-header">
+      <button type="button" class="js-country-switcher-btn btn-localization fs-body d-flex between-xs middle-xs w-100 ta-left field__text field--focus field--hover c-pointer">
+        {{ localization.country.name }} ({{ localization.country.currency.iso_code }}
+        {{ localization.country.currency.symbol }})
+        {{ icon_chevron_down }}
+      </button>
+    </sht-localization>
+  {%- endif -%}
+{%- endcapture -%}
+{%- capture header_search -%}
+  <div class="header__icon header__icon__search">
+    <a href="{{ routes.search_url }}" data-js-file-id="component-predictive-search-js-file" data-js-file="{{ 'component-predictive-search.js' | asset_url }}" onclick="event.preventDefault();" aria-label="{{ 'accessibility.search' | t }}" class="btn btn-plain btn-large btn-icon btn-search js-search-open-trigger" role="button" aria-haspopup="dialog">
+      {{ icon_search }}
+    </a>
+  </div>
+{%- endcapture -%}
+
+<sht-sticky-header class="header-container color-{{- section.settings.color_scheme }} d-block section header-sticky--{{- section.settings.header_sticky | replace:'always_reveal', 'always' }}" data-sticky-state="{{ section.settings.header_sticky }}">
+  <sht-header class="section-header ctnr js-header d-block p-relative" data-ui-component="Header Section" data-show-search-full="{{ section.settings.enable_search_full }}" data-js-file-id="component-predictive-search-js-file" data-js-file="{{ 'component-predictive-search.js' | asset_url }}">
+    <header class=" header {{ section_style }} {{ menu_style }} {{ search_style }} middle-xs p-relative zi-4" style="--logo-width-desktop: {{ section.settings.logo_width | append: 'px' }};--logo-width-mobile: {{ section.settings.logo_width_mobile | append: 'px' }};">
+      <div class="header__logo d-flex middle-xs gap-16 ">
+        <sht-menu-drwer-opner class="d-block header__icons {{ section.settings.enable_drawer | default: 'd-none-lg' | replace: true, '' }}" hidden>
+          <button type="button" aria-expanded="false" aria-label="{{ 'accessibility.toggle_navigation' | t }}" aria-controls="menuDrawer" class="btn btn-large btn-icon btn-plain button-toggle-nav js-menu-drawer-trigger hmburger-menu">
+            {%- render 'icon-hamburger-menu', class: 'icon-hamburger' -%}
+          </button>
+        </sht-menu-drwer-opner>
+        {% render 'header-logo', class: '' %}
+      </div>
+    {% if section.settings.enable_search_full %}
+  <div class="header-search-fullbox-mobile {% if settings.predictive_search_show_search_filter %} header-search-fullbox-mobile-with-filter {% endif %} d-none p-relative field__text">
+    <a class="btn-search js-search-open-trigger d-flex between-xs w-100 middle-xs"  
+       href="{{ routes.search_url }}" 
+       data-js-file-id="component-predictive-search-js-file" 
+       data-js-file="{{ 'component-predictive-search.js' | asset_url }}" 
+       onclick="event.preventDefault();" 
+       aria-label="{{ 'accessibility.search' | t }}" 
+       role="button" 
+       aria-haspopup="dialog">
+      {% render 'icon-filter', size: '16', class: 'd-none icon-search-filter' %}
+      <span class="d-flex w-100 between-xs">
+        {{ 'general.search.input_placeholder' | t }}
+        {{ icon_search }}
+      </span>
+      <span class="icon-close d-none" onclick="closeSearch()">✕</span>
+    </a>
+  </div>
+{% endif %}
+
+      {%- render 'predictive-search', class: 'header__search top-0 w-100 left-0 zi-9', form_search_style: form_search_style -%}
+
+      
+      <!-- header Navigation -->
+      <div class="header__menu d-none {% if section.settings.enable_drawer == false %} d-flex-lg fd-column {% endif %} js-menu-drawer-content">
+        <nav class="header__nav js-header-navigation flex-1 w-100">
+          <ul class="main__menu d-flex fw-wrap m-zero ls-none">
+            {% for link in section.settings.menu.links %}
+              {% assign mega_menu = false %}
+              {% for block in section.blocks %}
+                {% liquid
+                  assign mega_menu_name = block.settings.menu_item_name | downcase | strip
+                  assign link_anchor_name = link.title | downcase | strip
+                  if mega_menu_name == link_anchor_name
+                    assign mega_menu = true
+                    assign promo_block = block
+                  endif
+                %}
+              {% endfor %}
+            <li class="menu__item {{ mega_menu | default: '' | replace: 'true', 'menu__item-megamenu' }} p-relative">
+              {%- if link.links.size > 0 -%}
+                <sht-menu-header class="d-block">
+                  <details data-level="1">
+                    <summary class="menu__link menu__link-lv1 menu__heading m-zero d-flex between-xs middle-xs" aria-expanded="false" aria-controls="menuHeaderMenuList-{{ forloop.index }}">
+                      <span class="d-block link__title">{{ link.title }}</span>
+                      {{ icon_chevron_down }}
+                    </summary>
+                    <!-- Megamenu -->
+                    {%- if mega_menu -%}
+                      <div class="menu-dropdown menu-dropdown-lv2 color-{{ popup_scheme }} mega-menu-wrapper disable-scrollbars w-100">
+                        <button class="js-menu-header-back-btn menu-drawer__close w-100 d-none middle-xs ta-left h5 m-zero c-pointer" type="button" data-level="1">
+                          {{ icon_chevron_left }}
+                          {{ link.title }}
+                        </button>
+                        <div class="d-grid mega-menu {% if promo_block.settings.primary_image != blank or promo_block.settings.secondary_image != blank %} mega-menu__has-promo {% endif %}">
+                          <ul class="mega-menu__submenu m-zero w-100 ls-none d-flex fd-column p-zero"
+                            id="menuHeaderMenuList-{{ forloop.index }}">
+                            {%- for childlink in link.links -%}
+                            <li class="menu__item p-relative">
+                              {%- if childlink.links != blank -%}
+                                <div class="menu__grandchild d-none">
+                                  <a href="{{ childlink.url }}" class="menu__link menu__link-lv2 fw-700 m-zero d-block m-zero">
+                                    {{ childlink.title }}
+                                  </a>
+                                  <ul class="mega-menu__grandchild menu-dropdown__grandchild ls-none m-zero p-zero" role="menu">
+                                    {%- capture grand_child_menu -%}
+                                      {%- for grandchildlink in childlink.links -%}
+                                        <li class="menu__item {{ grandchildlink.current | default: '' | replace: 'true', 'menu__item--current' }}">
+                                          <a href="{{ grandchildlink.url }}" class="menu__link d-block {{ grandchildlink.current | default: '' | replace: 'true', 'menu__link--active' }}" role="menuitem">
+                                            {{ grandchildlink.title }}
+                                          </a>
+                                        </li>
+                                      {%- endfor -%}
+                                    {%- endcapture -%}
+                                    {{ grand_child_menu }}
+                                  </ul>
+                                </div>
+                                <details data-level="2">
+                                  <summary class="menu__link between-xs d-flex middle-xs menu__link-lv2 m-zero">
+                                    <span class="d-block link__title">{{ childlink.title }}</span>
+                                    {{ icon_chevron_down }}
+                                  </summary>
+                                  <ul class="mega-menu__grandchild menu-dropdown__grandchild m-zero p-zero d-flex fd-column ls-none" role="menu">
+                                    {{ grand_child_menu }}
+                                  </ul>
+                                </details>
+                              {%- else -%}
+                                <a href="{{ childlink.url }}" class="menu__link menu__link-lv2 fw-700 m-zero m-zero d-block">
+                                  {{ childlink.title }}
+                                </a>
+                              {%- endif -%}
+                            </li>
+                            {%- endfor -%}
+                          </ul>
+                          <div class="mega-menu-promotions d-grid w-100 hide-empty">
+                            {%- if promo_block.settings.primary_image -%}
+                              {% liquid
+                                unless promo_block.settings.promotions_mask_overlay_color.alpha == 0.0 or promo_block.settings.promotions_mask_overlay_color == blank
+                                  assign overlay_color = '--color-mask-overlay:' | append: promo_block.settings.promotions_mask_overlay_color.red | append: ',' | append: promo_block.settings.promotions_mask_overlay_color.green | append: ',' | append: promo_block.settings.promotions_mask_overlay_color.blue
+                                endunless
+                                unless promo_block.settings.promotions_content_overlay_color.alpha == 0.0 or promo_block.settings.promotions_content_overlay_color == blank
+                                  assign content_color = 'color:' | append: promo_block.settings.promotions_content_overlay_color
+                                endunless
+                              %}
+                              <div class="card__promotion card--content-inner p-relative sht-mask" style="--overlay: {{ promo_block.settings.promotions_overlay_opacity }}; {{ overlay_color }};">
+                                <div class="card__media">
+                                  <a href="{{ promo_block.settings.primary_link | default: '#' }}" class="p-absolute top-0 left-0 w-100 h-100 zi-2 hide-no-link" aria-label="{{ promo_block.settings.primary_heading }}"></a>
+                                  {%- liquid
+                                    assign primary_image_alt = promo_block.settings.primary_image.image.alt | default: promo_block.settings.primary_image.image | split: '/' | last
+                                    assign primary_image_media = promo_block.settings.primary_image | image_url: width: 400 | image_tag: alt: primary_image_alt, class: 'h-100 w-100 of-cover media js-image-lazy w-100', image_classes: 'w-100 h-100'
+                                    render 'image', image_item: primary_image_media, ratio: '3/2', image_wrap_classes: 'h-100 w-100', image_classes: 'w-100 h-100'
+                                  -%}
+                                </div>
+                                <div
+                                  class="card__content wb-break-word p-absolute bottom-0 w-100 zi-1 {{ promo_block.settings.primary_heading | default: 'd-none' | replace: promo_block.settings.primary_heading, '' }}">
+                                  <span class="card__title card__heading fw-700" style="{{ content_color }}">
+                                    {{- promo_block.settings.primary_heading -}}
+                                  </span>
+                                </div>
+                              </div>
+                            {%- endif -%}
+                            {%- if promo_block.settings.secondary_image -%}
+                              {% liquid
+                                unless promo_block.settings.promotions_second_mask_overlay_color.alpha == 0.0 or promo_block.settings.promotions_second_mask_overlay_color == blank
+                                  assign overlay_color_second = '--color-mask-overlay:' | append: promo_block.settings.promotions_second_mask_overlay_color.red | append: ',' | append: promo_block.settings.promotions_second_mask_overlay_color.green | append: ',' | append: promo_block.settings.promotions_second_mask_overlay_color.blue
+                                endunless
+                                unless promo_block.settings.promotions_second_content_overlay_color.alpha == 0.0 or promo_block.settings.promotions_second_content_overlay_color == blank
+                                  assign content_color_second = 'color:' | append: promo_block.settings.promotions_second_content_overlay_color
+                                endunless
+                              %}
+                            <div class="card__promotion card--content-inner p-relative sht-mask" style="--overlay: {{ promo_block.settings.promotions_second_overlay_opacity }}; {{ overlay_color_second }};">
+                              <div class="card__media">
+                                <a href="{{ promo_block.settings.secondary_link | default: '#' }}" class="p-absolute top-0 left-0 w-100 h-100 zi-2 hide-no-link" aria-label="{{ promo_block.settings.secondary_heading }}"></a>
+                                {%- liquid
+                                  assign secondary_image_media_alt = promo_block.settings.secondary_image.image.alt | default: promo_block.settings.secondary_image.image | split: '/' | last
+                                  assign secondary_image_media = promo_block.settings.secondary_image | image_url: width: 400 | image_tag: alt: secondary_image_media_alt, class: 'h-100 w-100 of-cover media js-image-lazy '
+                                  render 'image', image_item: secondary_image_media, ratio: '3/2', image_wrap_classes: 'h-100 w-100', image_classes: 'w-100 h-100'
+                                -%}
+                              </div>
+                              <div
+                                class="card__content wb-break-word p-absolute bottom-0 w-100 zi-1 {{ promo_block.settings.secondary_heading | default: 'd-none' | replace: promo_block.settings.secondary_heading, '' }}">
+                                <span class="card__title card__heading fw-700" style="{{ content_color_second }}">
+                                  {{- promo_block.settings.secondary_heading -}}
+                                </span>
+                              </div>
+                            </div>
+                            {%- endif -%}
+                          </div>
+                        </div>
+                      </div>
+                    {% else %}
+                      <div class="menu-dropdown menu-dropdown-lv2 color-{{ popup_scheme }}">
+                      <button class="js-menu-header-back-btn menu-drawer__close w-100 d-none middle-xs ta-left h5 m-zero c-pointer" type="button" data-level="1">
+                        {{ icon_chevron_left }}
+                        {{ link.title }}
+                      </button>
+                      <ul class="submenu-dropdown m-zero p-zero ls-none d-flex fd-column" id="menuHeaderMenuList-{{ forloop.index }}">
+                        {%- for childlink in link.links -%}
+                          <li class="submenu__item p-relative" style="--delay: {{ forloop.index | plus: 1 | times: 0.05 }}s;">
+                            {%- if childlink.links != blank -%}
+                              <details data-level="2">
+                                <summary class="menu__link menu__link-lv2 fw-700 m-zero between-xs d-flex middle-xs" aria-expanded="false" aria-controls="menuHeaderSubMenuList-{{ forloop.index }}">
+                                  <span class="d-block link__title">
+                                    {{ childlink.title }}
+                                  </span>
+                                  {{ icon_chevron_down }}
+                                </summary>
+                                <ul class="menu-dropdown__grandchild m-zero p-zero ls-none d-flex fd-column">
+                                  {%- for grandchildlink in childlink.links -%}
+                                  <li class="submenu__item {{ grandchildlink.current | default: '' | replace: 'true', 'menu__item--current' }}">
+                                    <a href="{{ grandchildlink.url }}" class="menu__link d-block {{ grandchildlink.current | default: '' | replace: 'true', 'menu__link--active' }}">
+                                      <span class="d-block link__title">{{ grandchildlink.title }}</span>
+                                    </a>
+                                  </li>
+                                  {%- endfor -%}
+                                </ul>
+                              </details>
+                            {%- else -%}
+                              <a href="{{ childlink.url }}" class="menu__link menu__link-lv2 fw-700 m-zero d-block {{ childlink.current | default: '' | replace: 'true', 'menu__link--active' }}">
+                                <span class="d-block link__title">{{ childlink.title }}</span>
+                              </a>
+                            {%- endif -%}
+                          </li>
+                        {%- endfor -%}
+                      </ul>
+                      </div>
+                    <!-- endif megamenu -->
+                    {%- endif -%}
+                  </details>
+                </sht-menu-header>
+              {%- else -%}
+                <a href="{{ link.url }}" class="menu__link menu__link-lv1 menu__heading m-zero d-block {{ link.current | default: '' | replace: 'true', 'menu__link--active' }}">
+                  <span class="d-block link__title">{{ link.title }}</span>
+                </a>
+              {%- endif -%}
+            </li>
+            {%- endfor -%}
+            <!-- Subcription button -->
+                      <div class="header-button">
+                        <a href="{{ section.settings.button_link }}" class="button-link">
+                          {{ section.settings.button_text }}
+                        </a>
+                      </div>
+            <!-- Subcription button ends -->
+          </ul>
+        </nav>
+      </div>
+      <!-- end Header Navigation -->
+<!-- Header Icons Right -->
+
+<div class="header__icons d-flex end-xs middle-xs">
+  {{ header_search }}
+
+  {% assign current_locale = request.locale.iso_code %}
+<a href="{% if current_locale == 'en' %}/ar{% else %}/{% endif %}" class="language-button" style="font-weight: bold;">
+  {% if current_locale == 'en' %}
+    العربية
+  {% else %}
+    English
+  {% endif %}
+</a>
+    <!-- Swym Wishlist Button -->
+  <a href="#swym-wishlist" class="swym-wishlist" style="display: none;">
+    <i class="icon-swym-wishlist"></i>
+  </a>
+  <div class="header__localization d-none d-flex-md" style="display: none;">
+    {{ header_currency }}
+  </div>
+  {{ user_account }}
+  <div class="header__icon header__icon--cart">
+    {%- liquid
+      capture header_cart_status
+        render 'header-cart-status', cart: cart
+      endcapture
+    -%}
+    <a role="button" href="{{ routes.cart_url }}" onclick="event.preventDefault();try { window.shtCartDrawer.openDrawer(this); } catch(err) { window.location.assign('{{ routes.cart_url }}');}" aria-haspopup="true" aria-expanded="false" aria-controls="shtCartDrawer" class="header-cart-status js-header-cart-status-btn btn btn-plain btn-large btn-icon p-relative" id="headerCartStatus">
+      {{ header_cart_status }}
+    </a>
+  </div>
+
+  <!-- NewLy Added Feb26 16:26 -->
+  <div class="largescreendevices">
+          <div class="location-deliveryslot-container">
+           <!-- <img width="15" height="15" src="https://img.icons8.com/office/40/marker.png" alt="marker" style="position: absolute;margin-left: 2px;"> -->
+            <div>
+              <div class="img-locationpin">
+            <img width="15" height="15" src="https://img.icons8.com/ios-filled/50/marker.png"  alt="marker"/>
+              </div>
+        <select class="location-dropdown-hdr"  id="delivery_locations_selector"></select>
+            </div>
+          <div class="delivery-availibility-details-block">
+      <div class="delivery-date-available">
+       <!-- <img width="20" height="20" src="https://img.icons8.com/ios-glyphs/30/FFFFFF/in-transit.png" alt="in-transit"/> -->
+{% render 'deliverysvg' %}
+        <div id="day-of-delivery"></div>
+      </div>
+        <div class="delivery-slot-available" id="time-slot-of-delivery"></div>
+          </div>
+      </div>
+  </div>
+    
+
+<!--  -->
+</div>
+<!-- end Header Icons Right -->
+<div id="success-toast" class="toast-message">
+  <p>You are successfully Signed Up!</p>
+</div>
+
+
+      
+    </header>
+  </sht-header>
+</sht-sticky-header>
+
+<div style="display:none" class="smallscreendevices"></div>
+<!-- Menu Drawer -->
+<sht-menu-drwer aria-hidden="true" id="menuDrawer" class="sht-drawer js-menu-drawer drawer--left no-focus-visible" hidden tabindex="-1">
+  <div class="drawer__overlay js-menu-drawer-overlay js-drawer-overlay p-fixed top-0 left-0 right-0 bottom-0 w-100 h-100v"></div>
+  <div class="drawer__wrapper js-menu-drawer-wrapper js-drawer-wrapper corner-radius-m color-{{ popup_scheme }}">
+    <div class="drawer__header d-flex middle-xs between-xs p-sticky top-0 zi-2">
+      <h2 class="drawer__heading h4 m-zero">{{ 'sections.header.drawer.title' | t }}</h2>
+      <button class="drawer__btn-close js-menu-drawer-btn-close js-drawer-btn-close btn btn-plain btn-large btn-icon" type="button" aria-label="{{ 'accessibility.close' | t }}">
+        {%- render 'icon-close' -%}
+      </button>
+    </div>
+    <div class="drawer__body js-menu-drawer-body-container flex-1">
+      <div class="drawer__body__container">
+        <div class="menu-drawer js-menu-drawer-body"></div>
+        <div class="header-extra-info hide-empty p-relative">
+          {%- liquid
+            if section.settings.enable_contact
+              render 'contact', header_style: 'd-none-important', contact_class: 'd-grid r-gap-16', contact_style: '', classes: 'header__contact d-flex pt-24 pb-24 mb-24'
+            endif
+            if section.settings.enable_quick_links
+              render 'quick-links', class: 'header__quick-links fw-wrap', link_class: 'btn btn-link btn-small mr-16'
+            endif
+          -%}
+          {{ user_account_drawer }}
+          <div class="header__localization d-none-md d-flex">
+            {{ header_currency }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</sht-menu-drwer>
+
+<!-- Menu Drawer -->
+
+<script type="application/ld+json">
+  {"@context": "http://schema.org","@type": "Organization","name": {{- shop.name | json -}},{%- if section.settings.logo -%}"logo": {{ section.settings.logo | image_url: width: section.settings.logo.width | prepend: "https:" | json }},{%- endif -%}"sameAs": [{{ settings.social_twitter_link | json }},{{ settings.social_facebook_link | json }},{{ settings.social_pinterest_link | json }},{{ settings.social_instagram_link | json }},{{ settings.social_tiktok_link | json }},{{ settings.social_tumblr_link | json }},{{ settings.social_snapchat_link | json }},{{ settings.social_youtube_link | json }},{{ settings.social_vimeo_link | json }}],"url": {{ request.origin | append: page.url | json }}}
+</script>
+{%- if request.page_type == 'index' -%}
+  {% assign potential_action_target = request.origin | append: routes.search_url | append: "?q={search_term_string}" %}
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "WebSite",
+      "name": {{ shop.name | json }},
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {{ potential_action_target | json }},
+        "query-input": "required name=search_term_string"},
+        "url": {{ request.origin | append: page.url | json }}
+      }
+  </script>
+{%- endif -%}
+
+<style>
+  @media (max-width: 500px){
+    .btn-localization{
+    gap: 1.2rem!important;
+  }
+    .field__dropdown-switcher {
+    width: 11.5rem!important;
+}
+  }
+  .btn-localization{
+    gap: 5.2rem;
+  }
+  .field__dropdown__link {
+    padding: 0.2rem 0.2rem 0.2rem 0.5rem;
+    font-size: var(--font-body-size);
+}
+   .localization-list{ 
+    bottom: -140%!important;
+  } 
+  .field__dropdown-switcher {
+    width: 14.5rem;
+}
+  .icon-chevron-down{
+    width: 15px;
+    height: 15px;
+  }
+</style>
+
+{%- schema -%}
+{
+  "name": "t:sections.header.name",
+  "class": "s-outer-padding-small js-section-header header-wrapper p-relative zi-4",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme-3",
+      "label": "t:general.settings.color_scheme.label",
+      "default": "scheme-3"
+    },
+   {
+      "type": "richtext",
+      "label": "Text 1",
+      "id": "text_1",
+      "default": "<p>Highlight your first announcement here</p>"
+    },
+    {
+      "type": "richtext",
+      "label": "Text 2",
+      "id": "text_2",
+      "default": "<p>Highlight your second announcement here</p>"
+    },
+    {
+      "type": "richtext",
+      "label": "Text 3",
+      "id": "text_3",
+      "default": "<p>Highlight your third announcement here</p>"
+    },
+    
+    {
+      "type": "header",
+      "content": "t:general.settings.headers.header_general.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_drawer",
+      "label": "t:sections.header.settings.enable_drawer.label",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "header_sticky",
+      "label": "t:sections.header.settings.sticky_header.label",
+      "options": [
+        {
+          "value": "false",
+          "label": "t:sections.header.settings.options.option_none.label"
+        },
+        {
+          "value": "always_reveal",
+          "label": "t:sections.header.settings.options.option_always.label"
+        },
+        {
+          "value": "true",
+          "label": "t:sections.header.settings.options.option_when_scroll_up.label"
+        }
+      ],
+      "default": "true"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:general.settings.color_scheme.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:general.settings.headers.header_logo.content"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "t:general.settings.image.label",
+      "info": "t:general.settings.logo_image.info"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "label": "t:general.settings.logo_width_desktop.label",
+      "min": 40,
+      "max": 200,
+      "step": 10,
+      "default": 100,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "logo_width_mobile",
+      "label": "t:general.settings.logo_width_mobile.label",
+      "min": 40,
+      "max": 140,
+      "step": 10,
+      "default": 80,
+      "unit": "px"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Subscription"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link",
+    },
+    {
+      "type": "header",
+      "content": "t:sections.header.settings.headers.header_navigation.content"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "default": "main-menu",
+      "label": "t:general.settings.menu.label"
+    },
+    {
+      "type": "header",
+      "content": "t:general.settings.headers.header_currency_selector.content",
+      "info": "t:general.settings.headers.header_currency_selector.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_currency_selector",
+      "label": "t:general.settings.show_currency_selector.label",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:sections.header.settings.headers.search.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_search_full",
+      "label": "t:sections.header.settings.enable_search.label",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:general.settings.quick_link.label",
+      "info": "t:sections.header.settings.enable_quick_link.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_quick_links",
+      "label": "t:sections.header.settings.enable_quick_link.label",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:sections.header.settings.contact_info.label",
+      "info": "t:sections.header.settings.contact_info.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_contact",
+      "label": "t:sections.header.settings.enable_contact.label",
+      "default": true
+    },
+      {
+        "type": "header",
+        "content": "t:general.settings.headers.header_language_selector.content",
+        "info": "t:general.settings.headers.header_language_selector.info"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_language_selector",
+        "label": "t:general.settings.show_language_selector.label",
+        "default": true
+      }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "name": "t:sections.header.blocks.mega_menu.name",
+      "type": "mega_menu",
+      "settings": [
+        {
+          "type": "text",
+          "id": "menu_item_name",
+          "label": "t:sections.header.blocks.mega_menu.settings.menu_item_name.label",
+          "info": "t:sections.header.blocks.mega_menu.settings.menu_item_name.info"
+        },
+        {
+          "type": "header",
+          "content": "t:sections.header.blocks.mega_menu.settings.headers.promotional_content_1.content"
+        },
+        {
+          "type": "image_picker",
+          "id": "primary_image",
+          "label": "t:general.settings.image.label",
+          "info": "t:sections.header.blocks.mega_menu.settings.image.info"
+        },
+        {
+          "type": "text",
+          "id": "primary_heading",
+          "label": "t:general.settings.heading.label",
+          "default": "Heading"
+        },
+        {
+          "type": "url",
+          "id": "primary_link",
+          "label": "t:general.settings.link.label"
+        },
+        {
+          "type": "range",
+          "unit": "%",
+          "max": 90,
+          "min": 0,
+          "step": 1,
+          "default": 30,
+          "id": "promotions_overlay_opacity",
+          "label": "t:general.settings.overlay_opacity.label"
+        },
+        {
+          "type": "color",
+          "id": "promotions_mask_overlay_color",
+          "label": "t:general.settings.custom_mask_overlay.label"
+        },
+        {
+          "type": "color",
+          "id": "promotions_content_overlay_color",
+          "label": "t:general.settings.custom_text_overlay.label"
+        },
+        {
+          "type": "header",
+          "content": "t:sections.header.blocks.mega_menu.settings.headers.promotional_content_2.content"
+        },
+        {
+          "type": "image_picker",
+          "id": "secondary_image",
+          "label": "t:general.settings.image.label",
+          "info": "t:sections.header.blocks.mega_menu.settings.image.info"
+        },
+        {
+          "type": "text",
+          "id": "secondary_heading",
+          "label": "t:general.settings.heading.label",
+          "default": "Heading"
+        },
+        {
+          "type": "url",
+          "id": "secondary_link",
+          "label": "t:general.settings.link.label"
+        },
+        {
+          "type": "range",
+          "unit": "%",
+          "max": 90,
+          "min": 0,
+          "step": 1,
+          "default": 30,
+          "id": "promotions_second_overlay_opacity",
+          "label": "t:general.settings.overlay_opacity.label"
+        },
+        {
+          "type": "color",
+          "id": "promotions_second_mask_overlay_color",
+          "label": "t:general.settings.custom_mask_overlay.label"
+        },
+        {
+          "type": "color",
+          "id": "promotions_second_content_overlay_color",
+          "label": "t:general.settings.custom_text_overlay.label"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+  i.icon-swym-wishlist {
+font-family: 'swym-font';
+font-style: normal;
+vertical-align: middle;
+}
+i.icon-swym-wishlist+span {
+vertical-align: middle;
+}
+i.icon-swym-wishlist:after {
+content: '';
+font-size: 130%;
+line-height: 18px;
+text-align: center;
+display: inline;
+}
+  
+.swym-ready i.icon-swym-wishlist:after {
+content: '\f004';
+}
+.tpbr__slider {
+  position: relative;
+  height: 28px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+</style>
+
+<!-- Load Swym Script (if not already included in theme.liquid) -->
+<!-- <script async src="https://wishlist.swymrelay.com/swym.js"></script> -->
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  let messages = [
+    `{{ section.settings.text_1 }}`,
+    `{{ section.settings.text_2 }}`,
+    `{{ section.settings.text_3 }}`
+  ].filter(msg => msg.trim() !== ""); 
+
+  if (messages.length === 0) return; 
+
+  const messageElement = document.getElementById("tpbrMessage");
+  let index = 0;
+
+  function showNextMessage() {
+    messageElement.style.opacity = 0;
+    setTimeout(() => {
+      index = (index + 1) % messages.length;
+      messageElement.innerHTML = messages[index];
+      messageElement.style.opacity = 1;
+    }, 500);
+  }
+
+  setInterval(showNextMessage, 5000);
+});
+</script>
+
+
+
+
+{% style %}
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+  
+.location-deliveryslot-container{
+      font-family: "Poppins";
+display: flex;
+    gap: 8px;
+    align-items: center;
+}  
+/* .location-dropdown-hdr{   
+    padding: 2px 19px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    min-width: 110px;
+    height: 27px;
+    color: #5b5b5b;
+    font-weight: 800;
+    text-transform: capitalize;
+    appearance: none;
+    background-image: url({{ 'down-arrow-56.svg' | asset_url }});
+    background-repeat: no-repeat;
+    background-position: right 0.7rem top 50%;
+    background-size: 0.65rem auto;
+    background-color: #fff;
+    padding-left: 25px;
+ }
+
+ */
+.location-dropdown-hdr{  
+    font-family: "Poppins", sans-serif !important;;
+    cursor:pointer;
+    padding: 0px 10px 0px 28px; 
+  border: 1px solid #b2b2b2;
+    border-radius: 6px;
+    min-width: 121px;
+    height: 29px;
+    color: #5b5b5b;
+    font-weight: 500;
+    text-transform: capitalize;
+    appearance: none;
+    background-image: url({{ 'down-arrow.png' | asset_url }});
+    background-repeat: no-repeat;
+    background-position: right 0.5rem top 50%;
+    background-size: 10px auto;
+    background-color: #fff;
+          /* background-color: #e7e7e7; */
+    font-size: 14px;
+}
+  [dir="rtl"] .location-dropdown-hdr {
+    padding: 0px 28px 0px 10px;
+    background-position: left 0.5rem top 50%;
+}
+
+
+  .location-dropdown-hdr:focus {
+             /* background-color: #e7e7e7; */
+      background-color: #ffffff;
+    border-color:1px solid #e7e7e7; 
+    outline: none;
+}
+  
+
+.delivery-availibility-details-block{
+           font-family: "Poppins", sans-serif !important;;
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    /* background-color: #b12b4e; */
+    border-radius: 5px 4px 20px;
+    padding-right: 10px;
+      background-color: #ffffff00;
+}
+.delivery-date-available {
+           /* font-family: "Poppins", sans-serif !important;;
+    padding: 4px 7px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: 700;
+    background: #db325e;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+    display: flex;
+    height: 27px;
+    align-items: center;
+    font-size: 12.5px;
+    gap: 4px;
+     color: #fff; */
+
+  font-family: "Poppins", sans-serif !important;
+    padding: 4px 7px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: 700;
+    background: #db325e;
+    /* box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px; */
+    display: flex
+;
+    height: 29px;
+    align-items: center;
+    font-size: 12.5px;
+    gap: 4px;
+    color: #fff;
+}
+.img-locationpin{
+   /* margin-right: 10px */
+    position: absolute;
+    margin-right: 5px;
+    background: #e7e7e7;
+    padding: 3px 4px;
+    border-radius: 5px 0 0 5px;
+      border: 1px solid #b2b2b2;
+  border-right:0;
+  
+}
+
+  .delivery-slot-available{
+         font-family: "Poppins", sans-serif !important;;
+    font-size: 12.5px!important;
+        color: #db325e;
+    font-weight: 600;
+}
+  .header-search-fullbox-mobile {
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.header-search-fullbox-mobile.active {
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2) !important;
+}
+
+
+ @media (max-width:1280px) {
+  .largescreendevices{
+    display: none;
+  }
+  .smallscreendevices{
+    padding: 8px;
+    height:auto!important;
+    background: #f7f7fa;
+    border-bottom: 1px solid #ebeaeb;
+  }
+  .location-deliveryslot-container {
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+  
+    .search__field__wrapper .search__field-input{
+    cursor:pointer!important;
+    
+    }
+
+ .wk_wallet_amount{
+  display:none;
+ }
+
+
+.toast-message {
+    position: absolute;
+    bottom: -55px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #db325e;
+    color: white;
+    padding: 15px 30px;
+    border-radius: 5px;
+    font-size: 16px;
+    z-index: 9999;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    opacity: 1;
+    display:none;
+    transition: opacity 0.5sease-in-out;
+}
+
+
+
+{% endstyle %}
+
+
+
+  
+  
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+
+
+<script>
+$(document).ready(function() {
+
+ const daysOfWeek = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
+let nowString =  '{{ "now" | date: "%Y-%m-%dT%H:%M:%S" }}';
+// console.log(nowString)
+  var date = new  Date(nowString)
+  // console.log(date)
+  // console.log(date.getHours())
+  
+// let now = new Date(nowString);
+     // const currentDate = new Date();
+     // const currentDayIndex = currentDate.getDay();
+     // const currentDayName = daysOfWeek[currentDayIndex];
+     // const currentMonthIndex = currentDate.getMonth();
+     // const currentMonthName = currentDate.toLocaleString('default', { month: 'short' });
+     // const currentYear= currentDate.getFullYear();
+
+  
+      var delivery_zones_data = {{shop.metafields.delivery_zones | json}};
+      // console.log(delivery_zones_data )
+
+     if (typeof delivery_zones_data === 'object' && !Array.isArray(delivery_zones_data)) {
+      delivery_zones_data = Object.values(delivery_zones_data);  
+    }
+
+// --------------Functions-----------
+
+
+  function locationDetails(locationId){
+      const location_details = delivery_zones_data.find(function(option){ return option.id == locationId; });
+       return location_details
+    }
+
+    function getValidSlots(todayDelivery) {
+    let now = new Date(nowString);
+    let currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+    return todayDelivery.delivery_slots.filter(slot => {
+        let [startHour, startMin] = slot.start_fmt.split(":").map(Number);
+        let slotStartMinutes = startHour * 60 + startMin;
+        let bookingDeadline = slotStartMinutes - slot.offset_minutes; // Calculate the latest time an order can be placed
+  
+        return currentMinutes <= bookingDeadline; // Slot is valid if current time is before or equal to the booking deadline
+    });
+}
+
+  
+function getNextDeliverySlot(allowable_days) {
+    let now = new Date(nowString);
+    let todayIndex = now.getDay(); 
+    let currentTime = now.getHours() * 60 + now.getMinutes();
+
+    let deliveryDays = allowable_days.sort((a, b) => a.day - b.day); // Sort days in order
+     // console.log("delivery days allowable ", deliveryDays )
+  
+  function formatDate(date) {
+        let options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+        return date.toLocaleDateString('en-US', options);
+    }
+  // function getValidSlots(dayDelivery) {
+  //       return dayDelivery.delivery_slots.filter(slot => {
+  //           let [startHour, startMin] = slot.start_fmt.split(":").map(Number);
+  //           let startMinutes = startHour * 60 + startMin;
+  //           return startMinutes > currentTime;
+  //       });
+  //   }
+
+
+
+    let todayDelivery = allowable_days.find(day => day.day === todayIndex);
+  
+    if (todayDelivery) {
+        let validSlots = getValidSlots(todayDelivery);
+        if (validSlots.length > 0) {
+            return {
+                date: formatDate(now),
+                slot: validSlots[0] // Pick the nearest valid slot
+            };
+        }
+    }
+    for (let day of deliveryDays) {
+        if (day.day > todayIndex) { // Future days
+            if (day.delivery_slots.length > 0) {
+                let nextDeliveryDate = new Date(nowString);
+                let daysToAdd = day.day - todayIndex;
+                nextDeliveryDate.setDate(nextDeliveryDate.getDate() + daysToAdd);
+                
+                return {
+                    date: formatDate(nextDeliveryDate),
+                    slot: day.delivery_slots[0] // Pick the first slot on that day
+                };
+            }
+        }
+    }
+  
+   
+    // If no slots found in the current week, loop back to the next available delivery day
+    for (let day of deliveryDays) {
+        if (day.delivery_slots.length > 0) {
+            let nextDeliveryDate = new Date(nowString);
+            let daysToAdd = (7 - todayIndex) + day.day;
+            nextDeliveryDate.setDate(nextDeliveryDate.getDate() + daysToAdd);
+            
+            return {
+                date: formatDate(nextDeliveryDate),
+                slot: day.delivery_slots[0]
+            };
+        }
+    }
+
+    return "No delivery slots available";
+}
+
+  
+function getTimeLeftForNextSlot(allowable_days) {
+    let now = new Date(nowString);
+    let todayIndex = now.getDay();
+    let currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+    let sortedDays = allowable_days.sort((a, b) => a.day - b.day);
+
+    for (let i = 0; i < sortedDays.length; i++) {
+        let { day, delivery_slots } = sortedDays[i];
+
+        if (day=== todayIndex) {
+            for (let slot of delivery_slots) {
+                let [startHour, startMinute] = slot.start_fmt.split(":").map(Number);
+                let slotStartMinutes = startHour * 60 + startMinute;
+
+                if (slotStartMinutes > currentMinutes) {
+                    let timeLeft = slotStartMinutes - currentMinutes;
+                    let hours = Math.floor(timeLeft / 60);
+                    let minutes = timeLeft % 60;
+                    return `${hours} hrs and ${minutes} mins`;
+                }
+            }
+        }
+
+        if (day > todayIndex || i === sortedDays.length - 1) {
+            let nextDayIndex = (day > todayIndex) ? day : sortedDays[0].day;
+            let daysToAdd = (nextDayIndex >= todayIndex) ? (nextDayIndex - todayIndex) : (7 - todayIndex + nextDayIndex);
+
+            let nextSlot = sortedDays.find(day => day.day === nextDayIndex)?.delivery_slots[0];
+
+            if (nextSlot) {
+                let [startHour, startMinute] = nextSlot.start_fmt.split(":").map(Number);
+                let nextSlotDate = new Date(nowString);
+                nextSlotDate.setDate(nextSlotDate.getDate() + daysToAdd);
+                nextSlotDate.setHours(startHour, startMinute, 0, 0);
+
+                let timeLeftMs = nextSlotDate.getTime() - now.getTime();
+                let timeLeftMinutes = Math.floor(timeLeftMs / 60000);
+                let timeLeftHours = Math.floor(timeLeftMinutes / 60);
+                let timeLeftDays = Math.floor(timeLeftHours / 24);
+
+                if (timeLeftDays > 0) {
+                    return `${timeLeftDays} days, ${timeLeftHours % 24} hrs, and ${timeLeftMinutes % 60} mins`;
+                } else {
+                    return `${timeLeftHours} hrs and ${timeLeftMinutes % 60} mins`;
+                }
+            }
+        }
+    }
+
+    return "No available slots found.";
+}
+
+function formatterDate(dateInp) {
+  const date = new Date(dateInp);
+  const options = { month: 'short', weekday: 'short', day: '2-digit' };
+  const formattedDate = new Intl.DateTimeFormat('en-GB', options).format(date);
+  const parts = formattedDate.split(' ');
+  const finalFormattedDate = `${parts[1]} ${parts[2]} (${parts[0].replace(',', '')})`;
+
+  return finalFormattedDate;
+}
+  
+  
+  function convertToAMPM(time) {
+    let [start, end] = time.split('-'); 
+    let [startHour, startMin] = start.split(':').map(Number); 
+    let [endHour, endMin] = end.split(':').map(Number);
+
+    function formatTime(hour, minute) {
+        let period = hour >= 12 ? 'PM' : 'AM';
+        hour = hour % 12;  
+        hour = hour === 0 ? 12 : hour; 
+        return `${hour}${period}`;
+    }
+
+    let startAMPM = formatTime(startHour, startMin);
+    let endAMPM = formatTime(endHour, endMin);
+
+    return `${startAMPM}-${endAMPM}`;
+}
+
+  
+  // --------------------Functions End-----
+
+  // Adding options to location selector dropdown
+   $.each(delivery_zones_data , function(key, option) {
+      var newOption = $('<option>', {
+        value: option.id,   
+        text: option.name  
+      });
+      $('#delivery_locations_selector').append(newOption);
+    });
+// -------------------------------------
+
+
+  function renderDeliveryInfo(locationId) {
+    $(`#ld_delivery_${locationId}`).click();
+
+    let locationDetailsObj = locationDetails(locationId);
+    let allowableDays = locationDetailsObj.allowable_days;
+    let locationName = locationDetailsObj.name;
+    const { date, slot } = getNextDeliverySlot(allowableDays);
+    const nextDeliveryDateFormatted = formatterDate(date);
+    let timeLeft = getTimeLeftForNextSlot(allowableDays);
+
+    $("#day-of-delivery").text(nextDeliveryDateFormatted);
+    let timePeriod = `${slot.start_fmt}-${slot.end_fmt}`;
+    let tp = convertToAMPM(timePeriod);
+    $("#time-slot-of-delivery").text(tp);
+    $("#location-for-order").text(locationName);
+    $("#time-slot-of-delivery-prod").text(nextDeliveryDateFormatted + "  " + tp);
+    $("#time-left-to-place-order").text(timeLeft);
+}
+
+  
+    const storedLocationId = localStorage.getItem("location_id");
+
+
+        // default selection=dubai
+    $('#delivery_locations_selector option').each(function() { 
+              if ($(this).text() === 'Dubai') {
+                  $(this).prop('selected', true);
+                  const defaultLocationId = $(this).val();
+                  localStorage.setItem("location_id", defaultLocationId);
+                  renderDeliveryInfo(defaultLocationId); // Render default delivery info
+                }
+              });
+
+  // closed
+$('#delivery_locations_selector').on("change",function() {
+    const selected_location_id = $(this).val();
+  // appusablelocation_id = selected_location_id;
+  localStorage.setItem("location_id", selected_location_id)
+  
+// $(`#ld_delivery_${selected_location_id}`).click();
+  
+    let selected_location_details = locationDetails(selected_location_id);
+    let allowable_days = selected_location_details.allowable_days;
+// -------------------------------------------
+       
+   const {date , slot} = getNextDeliverySlot(allowable_days)
+    const nextDeliveryDateformatted = formatterDate(date)
+            let timeLeft = getTimeLeftForNextSlot(allowable_days)
+    $("#day-of-delivery").text(nextDeliveryDateformatted)
+  let locationname = selected_location_details.name;
+       let time_period = `${slot.start_fmt}-${slot.end_fmt}`;
+        let tp = convertToAMPM(time_period);
+        $("#time-slot-of-delivery").text(tp);
+  $("#location-for-order").text(locationname)
+        $("#time-slot-of-delivery-prod").text(nextDeliveryDateformatted+ " - "+tp)
+        $("#time-left-to-place-order").text(timeLeft)
+})    
+
+  // end of doc.ready(f)
+});
+  
+
+</script>
+
+
+<script>
+  $(document).ready(function() {
+  function moveDivOnResize() {
+    const deliveryslotcomponent = $('.location-deliveryslot-container');
+    const originalParent = $('.largescreendevices');
+    const newParent = $('.smallscreendevices');
+
+    if ($(window).width() <= 1280) {
+        deliveryslotcomponent.detach().appendTo(newParent);
+        deliveryslotcomponent.show(); 
+       
+    }else{
+       deliveryslotcomponent.detach().appendTo(originalParent);
+        deliveryslotcomponent.show(); 
+    }
+
+
+  }
+
+  $(window).on('resize', moveDivOnResize);
+  moveDivOnResize(); 
+
+    $('#headerCartStatus').click(function() { 
+    $('#cartNotificationPanel').hide();
+  });
+
+    $('.hmburger-menu').click(function() { 
+    $('#cartNotificationPanel').hide();
+   
+  });
+
+
+
+
+    $(".userbtn").on('click',()=>{
+       let resetPass = localStorage.removeItem("reset-password")
+    })
+
+  
+
+
+
+
+    
+  });
+
+
+  
+  function showToast() {
+    $("#success-toast").fadeIn(500); 
+    setTimeout(function() {
+      $("#success-toast").fadeOut(500); 
+    }, 3000); 
+  }
+
+
+   {% if customer.id %}
+    let customerId = "{{customer.id}}";
+  {% else %}
+    let customerId = "";
+  {% endif %}
+  
+  function checkValidity(customerId){
+    
+  var newUserSignup = localStorage.getItem("newSignup");
+ 
+  if(newUserSignup && customerId){
+  setTimeout(function() {
+    showToast();
+      localStorage.removeItem("newSignup");
+    }, 5000); 
+  }
+
+}
+  checkValidity(customerId)
+
+  
+
+  
+</script>
+
+
+<!-- <script>
+  $(document).ready(function() {
+    function moveDivOnResize() {
+      const deliveryslotcomponent = $('.location-deliveryslot-container');
+      const originalParent = $('.largescreendevices');
+      const newParent = $('.smallscreendevices');
+
+      const windowWidth = $(window).width();
+
+      if (windowWidth <= 1280) {
+        if (!deliveryslotcomponent.closest(newParent).length) {
+          deliveryslotcomponent.detach().appendTo(newParent).show();
+        }
+      } else {
+        if (!deliveryslotcomponent.closest(originalParent).length) {
+          deliveryslotcomponent.detach().appendTo(originalParent).show();
+        }
+      }
+
+    
+    }
+
+    $(window).on('resize', moveDivOnResize);
+    moveDivOnResize(); // Call initially to check the size.
+
+    $('#headerCartStatus').click(function() { 
+      $('#cartNotificationPanel').hide();
+    });
+
+    $('.hmburger-menu').click(function() { 
+      $('#cartNotificationPanel').hide();
+    });
+
+
+// ---------------------------------------------------------
+   var customername = {{customer.id }}
+   var newUserSignup = localStorage.getItem("newSignup");
+  
+  console.log(customername)
+  console.log(newUserSignup)
+  
+  function showToast() {
+    $("#success-toast").fadeIn(500); 
+    setTimeout(function() {
+      $("#success-toast").fadeOut(500); 
+    }, 3000); 
+  }
+
+  if(newUserSignup && customername){
+  setTimeout(function() {
+    showToast();
+      localStorage.removeItem("newSignup");
+  }, 5000); 
+     // localStorage.removeItem("newSignup");
+
+    
+    }
+
+
+
+    
+  });
+</script> -->
+
+
+<script>
+  //search
+    document.addEventListener("DOMContentLoaded", function () {
+  const searchBox = document.querySelector(".header-search-fullbox-mobile");
+  const searchTrigger = document.querySelector(".js-search-open-trigger");
+  const closeIcon = document.querySelector(".icon-close");
+
+  searchTrigger.addEventListener("click", function () {
+    searchBox.classList.add("active");
+    closeIcon.classList.remove("d-none"); // Show close button
+  });
+
+  closeIcon.addEventListener("click", function () {
+    searchBox.classList.remove("active");
+    closeIcon.classList.add("d-none"); // Hide close button
+  });
+});
+
+</script>
+

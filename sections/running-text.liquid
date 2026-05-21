@@ -1,0 +1,206 @@
+{%- if section.blocks.size > 0 -%}
+  {%- liquid
+    assign rand =  section.id | md5 | truncate: 12, ""
+    assign link_label = ''
+  -%}
+<div class="section section-running-text section-index--{{section.index |  replace: '1', 'first' }} {% render 'sections-spacing' %} color-{{- section.settings.color_scheme }}">
+  <div class="ctnr p-relative background running-content js-running-content {{ section.settings.pause_when_hover | default: '' | replace: 'true', 'marquee--animation-pause' }}" data-ui-component="Running Content Section" role="region" style="--line-height-heading: calc( 1.5 * {{ section.settings.heading_size | replace: "headline", "var(--headline)" | replace: "h1", "var(--heading-1)" | replace: "h2", "var(--heading-2)" | replace: "h3", "var(--heading-3)"}})">
+    <div id="marquee-{{ rand }}" class="marquee d-flex middle-xs  ">
+      <sht-marquee data-speed="{{ section.settings.speed }}" class="ws-nowrap o-hidden w-100 p-relative d-block zi-1 gap-2x" style="--marquee-duration: {{ 1000 | divided_by: section.settings.speed }}s;">
+        {%- capture marquee_item -%}
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign content_color_class = ''
+              assign content_color_style = ''
+              unless block.settings.color_text.alpha == 0.0 or block.settings.color_text == blank
+                assign content_color_style =  'color:' | append: block.settings.color_text
+              endunless
+              if block.settings.text_color_gradient != empty
+                assign content_color_class = 'color-text-gradient'
+                assign content_color_style = '--text-color-gradient:' | append: block.settings.text_color_gradient
+              endif
+              assign link_label = block.settings.promotion_text
+            -%}
+            <div class="running-content-item running-content-text ta-center d-flex center-xs middle-xs {{ section.settings.heading_size }} {{ content_color_class }} rte m-zero" style="{{ content_color_style }}" {{ block.shopify_attributes }}>
+              {{- block.settings.promotion_text -}}
+            </div>
+          {%- endfor -%}
+        {%- endcapture -%}
+        <div class="marquee-container js-marquee-items d-flex o-hidden zi-m-1">
+          {%- case section.blocks.size -%}
+            {%- when 1 -%}
+            {%- for i in (1..12) -%}
+              <div class="js-marquee-item d-flex fw-nowrap fs-0 marquee__items--animate marquee__items middle-xs marquee--{{- section.settings.moving_direction }}">
+                {{- marquee_item -}}
+              </div>
+              {%- endfor -%}
+            {%- when 2,3 -%}
+              {%- for i in (1..7) -%}
+                <div class="js-marquee-item d-flex fw-nowrap fs-0 marquee__items--animate marquee__items middle-xs marquee--{{- section.settings.moving_direction }}">
+                  {{- marquee_item -}}
+                </div>
+              {%- endfor -%}
+            {%- else -%}
+              {%- for i in (1..5) -%}
+                <div class="js-marquee-item d-flex fw-nowrap fs-0 marquee__items--animate marquee__items middle-xs marquee--{{- section.settings.moving_direction }}">
+                  {{- marquee_item -}}
+                </div>
+                {%- endfor -%}
+          {%- endcase -%}
+        </div>
+      </sht-marquee>
+    </div>
+    {% if section.settings.text_link %}
+      <a target="_blank" href="{{ section.settings.text_link }}" class="marquee_link p-absolute top-0 left-0 right-0 bottom-0 zi-1" aria-label="{{- link_label -}}" ></a>
+    {% endif %}
+  </div>
+</div>
+  {%- endif -%}
+  {% schema %}
+  {
+    "name": "t:sections.running_content.name",
+    "class": "s-outer-padding-small",
+    "max_blocks": 10,
+    "settings": [
+      {
+        "type": "header",
+        "content": "t:general.settings.headers.general.content"
+      },
+      {
+        "type": "color_scheme",
+        "id": "color_scheme",
+        "label": "t:general.settings.color_scheme.label",
+        "default": "scheme-3"
+      },
+      {
+        "type": "select",
+        "id": "speed",
+        "label": "t:sections.running_content.settings.speed.label",
+        "default": "100",
+        "options": [
+          {
+            "value": "50",
+            "label": "t:sections.running_content.settings.speed.option_1.label"
+          },
+          {
+            "value": "100",
+            "label": "t:sections.running_content.settings.speed.option_2.label"
+          },
+          {
+            "value": "150",
+            "label": "t:sections.running_content.settings.speed.option_3.label"
+          },
+          {
+            "value": "200",
+            "label": "t:sections.running_content.settings.speed.option_4.label"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "label": "t:sections.running_content.settings.moving_direction.label",
+        "id": "moving_direction",
+        "options": [
+          {
+            "value": "animation-direction",
+            "label": "t:sections.running_content.settings.moving_direction.option_1.label"
+          },
+          {
+            "value": "animation-reverse",
+            "label": "t:sections.running_content.settings.moving_direction.option_2.label"
+          }
+        ],
+        "default": "animation-direction"
+      },
+      {
+        "type": "checkbox",
+        "id": "pause_when_hover",
+        "label": "t:sections.running_content.settings.pause_when_hover.label",
+        "default": true
+      },
+      {
+        "type": "select",
+        "label": "t:general.settings.text_size.label",
+        "id": "heading_size",
+        "options": [
+          {
+            "value": "headline",
+            "label": "t:general.settings.heading_size.options.headline.label"
+          },
+          {
+            "value": "h1",
+            "label": "t:general.settings.heading_size.options.h1.label"
+          },
+          {
+            "value": "h2",
+            "label": "t:general.settings.heading_size.options.h2.label"
+          },
+          {
+            "value": "h3",
+            "label": "t:general.settings.heading_size.options.h3.label"
+          },
+          {
+            "value": "h4",
+            "label": "t:general.settings.heading_size.options.h4.label"
+          },
+          {
+            "value": "h5",
+            "label": "t:general.settings.heading_size.options.h5.label"
+          },
+          {
+            "value": "h6",
+            "label": "t:general.settings.heading_size.options.h6.label"
+          }
+        ],
+        "default": "h2"
+      },
+      {
+        "type": "url",
+        "label": "t:general.settings.link.label",
+        "id": "text_link"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "text",
+        "name": "t:general.settings.text.label",
+        "limit": 3,
+        "settings": [
+          {
+            "type": "text",
+            "label": "t:general.settings.text.label",
+            "info": "t:general.settings.text.info",
+            "id": "promotion_text",
+            "default": "Welcome to our store"
+          },
+          {
+            "type": "color",
+            "id": "color_text",
+            "label": "t:general.settings.custom_text_color.label"
+          },
+          {
+            "type": "color_background",
+            "id": "text_color_gradient",
+            "label": "t:general.settings.custom_text_gradient.label"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "t:sections.running_content.name",
+        "blocks": [
+          {
+            "type": "text"
+          },
+          {
+            "type": "text"
+          },
+          {
+            "type": "text"
+          }
+        ]
+      }
+    ]
+  }
+  {% endschema %}

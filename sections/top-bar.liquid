@@ -1,0 +1,157 @@
+{%-liquid
+  assign block_position = 'between-md center-xs'
+  assign content_align = 'ta-left-md'
+-%}
+{%- if section.blocks.size > 0 -%}
+  {% capture top_bar_html %}
+    <div class="section color-{{ section.settings.color_scheme }}">
+      <div class="ctnr js-top-bar subtext  background" data-ui-component="Top Bar Section" role="region" aria-label="{{ 'accessibility.top_bar' | t }}">
+        <div class="d-flex middle-xs SHT_TOP_BAR_BLOCK_MAX_WIDTH SHT_TOP_BAR_BLOCK_POSITION">
+          {%- for block in section.blocks -%}
+            {%- case block.type -%}
+              {% when 'message' %}
+                {%- if block.settings.text != blank -%}
+                  <div class="tpbr__message ta-center text-block SHT_TOP_BAR_CONTENT_ALIGN" {{ block.shopify_attributes }}>
+                    {{- block.settings.text -}}
+                  </div>
+                {%- else -%}
+                  {%- assign block_position = 'center-xs' -%}
+                {%- endif -%}
+              {% when 'store_info' %}
+                {%- liquid
+                  assign hidden_divider = 'hidden-divider'
+                  assign info_link_is_visible = false
+                  assign show_quicks_links = block.settings.show_quick_links
+                  if settings.quick_links == blank
+                    assign show_quicks_links = false
+                  endif
+                  if show_quicks_links
+                    assign info_link_is_visible = true
+                    capture tpbr_quick_links
+                      render 'quick-links', class: 'middle-xs tpbr__links p-relative vertical-divider', link_class: 'td-none pl-12 pr-12'
+                    endcapture
+                  endif
+                  if block.settings.show_info
+                    assign info_link_is_visible = true
+                    capture tpbr_contact
+                      render 'contact', header_style: 'd-none-important', contact_class: 'd-inline-flex fd-row', contact_style: 'pl-12 pr-12', classes: 'd-flex  p-relative vertical-divider'
+                    endcapture
+                  endif
+                  if show_quicks_links and block.settings.show_info
+                    assign hidden_divider = ''
+                  endif
+                  if info_link_is_visible == false
+                    assign block_position = 'center-xs'
+                  endif
+                  -%}
+                <div class="tpbr__info fw-wrap d-none d-flex-md r-gap-10 hide-empty start-xs {{ hidden_divider }}" {{ block.shopify_attributes }}>
+                  {%- if block.settings.content_ordering == 'link-first' -%}
+                    {{- tpbr_quick_links -}}
+                    {{- tpbr_contact -}}
+                  {%- else -%}
+                    {{- tpbr_contact -}}
+                    {{- tpbr_quick_links -}}
+                  {% endif %}
+                </div>
+              {%- endcase -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  {% endcapture %}
+  {%- liquid
+    if section.blocks.size == 1
+      assign block_position = 'center-xs'
+    endif
+    if block_position == 'center-xs'
+      assign block_max_width = 'tpbr'
+      assign content_align = ''
+    endif
+    echo top_bar_html | replace: 'SHT_TOP_BAR_BLOCK_MAX_WIDTH', block_max_width | replace: 'SHT_TOP_BAR_BLOCK_POSITION', block_position | replace: 'SHT_TOP_BAR_CONTENT_ALIGN', content_align
+   -%}
+{%- endif -%}
+{% schema %}
+{
+  "name": "t:sections.top_bar.name",
+  "class": "s-outer-padding-small main-announcement-bar",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:general.settings.color_scheme.label",
+      "default": "scheme-3"
+    }
+  ],
+  "blocks": [
+    {
+      "name": "t:sections.top_bar.blocks.annoucement.name",
+      "type": "message",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "richtext",
+          "label": "t:general.settings.text.label",
+          "id": "text",
+          "default": "<p>Highlight your significant announcement here</p>"
+        }
+      ]
+    },
+    {
+      "name": "t:sections.top_bar.blocks.store_info.name",
+      "type": "store_info",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "t:sections.top_bar.blocks.paragraph_store_info.content"
+        },
+        {
+          "type": "select",
+          "id": "content_ordering",
+          "label": "t:general.settings.content_ordering.label",
+          "default": "contact-first",
+          "options": [
+            {
+              "value": "link-first",
+              "label": "t:sections.top_bar.blocks.content_ordering.options.option_links_first.label"
+            },
+            {
+              "value": "contact-first",
+              "label": "t:sections.top_bar.blocks.content_ordering.options.option_content_info_first.label"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "t:general.settings.header.header_quick_links.content",
+          "info": "t:general.settings.header.header_quick_links.info"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_quick_links",
+          "label": "t:sections.top_bar.blocks.show_quick_links_on_desktop.label",
+          "default": true
+        },
+        {
+          "type": "header",
+          "content": "t:general.settings.headers.header_contact_information.content",
+          "info": "t:general.settings.headers.header_contact_information.info"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_info",
+          "label": "t:sections.header.settings.enable_contact.label",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      {
+        "type": "message"
+      }
+    ]
+  }
+}
+{% endschema %}

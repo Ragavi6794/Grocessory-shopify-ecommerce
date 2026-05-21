@@ -1,0 +1,128 @@
+{%- if cart != empty -%}
+{% comment %}
+  {% if settings.cart_show_free_shipping_notification and settings.cart_minimum_order_price_for_free_shipping != blank %}
+    <div class="free-shipping-notification">
+      {% render 'free-shipping-amount', cart: cart, section: section %}
+    </div>
+  {% endif %}
+{% endcomment %}
+  {%- for item in cart.items -%}
+    <div class="cart-item js-cart-notification-panel-product-{{ item.id }}">
+      {%- liquid
+          assign image_height = 250 | divided_by: item.image.aspect_ratio
+          assign product_image = 'product-1' | placeholder_svg_tag: 'placeholder media of-cover w-100 corner-radius-xs'
+          assign product_image = item.image.src | image_url: width: 250, height: image_height | image_tag: alt: item.product.title, class: 'cart-notification-product__image of-contain corner-radius-xs'
+        -%}
+      {{ product_image }}
+      <div class="cart-notification-product__info d-grid gap-8 w-100">
+        <div>
+          <p class="subtext color-light mb-8 hide-empty">{{- item.vendor -}}</p>
+          <p class="h6 m-zero">
+            {{ item.product.title | escape }}
+          </p>
+
+          {%- unless item.product.selected_or_first_available_variant.unit_price_measurement == null -%}
+            <small class="unit-price d-block color-light">
+              <span class="visually-hidden">{{ 'products.product.price.unit_price' | t }}</span>
+              <span class="price-item d-inline-block">
+                <span>{{- item.product.selected_or_first_available_variant.unit_price | money -}}</span>
+                <span aria-hidden="true">/</span>
+                <span class="visually-hidden">&nbsp;{{ 'accessibility.unit_price_separator' | t }}&nbsp;</span>
+                <span>
+                  {%- if item.product.selected_or_first_available_variant.unit_price_measurement.reference_value != 1 -%}
+                    {{- item.product.selected_or_first_available_variant.unit_price_measurement.reference_value -}}
+                  {%- endif -%}
+                  {{ item.product.selected_or_first_available_variant.unit_price_measurement.reference_unit }}
+                </span>
+              </span>
+            </small>
+          {%- endunless -%}
+        </div>
+        <div class="m-zero ta-right cart-notification-product__price wb-break-word">
+          {%- if item.original_line_price != item.final_line_price -%}
+            <div class="cart-item__discounted-prices wb-break-word">
+              <span class="visually-hidden">
+                {{ 'products.product.price.sale_price' | t }}
+              </span>
+              <span class="d-block mb-4 fw-400">
+                {{ item.final_line_price | money_with_currency }}
+              </span>
+              <span class="visually-hidden">
+                {{ 'products.product.price.regular_price' | t }}
+              </span>
+              <s class="color-light subtext">
+                {{ item.original_line_price | money_with_currency }}
+              </s>
+            </div>
+          {%- else -%}
+            <span class="d-block mb-4 fw-400">
+              {{ item.original_line_price | money_with_currency }}
+            </span>
+            {% if item.variant.compare_at_price > item.variant.price %}
+              <s class="color-light subtext d-block"> {{ item.variant.compare_at_price | times: item.quantity | money_with_currency }} </s>
+            {% endif %}
+          {%- endif -%}
+        </div>
+
+        <div class="m-zero subtext color-light wb-break-word" style="--gc-xs: 1/3">
+        {%- unless item.product.has_only_default_variant -%}
+          <div class="product-option">
+            <span>
+              {%- liquid
+                assign options_names = ''
+                for option in item.options_with_values
+                  assign options_names = options_names | append: ', ' | append: option.value
+                endfor
+                echo  options_names | replace_first: ', ', ''
+              -%}
+            </span>
+          </div>
+        {%- endunless -%}
+        {%- for property in item.properties -%}
+          {%- assign property_first_char = property.first | slice: 0 -%}
+          {%- if property.last != blank and property_first_char != '_' -%}
+          <div class="mt-8">
+            <p>{{ property.first }}:
+              {% if property.last contains '/uploads/' %}
+              <a href="{{ property.last }}" class="link" target="_blank">
+                {{ property.last | split: "/" | last }}
+              </a>
+              {% else %}
+                {{ property.last }}
+              {% endif %}
+            </p>
+          </div>
+          {% endif %}
+        {%- endfor -%}
+        x <span class="color-light">{{ item.quantity }}</span>
+        </div>
+
+        {%- if item.discounts.size > 0 -%}
+          <ul class="ls-none hide-empty p-zero" style="--gc-xs: 1/3">
+            {%- for discount in item.discounts -%}
+              <li class="cart-item__discounted d-grid middle-xs pb-8">
+                <span class="discounted-icon icon icon--small mr-8 fs-0">
+                  {% render 'icon-voucher', size: 16 %}
+                </span>
+                <span>
+                  {{ discount.title }}
+                  (
+                  {{- discount.savings | money_with_currency -}}
+                  )
+                </span>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+        {%- if item.selling_plan_allocation != nil -%}
+          <p class="m-zero mb-12" style="--gc-xs: 1/3">
+            {{ item.selling_plan_allocation.selling_plan.name }}
+          </p>
+        {%- endif -%}
+
+      </div>
+    </div>
+  {%- endfor -%}
+  <span class="js-cart-notification-panel-item-count">{{ cart.item_count }}</span>
+{%- endif -%}

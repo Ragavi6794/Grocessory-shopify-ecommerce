@@ -1,0 +1,136 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "footer",
+  "name": "Footer Group",
+  "sections": {
+    "icon_with_text": {
+      "type": "icon-with-text",
+      "blocks": {
+        "item_1": {
+          "type": "item",
+          "settings": {
+            "icon_source": "theme_library",
+            "options_icon": "cart",
+            "html_code": "",
+            "color_text_icon": "#feb869",
+            "heading": "Item heading",
+            "description": "<p>Share information about your products, policies or services. </p>"
+          }
+        },
+        "item_2": {
+          "type": "item",
+          "settings": {
+            "icon_source": "theme_library",
+            "options_icon": "customer-support",
+            "html_code": "",
+            "color_text_icon": "#feb869",
+            "heading": "Item heading",
+            "description": "<p>Share information about your products, policies or services. </p>"
+          }
+        },
+        "item_3": {
+          "type": "item",
+          "settings": {
+            "icon_source": "theme_library",
+            "options_icon": "credit-card",
+            "html_code": "",
+            "color_text_icon": "#feb869",
+            "heading": "Item heading",
+            "description": "<p>Share information about your products, policies or services. </p>"
+          }
+        },
+        "item_4": {
+          "type": "item",
+          "settings": {
+            "icon_source": "theme_library",
+            "options_icon": "3d-model",
+            "html_code": "",
+            "color_text_icon": "#feb869",
+            "heading": "Item heading",
+            "description": "<p>Share information about your products, policies or services. </p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "disabled": true,
+      "settings": {
+        "color_scheme": "",
+        "subheading": "",
+        "heading": "",
+        "heading_size": "h2",
+        "description": "",
+        "items_per_row_on_desktop": "4",
+        "content_align": "ta-center middle-xs",
+        "button_main_text": "",
+        "button_main_link": ""
+      }
+    },
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "block_1": {
+          "type": "store_information",
+          "settings": {
+            "logo": "shopify://shop_images/Gulffruits_Trade_Co_LLC.svg",
+            "logo_width": 100,
+            "heading": "We're always here to help",
+            "description": ""
+          }
+        },
+        "block_3": {
+          "type": "social_media",
+          "settings": {
+            "social_heading": "Connect with us",
+            "show_socical_icons": true,
+            "enable_follow_on_shop": false
+          }
+        },
+        "store_contact_67iygr": {
+          "type": "store_contact",
+          "settings": {
+            "contact_heading": "Contact us"
+          }
+        },
+        "single_menu_LMMV6D": {
+          "type": "single_menu",
+          "settings": {
+            "heading": "Quick Links",
+            "menu": "footer"
+          }
+        }
+      },
+      "block_order": [
+        "block_1",
+        "block_3",
+        "store_contact_67iygr",
+        "single_menu_LMMV6D"
+      ],
+      "settings": {
+        "enable_back_to_top": true,
+        "enable_collapse": false,
+        "color_scheme": "scheme-2",
+        "show_currency_selector": false,
+        "show_language_selector": false,
+        "show_payment_methods": true,
+        "enable_quick_links": false
+      }
+    }
+  },
+  "order": [
+    "icon_with_text",
+    "footer"
+  ]
+}

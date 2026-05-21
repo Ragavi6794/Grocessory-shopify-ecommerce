@@ -1,0 +1,2253 @@
+{{ 'cart.css' | asset_url | stylesheet_tag: preload: true }}
+<style>
+  {% if localization.language.iso_code == "ar" %}
+
+   .ld_input_icon_wrapper #local_delivery , .ld_input_icon_wrapper #datepicker:not(.ld_datepicker_always_visible) {
+        width: 90%;
+    }
+  @media (max-width: 470px) {
+      .address-box .default-badge {
+        right: 79% !important;
+      }
+    }
+    .default-badge {
+      right: 85% !important;
+    }
+  {% endif %}
+
+  /* Free Shipping Progress Bar Styles */
+  .free-shipping-bar-wrapper {
+    background: #FEF7F9B2;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+    border: 1px solid #F0A8BB;
+  }
+
+  .free-shipping-message {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    text-align: center;
+  }
+  span.free-shipping-icon-block {
+      background: #db325e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 100px;
+      padding: 5px;
+  }
+  .free-shipping-icon {
+    flex-shrink: 0;
+  }
+
+  .free-shipping-success {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    color: {{ settings.free_shipping_bar_color }};
+    font-weight: 600;
+    gap: 5px;
+  }
+
+  .free-shipping-progress-text {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-weight: 400;
+  }
+
+  .free-shipping-highlight {
+    color: #34BA12;
+    font-weight: 500;
+  }
+
+  .free-shipping-progress-bar {
+    width: 100%;
+    height: 10px;
+    background-color: {{ settings.free_shipping_bar_bg_color }};
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .free-shipping-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, {{ settings.free_shipping_bar_color }}, {{ settings.free_shipping_bar_color | color_lighten: 15 }});
+    border-radius: 10px;
+    transition: width 0.4s ease-in-out;
+    position: relative;
+  }
+
+  .free-shipping-progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    animation: shimmer 2s infinite;
+  }
+
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  /* Mobile Responsive Styles */
+  @media (max-width: 768px) {
+    .free-shipping-bar-wrapper {
+      padding: 12px;
+      margin-bottom: 16px;
+      border-radius: 10px;
+    }
+
+    .free-shipping-message {
+      font-size: 13px;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+
+    .free-shipping-icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    .free-shipping-progress-bar {
+      height: 8px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .free-shipping-bar-wrapper {
+      padding: 10px;
+      margin-bottom: 12px;
+    }
+
+    .free-shipping-message {
+      font-size: 12px;
+    }
+
+    .free-shipping-icon {
+      width: 16px;
+      height: 16px;
+      color: white;
+    }
+  }
+
+  /* RTL Support for Arabic */
+  [dir="rtl"] .free-shipping-icon,
+  html[lang="ar"] .free-shipping-icon {
+    margin-right: 0;
+    margin-left: 8px;
+  }
+
+  [dir="rtl"] .free-shipping-progress-fill,
+  html[lang="ar"] .free-shipping-progress-fill {
+    right: 0;
+    left: auto;
+  }
+
+  /* Desktop/Mobile visibility */
+  .free-shipping-mobile {
+    display: none;
+    margin-top: 16px;
+  }
+
+  .free-shipping-desktop {
+    display: block;
+  }
+  .free-shipping-icon {
+    color: white;
+  }
+
+  @media (max-width: 989px) {
+    .free-shipping-mobile {
+      display: block;
+    }
+
+    .free-shipping-desktop {
+      display: none;
+    }
+  }
+  @media (min-width: 989px) {
+    span.free-shipping-icon-block {
+      height:29px
+    }
+  }
+</style>
+{%- liquid
+  if cart == empty
+    assign cart_empty_hide = 'd-none'
+    assign cart_empty_show = 'd-block'
+  endif
+  capture icon_plus
+    render 'icon-plus', size: 16
+  endcapture
+
+  capture icon_minus
+    render 'icon-minus', size: 16
+  endcapture
+
+  capture icon_remove
+    render 'icon-remove'
+  endcapture
+
+
+-%}
+
+<div class="main-cart section section-index--{{section.index |  replace: '1', 'first' }} {% render 'sections-spacing' %} color-{{- section.settings.color_scheme }}" id="mainCart" data-ui-component="Main Cart Section" >
+  <div class="ctnr js-animate anm anm-fadeInUpSmall background" id="mainCartContainer" style="--duration: .7s">
+    <sht-cart-frm class="cart-content d-block">
+      <div class="s-header cart-heading">
+        <h1 class="{{ section.settings.heading_size }}  m-zero">
+          {{ 'general.cart.cart_title' | t }} (<span class="js-cart-form-item_count">{{ cart.item_count }}</span>)
+        </h1>
+
+        <!-- Two-Tier Progress Bar - Mobile/Tablet Only: Checkout Minimum (30 AED) + Free Shipping -->
+        {% if settings.enable_free_shipping_bar %}
+          {%- assign checkout_minimum_mobile = 3000 -%}
+          {%- assign free_shipping_threshold = settings.free_shipping_threshold | times: 100 -%}
+          {%- assign cart_total_mobile = 0 -%}
+          {%- for item in cart.items -%}
+            {%- unless item.product.handle == 'shipping-charges' -%}
+              {%- assign cart_total_mobile = cart_total_mobile | plus: item.final_line_price -%}
+            {%- endunless -%}
+          {%- endfor -%}
+          {% if cart != empty %}
+            <div class="free-shipping-bar-wrapper free-shipping-mobile{% if cart == empty %} d-none{% endif %}" data-threshold="{{ free_shipping_threshold }}" data-checkout-minimum="{{ checkout_minimum_mobile }}">
+              <div class="free-shipping-message">
+                {% if cart_total_mobile < checkout_minimum_mobile %}
+                  {%- assign remaining_checkout_mobile = checkout_minimum_mobile | minus: cart_total_mobile -%}
+                  {%- assign progress_percentage_mobile = cart_total_mobile | times: 100 | divided_by: checkout_minimum_mobile -%}
+                  <span class="free-shipping-progress-text checkout-progress-text">
+                    <span class="free-shipping-icon-block">    
+                      <svg class="free-shipping-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                      </svg>
+                    </span>
+                    {%- assign remaining_checkout_aed_mobile = remaining_checkout_mobile | money_without_currency -%}
+                    Add {{ remaining_checkout_aed_mobile }} AED more to <span class="free-shipping-highlight">enable checkout!</span>
+                  </span>
+                {% elsif cart_total_mobile >= free_shipping_threshold %}
+                  {%- assign progress_percentage_mobile = 100 -%}
+                  <span class="free-shipping-success">
+                    <span class="free-shipping-icon-block">             
+                      <svg class="free-shipping-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                    </span>
+                    {{ settings.free_shipping_message_success }}
+                  </span>
+                {% else %}
+                  {%- assign remaining_amount_mobile = free_shipping_threshold | minus: cart_total_mobile -%}
+                  {%- assign shipping_progress_range_mobile = free_shipping_threshold | minus: checkout_minimum_mobile -%}
+                  {%- assign cart_above_minimum_mobile = cart_total_mobile | minus: checkout_minimum_mobile -%}
+                  {%- assign progress_percentage_mobile = cart_above_minimum_mobile | times: 100 | divided_by: shipping_progress_range_mobile -%}
+                  {%- if progress_percentage_mobile > 100 -%}
+                    {%- assign progress_percentage_mobile = 100 -%}
+                  {%- endif -%}
+                  <span class="free-shipping-progress-text">
+                    <span class="free-shipping-icon-block">    
+                      <svg class="free-shipping-icon" width="21" height="17" viewBox="0 0 21 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd" clip-rule="evenodd" d="M13.1104 0C14.5593 0 15.7325 1.17322 15.7325 2.62209V3.81394H16.3433C17.2483 3.81394 18.0882 4.27951 18.5687 5.04675L19.9561 7.26847C20.3118 7.83646 20.4999 8.49384 20.4999 9.16242V12.1569C20.4999 13.6058 19.3267 14.779 17.8778 14.779H17.5407C17.2297 15.8796 16.2167 16.686 15.0173 16.686C13.818 16.686 12.805 15.8796 12.4939 14.779H9.91281C9.60181 15.8796 8.58875 16.686 7.38941 16.686C6.19007 16.686 5.17704 15.8796 4.86601 14.779H3.57547C3.18067 14.779 2.86035 14.4587 2.86035 14.0639C2.86035 13.6691 3.18067 13.3488 3.57547 13.3488H4.86601C5.17701 12.2482 6.19007 11.4418 7.38941 11.4418C8.58875 11.4418 9.60178 12.2482 9.91281 13.3488H12.4939C12.7416 12.4754 13.4288 11.7882 14.3022 11.5405V2.62209C14.3022 1.9647 13.7677 1.43023 13.1104 1.43023H3.57551C3.18071 1.43023 2.8604 1.10991 2.8604 0.715114C2.8604 0.320314 3.18071 0 3.57551 0H13.1104ZM7.38947 12.8721C6.73209 12.8721 6.19761 13.4065 6.19761 14.0639C6.19761 14.7213 6.73209 15.2558 7.38947 15.2558C8.04685 15.2558 8.58133 14.7213 8.58133 14.0639C8.58133 13.4065 8.04685 12.8721 7.38947 12.8721ZM15.0174 12.8721C14.36 12.8721 13.8255 13.4065 13.8255 14.0639C13.8255 14.7213 14.36 15.2558 15.0174 15.2558C15.6747 15.2558 16.2092 14.7213 16.2092 14.0639C16.2092 13.4065 15.6747 12.8721 15.0174 12.8721ZM15.7325 11.5405C16.6059 11.7882 17.293 12.4754 17.5408 13.3488H17.8778C18.5352 13.3488 19.0697 12.8143 19.0697 12.1569V9.16242C19.0697 8.76204 18.9561 8.36722 18.7438 8.02644L17.3545 5.80472C17.1366 5.45648 16.7549 5.24417 16.3433 5.24417H15.7325L15.7325 11.5405Z" fill="white"/>
+                      <path d="M4.52918 7.62793C4.92398 7.62793 5.2443 7.94824 5.2443 8.34304C5.2443 8.73784 4.92398 9.05816 4.52918 9.05816H1.66873C1.27393 9.05816 0.953613 8.73784 0.953613 8.34304C0.953613 7.94824 1.27393 7.62793 1.66873 7.62793H4.52918Z" fill="white"/>
+                      <path d="M4.52906 3.81396C4.92386 3.81396 5.24417 4.13428 5.24417 4.52908C5.24417 4.92388 4.92386 5.24419 4.52906 5.24419H0.715114C0.320314 5.24419 0 4.92388 0 4.52908C0 4.13428 0.320314 3.81396 0.715114 3.81396H4.52906Z" fill="white"/>
+                      </svg>
+                    </span>
+                    {%- assign remaining_aed_mobile = remaining_amount_mobile | money_without_currency -%}
+                    Add {{ remaining_aed_mobile }} AED more for <span class="free-shipping-highlight">FREE shipping!</span>
+                  </span>
+                {% endif %}
+              </div>
+              <div class="free-shipping-progress-bar">
+                <div class="free-shipping-progress-fill" style="width: {{ progress_percentage_mobile }}%;"></div>
+              </div>
+            </div>
+          {% endif %}
+        {% endif %}
+      </div>
+
+      {%- comment -%} Check for subscription products {%- endcomment -%}
+      {%- assign has_subscription = false -%}
+      {%- for line_item in cart.items -%}
+        {%- if line_item.product.tags contains "subscriptions-products" -%}
+          {%- comment -%} Check if has selling plan allocation (native Shopify subscriptions) {%- endcomment -%}
+          {%- if line_item.selling_plan_allocation != nil -%}
+            {%- assign has_subscription = true -%}
+            {%- break -%}
+          {%- endif -%}
+
+          {%- comment -%} Check if has subscription property {%- endcomment -%}
+          {%- for property in line_item.properties -%}
+            {%- assign property_key = property.first | downcase -%}
+            {%- if property_key contains "subscription" -%}
+              {%- assign has_subscription = true -%}
+              {%- break -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+        {%- if has_subscription -%}
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- if has_subscription -%}
+        <div class="subscription_message" style="background: #fff3cd; border: 1px solid #ffc107; border-radius: 8px; padding: 15px; color: #856404; margin: 20px 0;">
+          <p style="margin: 0; font-weight: 500; font-size: 14px;">Your cart has a subscription product, please note we deliver only in Dubai region</p>
+        </div>
+      {%- endif -%}
+      {%- assign non_deliverable = false -%}
+      {%- if customer.default_address.province == "Sharjah" or  customer.default_address.province == "Ajman"-%} 
+        {%- assign non_deliverable = true -%}
+      {%- endif -%}
+      {%- if non_deliverable -%}
+        <div class="non_deliverable_message" style="background: #fff3cd; border: 1px solid #ffc107; border-radius: 8px; padding: 15px; color: #856404; margin: 20px 0;">
+          <p style="margin: 0; font-weight: 500; font-size: 14px;">It appears your default address is in {{customer.default_address.province}}. Unfortunately, we currently do not deliver to this location.</p>
+        </div>
+      {%- endif -%}
+      <div class="ta-center d-none {{ cart_empty_show }}">
+        <p class="mb-24">{{ 'sections.cart.empty' | t }}</p>
+        <a class="btn btn-primary btn-large" href="{{ routes.all_products_collection_url }}">{{ 'general.cart.continue_shopping' | t }}</a>
+      </div>
+      <form action="{{ routes.cart_url }}" method="post" id="cartForm" class="{{ cart_empty_hide }}">
+        <div class="rw">
+          <div class="pb-24 pb-sm-36 js-cart-form-wrapper clm" id="mainCartForm" data-section-id="{{ section.id }}" style="--w-xs: 12; --w-md:8; ">
+            <div class="js-cart-form-content-cart-items mr-md-16 mr-xl-20">
+              {%- if cart != empty -%}
+                <div class="cart-content__headings d-grid-md c-gap pb-md-24" style="--gtc-equal:4">
+                  <div class="d-none d-block-md fw-700 padding--start" style="--gc-xs: 1 / span 3; --gc-md: 1 / span 2">
+                    {{ 'sections.cart.label.product' | t }}
+                  </div>
+                  <div class="d-none d-block-md fw-700 padding--start">
+                    {{ 'sections.cart.label.quantity' | t }}
+                  </div>
+                  <div class="d-none d-block-md fw-700 ta-right">
+                    {{ 'sections.cart.label.total' | t }}
+                  </div>
+                </div>
+                <div class="cart-items d-grid r-gap-32 r-gap-md-36">
+                  {% for line_item in cart.items %}
+                  {% unless line_item.product.tags contains "Pre-Order-Item" %}
+                    <div class="cart-item d-grid middle-md lagu" id="cartItem-{{ line_item.index | plus: 1 }}">
+                      <div class="cart-item__product d-grid start-md mr-12 m-zero-md gap-12 top-xs gap-md-24">
+                        <div class="cart-item__image p-relative o-hidden corner-radius-xs">
+                          {%- liquid
+                            assign media = 'image' | placeholder_svg_tag: 'placeholder js-image-lazy'
+                            assign media = line_item.image | image_url: width: 300 | image_tag: widths: '300', sizes: '100vw', alt: line_item.product.title, class: 'media w-100 h-100 of-cover'
+                          %}
+                          {% render 'image', image_item: media, image_classes: 'corner-radius-xs' %}
+                        </div>
+                        <div class="wb-break-word">
+                          {% if settings.enable_cart_product_vendor %}
+                            <p class="subtext color-light mb-8">
+                              {{ line_item.product.vendor }}
+                            </p>
+                          {% endif %}
+                          <a href="{{ line_item.url }}" class="fw-700 card__heading mb-8 d-block">{{ line_item.product.title | escape }}</a>
+                          
+                          {%- if line_item.product.has_only_default_variant == false or line_item.properties.size != 0 or line_item.selling_plan_allocation != null -%}
+                            <dl class="m-zero subtext color-light wb-break-word hide-empty">
+                              {%- if line_item.product.has_only_default_variant == false -%}
+                                <div class="product-option">
+                                  <span>
+                                    {%- liquid
+                                      assign options_names = ''
+                                      for option in line_item.options_with_values
+                                        assign options_names = options_names | append: ', ' | append: option.value
+                                      endfor
+                                      echo  options_names | replace_first: ', ', ''
+                                    -%}
+                                    </span>
+                                </div>
+                              {%- endif -%}
+                              {%- for property in line_item.properties -%}
+                                {%- assign property_first_char = property.first | slice: 0 -%}
+                                {%- if property.last != blank and property_first_char != '_' -%}
+                                  <div class="product-option">
+                                    <p>{{ property.first }}:
+                                      {%- if property.last contains '/uploads/' -%}
+                                        <a href="{{ property.last }}" class="link" target="_blank">
+                                          {{ property.last | split: '/' | last }}
+                                        </a>
+                                      {% else %}
+                                        {{ property.last }}
+                                      {% endif %}
+                                    </p>
+                                  </div>
+                                {%- endif -%}
+                              {%- endfor -%}
+                            </dl>
+                          {%- endif -%}
+                          {%- if line_item.variant.available and line_item.unit_price_measurement -%}
+                            <div class="color-light subtext mt-8">
+                              <span class="visually-hidden">{{ 'products.product.price.unit_price' | t }}</span>
+                              {{ line_item.variant.unit_price | money }}
+                              <span aria-hidden="true">/</span>
+                              <span class="visually-hidden">&nbsp;{{ 'accessibility.unit_price_separator' | t }}&nbsp;</span>
+                              {%- if line_item.variant.unit_price_measurement.reference_value != 1 -%}
+                                {{- line_item.variant.unit_price_measurement.reference_value -}}
+                              {%- endif -%}
+                              {{ line_item.variant.unit_price_measurement.reference_unit }}
+                            </div>
+                          {%- endif -%}
+                          <div class="cart-item__sale d-flex fd-column gap-12 hide-empty mt-16">
+                            {%- if line_item.selling_plan_allocation != nil -%}
+                              <div class="cart-item__discounted subtext hide-empty d-flex middle-xs">
+                                <span class="discounted-icon icon icon--small mr-8 fs-0">
+                                  {% render 'icon-subscription', size: 16 %}
+                                </span>
+                                <span>
+                                  {{ line_item.selling_plan_allocation.selling_plan.name }}
+                                </span>
+                              </div>
+                            {%- endif -%}
+                            {%- if line_item.original_line_price != line_item.final_line_price -%}
+                              <ul class="ls-none subtext hide-empty">
+                                {%- for discount in line_item.discounts -%}
+                                  <li class="cart-item__discounted d-grid middle-xs">
+                                    <span class="discounted-icon icon icon--small mr-8 fs-0">
+                                      {% render 'icon-voucher', size: 16 %}
+                                    </span>
+                                    <span>
+                                      {{ discount.title }}
+                                      (
+                                      {{- discount.savings | money -}}
+                                      )
+                                    </span>
+                                  </li>
+                                {%- endfor -%}
+                              </ul>
+                            {%- endif -%}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="cart-item__quantity padding--start ml-12 mt-16 m-zero-md">
+                        <div class="d-flex middle-xs">
+                          <label class="visually-hidden" for="quantity-{{ line_item.index | plus: 1 }}">
+                            {{ 'products.product.quantity.label' | t }}
+                          </label>
+                          <sht-qty-inp class="field_quantity d-inline-flex middle-xs center-xs btn-small mr-8">
+                            <button class="js-quantity-btn js-quantity-btn-minus icon--small btn btn-icon btn-plain no-js-hidden" name="minus" data-name="minus" type="button" aria-label="{{ 'accessibility.minus' | t }}">
+                              {{ icon_minus }}
+                            </button>
+                            <input
+                              class="js-quantity-input input-number icon--small b-zero ta-center"
+                              type="number"
+                              name="updates[]"
+                              value="{{ line_item.quantity }}"
+                              data-cart-quantity="{{ cart | item_count_for_variant: line_item.variant.id }}"
+                              min="0"
+                              aria-label="{{ 'products.product.quantity.input_label' | t: product: line_item.product.title | escape }}"
+                              id="quantity-{{ line_item.index | plus: 1 }}"
+                              data-index="{{ line_item.index | plus: 1 }}"
+                              data-variant-id="{{ line_item.variant.id }}"
+                            >
+                            <button class="js-quantity-btn js-quantity-btn-plus icon--small btn btn-icon btn-plain no-js-hidden" name="plus" data-name="plus" type="button" aria-label="{{ 'accessibility.plus' | t }}">
+                              {{ icon_plus }}
+                            </button>
+                          </sht-qty-inp>
+                          <sht-cart-rmv-btn data-index="{{ line_item.index | plus: 1 }}" data-variant-id="{{ line_item.variant.id }}">
+                            <a href="{{ line_item.url_to_remove }}" class="btn btn-icon btn-secondary icon--small bg-transparent b-zero d-inline-flex middle-xs center-xs" aria-label="{{ 'accessibility.delete' | t }}">
+                              {{ icon_remove }}
+                            </a>
+                          </sht-cart-rmv-btn>
+                        </div>
+                        <div class="d-none-important d-flex mt-16 center-cs middle-xs" id="line-item-error-{{ line_item.index | plus: 1 }}" role="alert">
+                          <div class="icon icon--small icon--error fs-0 mr-8">
+                            {% render 'icon-error', size: 16 %}
+                          </div>
+                          <small class="js-cart-form-item-error-message"></small>
+                        </div>
+                      </div>
+                      <div class="cart-item__price ta-right">
+                        <div class="wb-break-word d-flex fd-column">
+                          {%- if line_item.original_line_price != line_item.final_line_price -%}
+                            <div class="cart-item__discounted-prices">
+                              <span class="visually-hidden">
+                                {{ 'products.product.price.sale_price' | t }}
+                              </span>
+                              <span class="d-block fw-400 mb-4">
+                                {{ line_item.final_line_price | money_with_currency }}
+                              </span>
+                              <span class="visually-hidden">
+                                {{ 'products.product.price.regular_price' | t }}
+                              </span>
+                              <s class="color-light subtext">
+                                {{ line_item.original_line_price | money_with_currency }}
+                              </s>
+                            </div>
+                          {%- else -%}
+                            <span class="d-block fw-400">
+                              {{ line_item.original_line_price | money_with_currency }}
+                            </span>
+                            {% if line_item.variant.compare_at_price > line_item.variant.price %}
+                                <s class="color-light subtext d-block"> {{ line_item.variant.compare_at_price | times: line_item.quantity | money_with_currency }} </s>
+                              {% endif %}
+                          {%- endif -%}
+                        </div>
+                      </div>
+                    </div>
+                  {% endunless %}
+                  {% endfor %}
+                </div>
+                {%- assign has_preorder = false -%}
+                {%- for line_item in cart.items -%}
+                  {%- if line_item.product.tags contains "Pre-Order-Item" -%}
+                    {%- assign has_preorder = true -%}
+                    {%- break -%}
+                  {%- endif -%}
+                {%- endfor -%}
+
+                {%- assign all_preorder = true -%}
+                {%- for line_item in cart.items -%}
+                  {%- unless line_item.product.tags contains "Pre-Order-Item" or line_item.product.title == "Shipping Charge" -%}
+                    {%- assign all_preorder = false -%}
+                    {%- break -%}
+                  {%- endunless -%}
+                {%- endfor -%}
+
+
+  <input type="hidden" id="noteDetails"       name="attributes[note details]"   value="{{ cart.attributes['note details'] }}">
+  <input type="hidden" id="attr-delivery-date" name="attributes[Delivery Date]"  value="{{ cart.attributes['Delivery Date'] }}">
+  <input type="hidden" id="attr-delivery-time" name="attributes[Delivery Time]"  value="{{ cart.attributes['Delivery Time'] }}">
+  <input type="hidden" id="attr-emirates"      name="attributes[Emirates]"       value="{{ cart.attributes['Emirates'] }}">
+  <input type="hidden" id="attr-address"       name="attributes[Address]"        value="{{ cart.attributes['Address'] }}">
+  <input type="hidden" id="attr-order-note"    name="attributes[Order Note]"     value="{{ cart.attributes['Order Note'] }}">
+       {% if has_preorder %}              
+        <hr style="border: 1px solid #ffcdcd;">
+          <div class="cart-items d-grid r-gap-32 r-gap-md-36">
+            <h3 class="h3  m-zero cart-heading preorderItem">Pre Order Items</h3>
+            <p>( Pre-order items will be delivered in 2 business days. In case of full delivery, the full order will be shipped after 2 business days. )</p>
+              
+            <div class="delivery-type-selector mb-16">
+              {% if localization.language.iso_code == "ar" %}
+                <label for="deliveryType"><strong>اختر نوع التوصيل</strong></label>
+              {% else %}
+                <label for="deliveryType"><strong>Select Delivery Type:</strong></label>
+              {% endif %}
+              <select id="deliveryType" name="attributes[Delivery Type]" class="input-select-delivery-type">
+                {% if all_preorder %}
+                  <option value="Full Delivery" selected> {% if localization.language.iso_code == "ar" %} توصيل كامل {%else%}Full Delivery{%endif%}</option>
+                {% else %}
+                  <option value="Full Delivery" selected>{% if localization.language.iso_code == "ar" %}توصيل كامل {%else%}Full Delivery{%endif%}</option>
+                  <option value="Partial Delivery">{% if localization.language.iso_code == "ar" %}توصيل جزئي {%else%}Partial Delivery{%endif%} </option>
+                {% endif %}
+              </select>
+            </div>
+
+
+            {% for line_item in cart.items %}
+              {% if line_item.product.tags contains "Pre-Order-Item" %}
+                <div class="cart-item d-grid middle-md lagu" id="cartItem-{{ line_item.index | plus: 1 }}">
+                  <div class="cart-item__product d-grid start-md mr-12 m-zero-md gap-12 top-xs gap-md-24">
+                    <div class="cart-item__image p-relative o-hidden corner-radius-xs">
+                      {%- liquid
+                        assign media = 'image' | placeholder_svg_tag: 'placeholder js-image-lazy'
+                        assign media = line_item.image | image_url: width: 300 | image_tag: widths: '300', sizes: '100vw', alt: line_item.product.title, class: 'media w-100 h-100 of-cover'
+                      %}
+                      {% render 'image', image_item: media, image_classes: 'corner-radius-xs' %}
+                    </div>
+                    <div class="wb-break-word">
+                      {% if settings.enable_cart_product_vendor %}
+                        <p class="subtext color-light mb-8">
+                          {{ line_item.product.vendor }}
+                        </p>
+                      {% endif %}
+                      <a href="{{ line_item.url }}" class="fw-700 card__heading mb-8 d-block">{{ line_item.product.title | escape }}</a>
+                      {%- if line_item.product.has_only_default_variant == false or line_item.properties.size != 0 or line_item.selling_plan_allocation != null -%}
+                        <dl class="m-zero subtext color-light wb-break-word hide-empty">
+                          {%- if line_item.product.has_only_default_variant == false -%}
+                            <div class="product-option">
+                              <span>
+                                {%- liquid
+                                  assign options_names = ''
+                                  for option in line_item.options_with_values
+                                        assign options_names = options_names | append: ', ' | append: option.value
+                                      endfor
+                                      echo  options_names | replace_first: ', ', ''
+                                    -%}
+                                    </span>
+                                </div>
+                              {%- endif -%}
+                              {%- for property in line_item.properties -%}
+                                {%- assign property_first_char = property.first | slice: 0 -%}
+                                {%- if property.last != blank and property_first_char != '_' -%}
+                                  <div class="product-option">
+                                    <p>{{ property.first }}:
+                                      {%- if property.last contains '/uploads/' -%}
+                                        <a href="{{ property.last }}" class="link" target="_blank">
+                                          {{ property.last | split: '/' | last }}
+                                        </a>
+                                      {% else %}
+                                        {{ property.last }}
+                                      {% endif %}
+                                    </p>
+                                  </div>
+                                {%- endif -%}
+                              {%- endfor -%}
+                            </dl>
+                          {%- endif -%}
+                          {%- if line_item.variant.available and line_item.unit_price_measurement -%}
+                            <div class="color-light subtext mt-8">
+                              <span class="visually-hidden">{{ 'products.product.price.unit_price' | t }}</span>
+                              {{ line_item.variant.unit_price | money }}
+                              <span aria-hidden="true">/</span>
+                              <span class="visually-hidden">&nbsp;{{ 'accessibility.unit_price_separator' | t }}&nbsp;</span>
+                              {%- if line_item.variant.unit_price_measurement.reference_value != 1 -%}
+                                {{- line_item.variant.unit_price_measurement.reference_value -}}
+                              {%- endif -%}
+                              {{ line_item.variant.unit_price_measurement.reference_unit }}
+                            </div>
+                          {%- endif -%}
+                          <div class="cart-item__sale d-flex fd-column gap-12 hide-empty mt-16">
+                            {%- if line_item.selling_plan_allocation != nil -%}
+                              <div class="cart-item__discounted subtext hide-empty d-flex middle-xs">
+                                <span class="discounted-icon icon icon--small mr-8 fs-0">
+                                  {% render 'icon-subscription', size: 16 %}
+                                </span>
+                                <span>
+                                  {{ line_item.selling_plan_allocation.selling_plan.name }}
+                                </span>
+                              </div>
+                            {%- endif -%}
+                            {%- if line_item.original_line_price != line_item.final_line_price -%}
+                              <ul class="ls-none subtext hide-empty">
+                                {%- for discount in line_item.discounts -%}
+                                  <li class="cart-item__discounted d-grid middle-xs">
+                                    <span class="discounted-icon icon icon--small mr-8 fs-0">
+                                      {% render 'icon-voucher', size: 16 %}
+                                    </span>
+                                    <span>
+                                      {{ discount.title }}
+                                      (
+                                      {{- discount.savings | money -}}
+                                      )
+                                    </span>
+                                  </li>
+                                {%- endfor -%}
+                              </ul>
+                            {%- endif -%}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="cart-item__quantity padding--start ml-12 mt-16 m-zero-md">
+                        <div class="d-flex middle-xs">
+                          <label class="visually-hidden" for="quantity-{{ line_item.index | plus: 1 }}">
+                            {{ 'products.product.quantity.label' | t }}
+                          </label>
+                          <sht-qty-inp class="field_quantity d-inline-flex middle-xs center-xs btn-small mr-8">
+                            <button class="js-quantity-btn js-quantity-btn-minus icon--small btn btn-icon btn-plain no-js-hidden" name="minus" data-name="minus" type="button" aria-label="{{ 'accessibility.minus' | t }}">
+                              {{ icon_minus }}
+                            </button>
+                            <input
+                              class="js-quantity-input input-number icon--small b-zero ta-center"
+                              type="number"
+                              name="updates[]"
+                              value="{{ line_item.quantity }}"
+                              data-cart-quantity="{{ cart | item_count_for_variant: line_item.variant.id }}"
+                              min="0"
+                              aria-label="{{ 'products.product.quantity.input_label' | t: product: line_item.product.title | escape }}"
+                              id="quantity-{{ line_item.index | plus: 1 }}"
+                              data-index="{{ line_item.index | plus: 1 }}"
+                              data-variant-id="{{ line_item.variant.id }}"
+                            >
+                            <button class="js-quantity-btn js-quantity-btn-plus icon--small btn btn-icon btn-plain no-js-hidden" name="plus" data-name="plus" type="button" aria-label="{{ 'accessibility.plus' | t }}">
+                              {{ icon_plus }}
+                            </button>
+                          </sht-qty-inp>
+                          <sht-cart-rmv-btn data-index="{{ line_item.index | plus: 1 }}" data-variant-id="{{ line_item.variant.id }}">
+                            <a href="{{ line_item.url_to_remove }}" class="btn btn-icon btn-secondary icon--small bg-transparent b-zero d-inline-flex middle-xs center-xs" aria-label="{{ 'accessibility.delete' | t }}">
+                              {{ icon_remove }}
+                            </a>
+                          </sht-cart-rmv-btn>
+                        </div>
+                        <div class="d-none-important d-flex mt-16 center-cs middle-xs" id="line-item-error-{{ line_item.index | plus: 1 }}" role="alert">
+                          <div class="icon icon--small icon--error fs-0 mr-8">
+                            {% render 'icon-error', size: 16 %}
+                          </div>
+                          <small class="js-cart-form-item-error-message"></small>
+                        </div>
+                      </div>
+                      <div class="cart-item__price ta-right">
+                        <div class="wb-break-word d-flex fd-column">
+                          {%- if line_item.original_line_price != line_item.final_line_price -%}
+                            <div class="cart-item__discounted-prices">
+                              <span class="visually-hidden">
+                                {{ 'products.product.price.sale_price' | t }}
+                              </span>
+                              <span class="d-block fw-400 mb-4">
+                                {{ line_item.final_line_price | money_with_currency }}
+                              </span>
+                              <span class="visually-hidden">
+                                {{ 'products.product.price.regular_price' | t }}
+                              </span>
+                              <s class="color-light subtext">
+                                {{ line_item.original_line_price | money_with_currency }}
+                              </s>
+                            </div>
+                          {%- else -%}
+                            <span class="d-block fw-400">
+                              {{ line_item.original_line_price | money_with_currency }}
+                            </span>
+                            {% if line_item.variant.compare_at_price > line_item.variant.price %}
+                                <s class="color-light subtext d-block"> {{ line_item.variant.compare_at_price | times: line_item.quantity | money_with_currency }} </s>
+                              {% endif %}
+                          {%- endif -%}
+                        </div>
+                      </div>
+                    </div>
+                  {% endif %}
+                  {% endfor %}
+                </div>
+      {% endif %}
+                
+   {%- endif -%}
+              {% if settings.enable_cart_order_notes and cart != empty %}
+                <div class="cart__note mt-4x">
+                  <details>
+                    <summary class="d-inline-block ls-none">
+                      <span class="btn btn-link btn-small note-text">✎ 
+                        {{ 'general.cart.cart_note_title' | t }}
+                      </span>
+                      <textarea id="cartNoteDummy" class="textarea field__text field--focus field--hover w-100 mt-12" name="note-dummy" placeholder="{{ 'general.cart.cart_note_placeholder' | t }}" rows="4"></textarea>
+                    </summary>
+                    <sht-cart-note>
+                      <label class="visually-hidden" for="cartNote">{{ 'general.cart.cart_note_title' | t }}</label>
+                      <textarea id="cartNote" class="textarea field__text field--focus field--hover w-100 mt-12" form="cartForm" name="note" placeholder="{{ 'general.cart.cart_note_placeholder' | t }}" rows="4" hidden>{{ cart.note }}</textarea>
+                    </sht-cart-note>
+                  </details>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+          <div class="js-cart-form-footer clm{% if cart == empty %} d-none{% endif %}" style="--w-xs: 12; --w-md:4; ">
+
+            <!-- Two-Tier Progress Bar: Checkout Minimum (30 AED) + Free Shipping -->
+            {% if settings.enable_free_shipping_bar %}
+              {%- assign checkout_minimum = 3000 -%}
+              {%- assign free_shipping_threshold = settings.free_shipping_threshold | times: 100 -%}
+              {%- assign cart_total = 0 -%}
+              {%- for item in cart.items -%}
+                {%- unless item.product.handle == 'shipping-charges' -%}
+                  {%- assign cart_total = cart_total | plus: item.final_line_price -%}
+                {%- endunless -%}
+              {%- endfor -%}
+              
+              <div class="free-shipping-bar-wrapper free-shipping-desktop" data-threshold="{{ free_shipping_threshold }}" data-checkout-minimum="{{ checkout_minimum }}">
+                <div class="free-shipping-message">
+                  {% if cart_total < checkout_minimum %}
+                    {%- assign remaining_checkout = checkout_minimum | minus: cart_total -%}
+                    {%- assign progress_percentage = cart_total | times: 100 | divided_by: checkout_minimum -%}
+                    <span class="free-shipping-progress-text checkout-progress-text">
+                      <span class="free-shipping-icon-block">  
+                        <svg class="free-shipping-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <circle cx="9" cy="21" r="1"></circle>
+                          <circle cx="20" cy="21" r="1"></circle>
+                          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                      </span>  
+                      {%- assign remaining_checkout_aed = remaining_checkout | money_without_currency -%}
+                      Add {{ remaining_checkout_aed }} AED more to <span class="free-shipping-highlight">enable checkout!</span>
+                    </span>
+                  {% elsif cart_total >= free_shipping_threshold %}
+                    {%- assign progress_percentage = 100 -%}
+                    <span class="free-shipping-success">
+                      <span class="free-shipping-icon-block">  
+                        <svg class="free-shipping-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                      </span>
+                      {{ settings.free_shipping_message_success }}
+                    </span>
+                  {% else %}
+                    {%- assign remaining_amount = free_shipping_threshold | minus: cart_total -%}
+                    {%- assign shipping_progress_range = free_shipping_threshold | minus: checkout_minimum -%}
+                    {%- assign cart_above_minimum = cart_total | minus: checkout_minimum -%}
+                    {%- assign progress_percentage = cart_above_minimum | times: 100 | divided_by: shipping_progress_range -%}
+                    {%- if progress_percentage > 100 -%}
+                      {%- assign progress_percentage = 100 -%}
+                    {%- endif -%}
+                    <span class="free-shipping-progress-text">
+                      <span class="free-shipping-icon-block">  
+                        <svg class="free-shipping-icon" width="21" height="17" viewBox="0 0 21 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M13.1104 0C14.5593 0 15.7325 1.17322 15.7325 2.62209V3.81394H16.3433C17.2483 3.81394 18.0882 4.27951 18.5687 5.04675L19.9561 7.26847C20.3118 7.83646 20.4999 8.49384 20.4999 9.16242V12.1569C20.4999 13.6058 19.3267 14.779 17.8778 14.779H17.5407C17.2297 15.8796 16.2167 16.686 15.0173 16.686C13.818 16.686 12.805 15.8796 12.4939 14.779H9.91281C9.60181 15.8796 8.58875 16.686 7.38941 16.686C6.19007 16.686 5.17704 15.8796 4.86601 14.779H3.57547C3.18067 14.779 2.86035 14.4587 2.86035 14.0639C2.86035 13.6691 3.18067 13.3488 3.57547 13.3488H4.86601C5.17701 12.2482 6.19007 11.4418 7.38941 11.4418C8.58875 11.4418 9.60178 12.2482 9.91281 13.3488H12.4939C12.7416 12.4754 13.4288 11.7882 14.3022 11.5405V2.62209C14.3022 1.9647 13.7677 1.43023 13.1104 1.43023H3.57551C3.18071 1.43023 2.8604 1.10991 2.8604 0.715114C2.8604 0.320314 3.18071 0 3.57551 0H13.1104ZM7.38947 12.8721C6.73209 12.8721 6.19761 13.4065 6.19761 14.0639C6.19761 14.7213 6.73209 15.2558 7.38947 15.2558C8.04685 15.2558 8.58133 14.7213 8.58133 14.0639C8.58133 13.4065 8.04685 12.8721 7.38947 12.8721ZM15.0174 12.8721C14.36 12.8721 13.8255 13.4065 13.8255 14.0639C13.8255 14.7213 14.36 15.2558 15.0174 15.2558C15.6747 15.2558 16.2092 14.7213 16.2092 14.0639C16.2092 13.4065 15.6747 12.8721 15.0174 12.8721ZM15.7325 11.5405C16.6059 11.7882 17.293 12.4754 17.5408 13.3488H17.8778C18.5352 13.3488 19.0697 12.8143 19.0697 12.1569V9.16242C19.0697 8.76204 18.9561 8.36722 18.7438 8.02644L17.3545 5.80472C17.1366 5.45648 16.7549 5.24417 16.3433 5.24417H15.7325L15.7325 11.5405Z" fill="white"/>
+                        <path d="M4.52918 7.62793C4.92398 7.62793 5.2443 7.94824 5.2443 8.34304C5.2443 8.73784 4.92398 9.05816 4.52918 9.05816H1.66873C1.27393 9.05816 0.953613 8.73784 0.953613 8.34304C0.953613 7.94824 1.27393 7.62793 1.66873 7.62793H4.52918Z" fill="white"/>
+                        <path d="M4.52906 3.81396C4.92386 3.81396 5.24417 4.13428 5.24417 4.52908C5.24417 4.92388 4.92386 5.24419 4.52906 5.24419H0.715114C0.320314 5.24419 0 4.92388 0 4.52908C0 4.13428 0.320314 3.81396 0.715114 3.81396H4.52906Z" fill="white"/>
+                        </svg>
+                      </span>  
+                      {%- assign remaining_aed = remaining_amount | money_without_currency -%}
+                      Add {{ remaining_aed }} AED more for <span class="free-shipping-highlight">FREE shipping!</span>
+                    </span>
+                  {% endif %}
+                </div>
+                <div class="free-shipping-progress-bar">
+                  <div class="free-shipping-progress-fill" style="width: {{ progress_percentage }}%;"></div>
+                </div>
+              </div>
+
+
+            {% endif %}
+
+            <!-- if the user is signed in the show this block  -->
+            {% if customer %}
+              {%- comment -%} Calculate cart total excluding shipping-charges for timeslot button {%- endcomment -%}
+              {%- assign cart_total_for_timeslot = 0 -%}
+              {%- for item in cart.items -%}
+                {%- unless item.product.handle == 'shipping-charges' -%}
+                  {%- assign cart_total_for_timeslot = cart_total_for_timeslot | plus: item.final_line_price -%}
+                {%- endunless -%}
+              {%- endfor -%}
+              
+              <div class="cartAddress">
+                {% render 'cart-address' %}
+              </div>
+              {% if localization.language.iso_code == "ar" %}
+               <p id="timeslot-chooser-text">حجز موعد التوصيل</p>
+              {% else %}
+               <p id="timeslot-chooser-text" >Book Delivery Slot</p>
+              {% endif %}
+
+              <div class="timeslot-chooser">
+              <div>
+              <p><b>{% if localization.language.iso_code == "ar" %}الموقع :{% else %}Emirates :{% endif %} </b><span id="location-view-ld"></span></p>
+              <p><b>{% if localization.language.iso_code == "ar" %}التاريخ :{% else %}Date :{% endif %} </b><span id="date-view-ld">{% if localization.language.iso_code == "ar" %}لم يتم التحديد{% else %}Not Selected{% endif %}</span></p>
+              <p><b>{% if localization.language.iso_code == "ar" %}وقت التوصيل :{% else %}Time-Slot :{% endif %} </b><span id="timeslot-view-ld">{% if localization.language.iso_code == "ar" %}لم يتم التحديد{% else %}Not Selected{% endif %}</span></p>
+
+              <br>
+            </div>
+            {% if localization.language.iso_code == "ar" %}
+              <label for="modal-toggle" class="open-modal-btn{% if cart_total_for_timeslot < 3000 %} empty-address{% endif %} {% if customer.addresses.size == 0 %} empty-address{% endif %}{% if non_deliverable %} non_deliverable-address{% endif %}">اختر وقت التوصيل</label>
+            {% else %}
+              <label for="modal-toggle" class="open-modal-btn{% if cart_total_for_timeslot < 3000 %} empty-address{% endif %}{% if customer.addresses.size == 0 %} empty-address{% endif %}{% if non_deliverable %} non_deliverable-address{% endif %}">Change Time Slot > </label>
+            {% endif %}
+
+            <input type="checkbox" id="modal-toggle" class="modal-toggle" />
+            </div>
+           {% endif %}   
+
+            <div class="cart-amount crt-amt-sibling color-{{ section.settings.color_scheme_card }} background corner-radius-s  p-sticky top-0 js-cart-form-content-cart-total ml-md-16 ml-xl-20">
+              <div class="hide-empty mb-16">
+                {%- if cart.cart_level_discount_applications.size > 0 -%}
+                  <ul class="ls-none cart__discounted" role="list" aria-label="{{ 'customer.order.discount' | t }}">
+                    {%- for discount in cart.cart_level_discount_applications -%}
+                      <li class="d-flex middle-xs between-xs">
+                        <div class="d-flex middle-xs">
+                          <span class="discounted-icon icon icon--small mr-8 fs-0">
+                            {% render 'icon-voucher', size: 16 %}
+                          </span>
+                          <span class="subtext">{{ discount.title }}</span>
+                        </div>
+                        <span class="h6 m-zero fw-700">-{{ discount.total_allocated_amount | money_with_currency }}</span>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                {%- endif -%}
+              </div>
+
+              {% assign vat_rate = 0.05 %}
+              {% assign vat_amount = cart.total_price | times: vat_rate | round %}
+
+
+
+
+                            
+              <div style="border: 2px solid #ccc; padding: 7px; margin-bottom: 10px; border-radius:7px">
+                
+                <!-- Subtotal -->
+                <div class="d-flex middle-xs between-xs mb-10 total-block">
+                  <h2 class="h5 m-zero" style="margin-left: 2px;">Subtotal</h2>
+                  <p class="m-zero h5 ta-right">{{ cart.total_price | money_with_currency }}</p>
+                </div>
+
+                <!-- Grand Total -->
+                <div class="d-flex middle-xs between-xs mb-10 total-block">
+                  <div>
+                    <h2 class="h5 m-zero" style="margin-left: 2px;">Grand Total</h2>
+                    <span style="font-size: 10px; display: block; margin-left: 2px;">(Inc Vat)</span>
+                  </div>
+                  <p class="m-zero h5 ta-right">{{ cart.total_price | money_with_currency }}</p>
+                </div>
+
+                <!-- Included VAT -->
+                <div class="d-flex middle-xs between-xs mb-10 total-block">
+                  <p class="m-zero" style="margin-left: 2px;">VAT</p>
+                  <p class="m-zero ta-right">{{ vat_amount | money_with_currency }}</p>
+                </div>
+              </div>
+
+              {% if customer %}
+                <div class="mt-4">
+                  {% if localization.language.iso_code == "ar" %}
+                    <p style="
+                        text-align: center;
+                        margin: 1em 0;
+                    ">تحقّق من تفاصيل التوصيل قبل إتمام عملية الدفع</p>
+                  {% else %}
+                    <p style="
+                        text-align: center;
+                        margin: 1em 0;
+                    ">Verify delivery details are correct before checkout</p>
+                  {% endif %}
+
+                </div>
+              {% endif %}         
+              
+              
+                {% if customer %}
+            {%- comment -%} Calculate cart total excluding shipping-charges product {%- endcomment -%}
+            {%- assign cart_total_excl_shipping = 0 -%}
+            {%- for item in cart.items -%}
+              {%- unless item.product.handle == 'shipping-charges' -%}
+                {%- assign cart_total_excl_shipping = cart_total_excl_shipping | plus: item.final_line_price -%}
+              {%- endunless -%}
+            {%- endfor -%}
+            
+            {% if cart_total_excl_shipping >= 3000 %}
+            <div class="w-100">
+            <div class="cart__checkout mb-12">
+                  <!-- <noscript>
+                    <button type="submit" class="mb-8 w-100 btn btn-secondary btn-large" form="cartForm">
+                      {{ 'sections.cart.update' | t }}
+                    </button>
+                  </noscript> -->
+
+            <p id="checkoutButtonError" style="color: red;"></p>
+            <!-- new code 20mar-->
+            <div class="checkout-btn-container-ctrl">
+                  <button
+                    type="submit"
+                    class="w-100 btn btn-primary btn-large checkout-button-ctrl"
+                    name="checkout"
+                    form="cartForm"
+                 {% if cart == empty %}
+                      disabled
+                    {% endif %}
+                    {% if customer == nil or customer.default_address.phone == blank or customer.addresses.size == 0  %}
+                      disabled
+                    {% endif %}
+                  >
+                        {{ 'sections.cart.checkout' | t }}
+                  </button>
+                   {% if cart.item_count > 0 %}
+                      <div id="wk_pay_wallet" class="wk_pay_wallet oncartpage" customer_id="{{ customer.id }}" customer_email="{{ customer.email }}" style="display:none"></div>
+               {% endif %}
+
+                    <div class="subscription-message" style="display:none;">
+                      Subscription products are only available for delivery in Dubai
+                    </div>
+                    <div class="non_deliverable-message" style="display:none;">
+                      Subscription products are only available for delivery in Dubai
+                    </div>
+
+                    <div class="timeslot-message">
+                      {% if customer.addresses.size < 1  %}
+                        No address added, please add an address to proceed!
+                      {% else  %}
+                        {% if customer.default_address.phone == blank %}
+                          Oops no Phone number is found ⚠️ 
+                        {% else  %}
+                            Please choose a timeslot, before checkout!
+                        {% endif %}
+                      {% endif %}
+                    </div>
+      
+                  </div>
+
+                  {%- if additional_checkout_buttons and settings.cart_enable_dynamic_checkout_button -%}
+                    <div class="mt-8 w-100">
+                      {{ content_for_additional_checkout_buttons }}
+                    </div>
+                  {%- endif -%}
+                </div>
+                <p class="ta-center m-zero">
+                  <a href="{{ routes.all_products_collection_url }}" class="btn btn-large text-decoration-underline w-100" style="
+                    color: #3866df;">
+                    {{ 'general.cart.continue_shopping' | t }}
+                  </a>
+                </p>
+                <div class="js-cart-form-errors"></div>
+              </div>
+            {% endif %}
+                  
+                {% else %}
+                    {%- comment -%} Calculate cart total excluding shipping-charges for guest users {%- endcomment -%}
+                    {%- assign cart_total_guest = 0 -%}
+                    {%- for item in cart.items -%}
+                      {%- unless item.product.handle == 'shipping-charges' -%}
+                        {%- assign cart_total_guest = cart_total_guest | plus: item.final_line_price -%}
+                      {%- endunless -%}
+                    {%- endfor -%}
+                    
+                    {% if cart_total_guest >= 3000 %}
+                    <div>
+                       <p style="
+                            text-align: center;
+                       ">You need to sign in to continue with checkout.</p>
+                       <a href="{{ routes.account_login_url }}#cart_login" class="btn btn-large btn-primary w-100" style="
+                          background: #3866df;
+                      ">Sign In</a>
+                    </div>
+                    {% endif %}
+                {% endif %}
+           
+            </div>
+          </div>
+        </div>
+      </form>
+    </sht-cart-frm>
+  </div>
+</div>
+{%- liquid
+  assign files = "component-cart.js" | split: ', '
+  render 'js-loader', files: files
+-%}
+{% render 'cart-address-popup' %}
+
+ {% render 'cart-change-address-popup' %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    revalidateCartAddress();
+  });
+
+  window.addEventListener("pageshow", function () {
+    revalidateCartAddress();
+  });
+
+  function revalidateCartAddress(e) {
+    const checkoutBtn = document.querySelector(".checkout-btn-container-ctrl");
+    let deliveryDateTime = $('#local_delivery').val() || '';
+    let cartNoteVal = $('#cartNoteDummy').val() || '';
+    let selectedAddress = $("input[name='shipping_address']:checked");
+
+    if (selectedAddress.length > 0) {
+      let selectedAddressProvince = selectedAddress.attr('data-province');
+      let phoneNumber = selectedAddress.attr('data-phone');
+
+      // Validate phone number first
+      if (!phoneNumber || phoneNumber.trim() === '' || phoneNumber === 'null' || phoneNumber === 'undefined') {
+        console.warn('Revalidation: Phone number is missing');
+        checkoutBtn.setAttribute("disabled", true);
+        $('#checkoutButtonError').text('⚠️ Phone number is missing in your address. Please update your address with a valid phone number.');
+        $('#checkoutButtonError').css({
+          'color': 'red',
+          'font-weight': '500',
+          'display': 'block'
+        });
+        return;
+      }
+
+      if (selectedAddressProvince) {
+        let address = `
+          Name: ${selectedAddress.attr("data-name")}
+          Address: ${selectedAddress.attr("data-address1")}${selectedAddress.attr("data-address2") ? ', ' + selectedAddress.attr("data-address2") : ''}
+          City: ${selectedAddress.attr("data-city")}
+          Country: ${selectedAddress.attr("data-country")}
+          Province: ${selectedAddress.attr("data-province")}
+          Phone: ${phoneNumber}
+          Email: ${selectedAddress.attr("data-email")}
+          Timeslot: ${deliveryDateTime}
+        `.trim();
+
+        let cartNotemain = 'Cart Note: ' + cartNoteVal + '\n' + address;
+
+        $('#cartNote').val(cartNotemain);
+
+        console.log("Selected Address:", address);
+        console.log("Final Cart Note:", cartNotemain);
+
+        // enable checkout
+        checkoutBtn.removeAttribute("disabled");
+        $('#checkoutButtonError').text('');
+        return;
+      }
+    }
+
+    // if no valid address → block checkout
+    if (e) e.preventDefault();
+    checkoutBtn.setAttribute("disabled", true);
+    $('#checkoutButtonError').text('Please add a new valid address');
+  }
+
+</script>
+{% schema %}
+{
+  "name": "t:sections.main_cart.name",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:general.settings.headers.header_general.content"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:general.settings.color_scheme.label",
+      "default": "scheme-3"
+    },
+    {
+      "type": "select",
+      "label": "t:general.settings.heading_size.label",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "headline",
+          "label": "t:general.settings.heading_size.options.headline.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:general.settings.heading_size.options.h1.label"
+        },
+        {
+          "value": "h2",
+          "label": "t:general.settings.heading_size.options.h2.label"
+        },
+        {
+          "value": "h3",
+          "label": "t:general.settings.heading_size.options.h3.label"
+        }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "header",
+      "content": "t:general.settings.headers.header_checkout_cart.content"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme_card",
+      "label": "t:general.settings.card_color_scheme.label",
+      "default": "scheme-1"
+    }
+  ]
+}
+{% endschema %}
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const lang = document.documentElement.lang || "en"; // assumes <html lang="ar">
+    const label = document.querySelector(".ld_radio_delivery_label");
+
+    if (label && label.textContent.trim().includes("Choose your delivery")) {
+      if (lang === "ar") {
+        label.textContent = "اختر تاريخ ووقت التوصيل";
+      } else {
+        label.textContent = "Choose your delivery date and timeslot";
+      }
+    }
+  });
+
+</script>
+
+{% style %}
+  .table-border.active {
+    background: #3866df !important;
+    color: #f0f1f4;
+    border: none;
+}
+  .table-border.active label.ld_radio_delivery_label {
+        color: #f0f1f4;
+}
+  .cart-heading{
+    color:#db325e;
+  }
+  
+  .ld_radio_delivery_label{
+    font-size:15px;
+  }
+  
+  #order-delivery{
+    display:none;
+  }
+
+  #order-delivery.ld_place_right_side{
+    width:auto!important;
+  }
+
+ .main-cart .alert-checkout{
+    background: #db325e;
+    padding: 10px;
+    border: 1px solid #b12b4e;
+    border-radius: 5px;
+    color: #fff;
+  }
+  
+  @media (max-width: 768px) { /* Adjust breakpoint as needed */
+    .cart-heading {
+        margin-top: 10px;
+        color:#db325e;
+    }
+}
+
+ .cart-amount.ml-md-16{
+    margin-left:0!important;
+  }
+
+ .cart-item{
+        justify-content: space-between;
+  }
+  /* .back-to-shopping{
+    background: #000000;
+    display: block;
+    margin-top: 9px;
+    border-radius: 4px;
+    padding: 7px 10px;
+    width: fit-content;
+    color: #fff;
+  } */
+
+  .delivery-address {
+    margin-bottom: 10px;
+}
+
+  #datepicker , #local_delivery{
+        border: 1px solid #d9d9d9;
+    background: #fff;
+  }
+
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 4;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+    background-color: rgb(0 0 0 / 76%);
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    backdrop-filter: blur(2px);
+}
+
+.modal-content {
+     background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    width: 95%;
+    max-width: 600px;
+    position: relative;
+    margin: auto;
+ transform: translate(0, calc(50vh - 250px));
+}
+
+.close-btn {
+     position: absolute;
+    top: -38px;
+    right: 2px;
+    font-size: 25px;
+    font-weight: bold;
+    color: #ffffff;
+    cursor: pointer;
+    background: #db325e;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    border: 3px solid #fff;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+color: #db325e;
+    text-decoration: none;
+    background: #ddffff;
+  transition:0.3s;
+}
+
+
+.modal-toggle:checked  .modal {
+  display: flex; /* Show the modal when checkbox is checked */
+}
+
+.open-modal-btn {
+    display: block;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    width: 100%;
+    text-align: center;
+    font-weight: 500;
+    font-size: 14px;
+    background: #3866df;
+    color: #f0f1f4;
+}
+
+.open-modal-btn:hover {
+    background-color: #3866dfc4;
+  
+}
+
+
+
+  /*  newly added */
+
+.timeslot-chooser{
+    margin-bottom: 30px;
+    margin-top: 0px;
+    background: white;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+.timeslot-chooser  p{
+  display:flex;
+  justify-content:space-between;
+}
+#save-timeslot{
+    background: #171717;
+    color: #fff;
+    border: none;
+    width: auto;
+    padding: 10px 28px;
+    border-radius: 20px;
+    cursor:pointer;
+  }
+  
+#save-timeslot:hover{
+        background: #000000;
+  }
+.verify-text{
+  font-size:10px;
+}
+.subscription-message {
+  display:none;
+  padding: 6px;
+  width: max-content;
+  text-align: center;
+  font-size: 11px;
+  margin: 10px auto;
+  color: #ff0000;
+  font-weight: 700;
+}
+
+.timeslot-message {
+  display:none;
+    padding: 6px;
+    width: max-content;
+    text-align: center;
+    font-size: 14px;
+    margin: 10px auto;
+    color: #ff0000;
+    font-weight: 500;
+}
+
+  .highlight-bg{
+    background:#ff4f4f;
+  }
+/* .btn-link {
+    background: #febf62;
+    padding: 6px 0;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration: none;
+    padding: 0 15px;
+    color: #ffffff;
+    width: 100%;
+}
+.btn-link:hover {
+   background: #e1a143;
+   color: #ffffff!important; 
+} */
+  /* loader */
+
+   /* ---------------loader */
+#loading-message{
+  display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+    padding: 15px 15px;
+}  
+.loader {
+  width: 50px;
+  --b: 8px; 
+  aspect-ratio: 1;
+  border-radius: 50%;
+  padding: 1px;
+  background: conic-gradient(#0000 10%,#f03355) content-box;
+  -webkit-mask:
+    repeating-conic-gradient(#0000 0deg,#000 1deg 20deg,#0000 21deg 36deg),
+    radial-gradient(farthest-side,#0000 calc(100% - var(--b) - 1px),#000 calc(100% - var(--b)));
+  -webkit-mask-composite: destination-in;
+          mask-composite: intersect;
+  animation:l4 1s infinite steps(10);
+  
+}
+@keyframes l4 {to{transform: rotate(1turn)}}
+
+.ld-delivery-method td{
+  padding:12px!important;
+}
+.note-text{
+  color: #db325e;
+}
+.cart-item {
+  border-bottom: 1px solid #e1e1e1;
+  padding:14px;
+  
+}
+  .cart-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.total-block + .total-block {
+  margin-top: 12px; /* Adjust spacing as needed */
+}
+.text-decoration-underline {
+    text-decoration: underline;
+}
+
+  .input-select-delivery-type{
+        background: #f7f7fa;
+    border: 1px solid #ddd;
+    border-radius: 7px;
+    padding: 10px;
+    cursor:pointer;
+        background-image: url(//gulffruits.com/cdn/shop/t/53/assets/down-arrow.png?v=1672146…);
+    background-repeat: no-repeat;
+    background-position: right 0.5rem top 50%;
+    background-size: 10px auto;
+    width:150px;
+  }
+
+
+
+  [dir="rtl"] .input-select-delivery-type {
+        padding: 10px 20px 10px 20px;
+
+    background-position: left 0.5rem top 50%;
+    
+    }
+{% endstyle %}
+
+<!--  new scripts added  mar 20 -->
+{% comment %} <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> {% endcomment %}
+
+<!-- jQuery (MUST be first) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- jQuery UI CSS -->
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" />
+
+<!-- jQuery UI (MUST be after jQuery) -->
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+
+<!-- Your script (AFTER jQuery UI) -->
+
+<script>
+$(document).ready(function() {
+  $("#modal-toggle, .open-modal-btn").on("click", function(event) {
+    event.preventDefault(); 
+    $(".modal").show();
+    $("#order-delivery").css("diplay","block");
+  });
+
+  var modal = $('<div></div>').addClass('modal');
+  var modalContent = $('<div></div>').addClass('modal-content');
+  modalContent.append($('#order-delivery')); 
+  modal.append(modalContent);
+  $('body').append(modal);
+  
+  var closeBtn = $('<span></span>').addClass('close-btn').html('&times;'); 
+  var saveBtn = $('<button id="save-timeslot"></button>').addClass('save-btn').html('Save'); 
+  var subscriptionWarning = $('<p id="subscription-warning-timeslot"></p>').css({
+    'color': '#ff0000',
+    'font-size': '12px',
+    'font-weight': '700',
+    'text-align': 'center',
+    'margin-top': '10px',
+    'display': 'none'
+  }).html('Subscription products are only available for delivery in Dubai');
+    var non_deliverableWarning = $('<p id="non-deliverable-warning-timeslot"></p>').css({
+    'color': '#ff0000',
+    'font-size': '12px',
+    'font-weight': '700',
+    'text-align': 'center',
+    'margin-top': '10px',
+    'display': 'none'
+  }).html('Currently, our products are available for delivery only in Dubai and Abu Dhabi.');
+  modalContent.prepend(closeBtn); 
+  modalContent.append(saveBtn);
+  modalContent.append(subscriptionWarning); 
+  modalContent.append(non_deliverableWarning); 
+  
+  closeBtn.on('click', function() {
+    modal.hide();
+  }); 
+
+// -------------------------------------------
+  
+$("#save-timeslot").hide();
+
+$(window).on('load', function() {
+  $("#save-timeslot").show();
+  $("#save-timeslot").prop("disabled", true); // Initially disabled
+});
+
+// Disable checkout button on page load
+$(".checkout-button-ctrl").prop("disabled", true);
+
+const targetNode = document.querySelector("#local_delivery");
+const observer = new MutationObserver(() => {
+  const timeslotStr = $("#local_delivery").val();
+  let timeSlot = "";
+
+  if (timeslotStr && timeslotStr.includes("between")) {
+    timeSlot = timeslotStr.split("between")[1].trim();
+  }
+
+  // Enable save button only if a timeslot is selected
+  toggleSaveButton();
+
+  $('#save-timeslot').off('click').on('click', (e) => {
+    // Check subscription condition first
+    let hasSubscription = false;
+    if ($(".subscription_message").length > 0) {
+      hasSubscription = true;
+    }
+    let non_deliverable = false;
+    if ($(".non_deliverable_message").length > 0) {
+      non_deliverable = true;
+    }
+    
+    let selectedProvince = $('input[name="shipping_address"]:checked').attr('data-province');
+    let non_deliverable_selectedProvince = false;
+
+    if (selectedProvince === "Sharjah" || selectedProvince === "Ajman") {
+      non_deliverable_selectedProvince = true;
+    }
+
+
+    // Prevent default if subscription product and not Dubai
+    if (hasSubscription && selectedProvince && selectedProvince !== 'Dubai') {
+      $("#save-timeslot").prop("disabled", true);
+      $("#subscription-warning-timeslot").show();
+      e.preventDefault();
+      console.log('🚫 Cannot save timeslot: Subscription product only available in Dubai');
+      $(".subscription-message").show();
+      setTimeout(() => {
+        $(".subscription-message").hide();
+      }, 5000);
+      return false;
+    } else {
+      $("#subscription-warning-timeslot").hide();
+    }
+    
+    const datepickeNew = $("#datepicker").val();
+    const timeslotStrfinal = $("#local_delivery").val();
+    let timeSlotfinal = "";
+
+    console.log("hasSubscription:", hasSubscription);
+    if (timeslotStrfinal && timeslotStrfinal.includes("between")) {
+      timeSlotfinal = timeslotStrfinal.split("between")[1].trim();
+    }
+
+    // Enable checkout only if both date and timeslot are selected
+    if (datepickeNew && timeSlotfinal) {
+      $("#date-view-ld").text(datepickeNew); 
+      $("#timeslot-view-ld").text(timeSlotfinal); 
+
+      modal.hide();
+      
+      // Get the selected province for subscription check
+      let subscriptionDataCityMain = $('input[name="shipping_address"]:checked').attr('data-province');
+      let selectedPhone = $('input[name="shipping_address"]:checked').attr('data-phone');
+      
+      // Validate phone number
+      if (!selectedPhone || selectedPhone.trim() === '' || selectedPhone === 'null' || selectedPhone === 'undefined') {
+        console.warn('Phone number is missing in selected address');
+        document.querySelector('.checkout-button-ctrl').disabled = true;
+        $(".wk_pay_wallet.oncartpage").hide();
+        $("#checkoutButtonError").text('⚠️ Phone number is missing in your address. Please update your address.');
+        $("#checkoutButtonError").show();
+        return;
+      }
+      
+      // Check if this is a subscription product and not in Dubai
+      if (hasSubscription == true && subscriptionDataCityMain !== 'Dubai') {
+        console.log('Subscription product not available outside Dubai');
+        $(".checkout-button-ctrl").prop("disabled", true);
+        $(".wk_pay_wallet.oncartpage").hide();
+        $(".timeslot-message").hide();
+        $(".subscription-message").show();
+        $("#checkoutButtonError").text('').hide();
+      } else {
+        $(".checkout-button-ctrl").prop("disabled", false); // Enable checkout
+        $(".wk_pay_wallet.oncartpage").show();
+        $(".subscription-message").hide();
+        $("#checkoutButtonError").text('').hide();
+      }
+        $(".open-modal-btn").text("Change Time Slot >");
+
+        // Sync timeslot + address data to cart metafields
+        if (window.CartMetafields) {
+          window.CartMetafields.syncDeliveryData();
+        }
+    } else {
+      // Keep save and checkout buttons disabled
+      $(".checkout-button-ctrl").prop("disabled", true);
+      $("#save-timeslot").prop("disabled", true);
+    }
+  });
+});
+
+// Also watch for changes in datepicker or timeslot to enable Save button
+$(document).on('change', '#datepicker, #local_delivery', toggleSaveButton);
+
+// Function to enable/disable Save button based on selections
+function toggleSaveButton() {
+  const dateSelected = $("#datepicker").val();
+  const timeslotSelected = $("#local_delivery").val() && $("#local_delivery").val().includes("between");
+  
+  if (dateSelected && timeslotSelected) {
+    
+    // Check if subscription product and not Dubai
+    let hasSubscription = false;
+    if ($(".subscription_message").length > 0) {
+      hasSubscription = true;
+    }
+    
+    let selectedProvince = $('input[name="shipping_address"]:checked').attr('data-province');
+    
+    if (hasSubscription && selectedProvince && selectedProvince !== 'Dubai') {
+      $("#save-timeslot").prop("disabled", true);
+      $("#subscription-warning-timeslot").show();
+    } else {
+      $("#save-timeslot").prop("disabled", false);
+      $("#subscription-warning-timeslot").hide();
+    }
+  } else {
+    $("#save-timeslot").prop("disabled", true);
+    $("#subscription-warning-timeslot").hide();
+  }
+}
+
+
+// Observe attribute and value changes on the input
+observer.observe(targetNode, { attributes: true, childList: true, subtree: true });
+
+  //----------------------------------------
+  
+$(".checkout-btn-container-ctrl").on("click",()=>{
+  if ($(".checkout-button-ctrl").prop("disabled")) {
+    // Check subscription condition FIRST - highest priority
+    let hasSubscription = false;
+    if ($(".subscription_message").length > 0) {
+      hasSubscription = true;
+    }
+    
+    let selectedAddress = $("input[name='shipping_address']:checked");
+    let selectedAddressProvince = selectedAddress.attr('data-province');
+    
+    // If subscription product and not Dubai, show ONLY subscription error
+    if (hasSubscription && selectedAddressProvince && selectedAddressProvince !== 'Dubai') {
+      $(".subscription-message").show(); 
+      $(".timeslot-message").hide(); // Hide timeslot message
+      setTimeout(()=>{
+        $(".subscription-message").hide()  
+      }, 10000);
+      return; // Stop here, don't check other conditions
+    }
+    
+    // Only check timeslot/address if subscription condition is OK
+    let deliveryDateTime = $('#local_delivery').val();
+
+    if (selectedAddress.length > 0 && selectedAddressProvince) {
+      let phoneNumber = selectedAddress.attr("data-phone");
+        if (!phoneNumber || phoneNumber.trim() === '' || phoneNumber === 'null' || phoneNumber === 'undefined') {
+            $('.timeslot-message').text('Oops no Phone number is found ⚠️ ');
+          }
+          else {
+            $('.timeslot-message').text('Please choose a timeslot, before checkout!'); 
+          }
+      let Timeslot = deliveryDateTime;
+      if (!Timeslot) {
+        $(".timeslot-message").show();
+        $(".subscription-message").hide(); // Hide subscription message
+        setTimeout(()=>{
+          $(".timeslot-message").hide()  
+        }, 10000);
+      }
+    } else {
+      $('.timeslot-message').text('No address added, please add an address to proceed!');
+      $(".timeslot-message").show();
+      $(".subscription-message").hide(); // Hide subscription message
+      setTimeout(()=>{
+        $(".timeslot-message").hide()  
+      }, 10000);
+    }
+  }
+})
+
+  // end of doc.ready
+});
+
+</script>
+
+<script>
+
+$(document).ready(function () {
+  $("#deliveryType").on("change" , ()=>{
+    $("#date-view-ld").text("Not Selected").css("color", "red");  
+    $("#timeslot-view-ld").text("Not Selected").css("color", "red");
+    $(".checkout-button-ctrl").prop("disabled", true)
+    $("#datepicker").val('');
+    $("#local_delivery").val('');
+    $("#timeDiv").addClass("ld_hidden");
+  })
+  $("#cartNoteDummy").on("change" , ()=>{
+    console.log("note change");
+    $("#date-view-ld").text("Not Selected").css("color", "red");  
+    $("#timeslot-view-ld").text("Not Selected").css("color", "red");
+    $(".checkout-button-ctrl").prop("disabled", true)
+  })
+});
+
+// Final sync before checkout — ensures Delivery Date/Time/Type are in cart attributes
+document.getElementById('cartForm')?.addEventListener('submit', async function(e) {
+  if (window.CartMetafields && !this._synced) {
+    e.preventDefault();
+    await window.CartMetafields.syncDeliveryData();
+    this._synced = true;
+    this.querySelector('[name="checkout"]')?.click();
+  }
+});
+
+  </script>
+
+{% comment %} <script>
+$(document).ready(function() {
+      let dataCityMain = $('input[name="shipping_address"]:checked').attr('data-province');
+      $("#location-view-ld").text(dataCityMain)
+
+
+// ---------------------loader---
+
+     $("#ld_delivery_areas_div_content_box").hide();
+     $("#date_div").hide()
+  
+     $("#ld_delivery_areas_div_content_box").before('<div id="loading-message">Your address is being set up for Checkout... <div class="loader"></div> </div> ');
+    $(window).on('load', function() {
+    $("#ld_delivery_areas_div_content_box").show();
+    $("#date_div").show()
+
+    $("#loading-message").remove();
+  });
+
+
+
+
+const isPreorder = $('.preorderItem').text();
+
+$("#modal-toggle, .open-modal-btn").on("click", function(event) {
+ {% comment %} $(".close-btn").hide(); {% endcomment %}
+  if(isPreorder){
+  
+    // Function to disable next 2 days
+    function disableNextTwoDays() {
+  
+      let dT = $("#deliveryType").val();
+ 
+      if(dT == "Full Delivery"){
+
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1);
+        const dayAfterTomorrow = new Date(today);
+        dayAfterTomorrow.setDate(today.getDate() + 2);
+        
+     
+        
+        // Wait for datepicker to render, then disable dates
+        setTimeout(() => {
+        
+          const $calendarCells = $('.ui-datepicker-calendar td');
+          
+          $calendarCells.each(function(index) {
+            const $cell = $(this);
+            const $link = $cell.find('a');
+            
+          
+            
+            if($link.length > 0) {
+              const cellDay = parseInt($link.text());
+             
+              
+              const cellDate = new Date(today.getFullYear(), today.getMonth(), cellDay);
+            
+              
+              // Handle cross-month dates
+              if(cellDay < today.getDate() && cellDay <= 15) {
+               
+                cellDate.setMonth(today.getMonth() + 1);
+               
+              }
+              
+           
+              
+              // Check if this date should be disabled
+              if(cellDate.toDateString() === today.toDateString() || cellDate.toDateString() === tomorrow.toDateString() || 
+                 cellDate.toDateString() === dayAfterTomorrow.toDateString()) {
+                
+               
+                
+                $cell.addClass('ui-state-disabled');
+                $link.css({
+                  'pointer-events': 'none',
+                  'color': '#ccc',
+                  'text-decoration': 'none'
+                });
+                $link.removeAttr('href');
+                
+                console.log(`Cell ${index} disabled successfully`);
+              } else {
+                console.log(`Cell ${index} NOT disabled`);
+              }
+            } else {
+              console.log(`Cell ${index} has no clickable link`);
+            }
+          });
+        }, 100);
+      } else {
+        console.log("Delivery type is not Full Delivery, no dates to disable");
+      }
+    }
+    
+    // Trigger when datepicker opens
+    $("#datepicker").on('focus click', function() {
+      disableNextTwoDays();
+    });
+    
+    // Also trigger when delivery type changes
+    $("#deliveryType").on('change', function() {
+      disableNextTwoDays();
+    });
+    
+  }
+});
+
+
+  // end of doc.ready
+});
+
+
+</script>   {% endcomment %}
+
+<script>
+  function resetLocalDeliverySelection() {
+    $("#date-view-ld")
+      .text("Not Selected")
+      .css("color", "red");
+
+    $("#timeslot-view-ld")
+      .text("Not Selected")
+      .css("color", "red");
+
+    $(".checkout-button-ctrl").prop("disabled", true);
+    $("#datepicker").val('');
+    $("#local_delivery").val('');
+    $("#timeDiv").addClass("ld_hidden");
+    $(".open-modal-btn").text("Choose Time Slot >");
+
+  }
+</script>
+
+
+<script>
+$(document).ready(function() {
+      let dataCityMain = $('input[name="shipping_address"]:checked').attr('data-province');
+      $("#location-view-ld").text(dataCityMain)
+
+  // --- Parse Metafield JSON (Multi-location) ---
+  const metafieldRaw = `{{ shop.metafields.custom.timeslot_details | escape }}`;
+  const metafieldJson = metafieldRaw.replace(/&quot;/g, '"');
+
+  let timeslotData = {};
+  try {
+    timeslotData = JSON.parse(metafieldJson);
+  } catch (error) {
+    console.error("❌ Invalid JSON in metafield:", error);
+    timeslotData = {};
+  }
+
+  // --- Helper: Parse time range like "10am - 1pm" ---
+  function parseTimeRange(rangeStr, baseDate) {
+    if (!rangeStr) return null;
+    const [start, end] = rangeStr.split(" - ").map(s => s.trim());
+
+    function parseTo24Hour(timeStr) {
+      const match = timeStr.match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)/i);
+      if (!match) return null;
+      let hour = parseInt(match[1], 10);
+      let minute = match[2] ? parseInt(match[2], 10) : 0;
+      const period = match[3].toLowerCase();
+      if (period === "pm" && hour < 12) hour += 12;
+      if (period === "am" && hour === 12) hour = 0;
+      return { hour, minute };
+    }
+
+    const startParts = parseTo24Hour(start);
+    const endParts = parseTo24Hour(end);
+    if (!startParts || !endParts) return null;
+
+    const startDate = new Date(baseDate);
+    startDate.setHours(startParts.hour, startParts.minute, 0, 0);
+
+    const endDate = new Date(baseDate);
+    endDate.setHours(endParts.hour, endParts.minute, 0, 0);
+
+    return { start: startDate, end: endDate };
+  }
+
+  // --- Helper: Format time for display ---
+  function formatTime(timeStr) {
+    const match = timeStr.match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)/i);
+    if (!match) return timeStr;
+    let hour = parseInt(match[1], 10);
+    let minute = match[2] ? ':' + match[2] : ':00';
+    const period = match[3].toUpperCase();
+    return hour + minute + ' ' + period;
+  }
+
+  // --- Main Function: Update timeslot based on location ---
+  function updateTimeslots(baseDate = new Date(), locationName = null) {
+    if (!timeslotData.locations) {
+      console.error("⚠️ No locations found in metafield");
+      return;
+    }
+
+    // Use provided locationName or fall back to dataCityMain
+    const selectedLocation = locationName || dataCityMain?.trim();
+    const locationData = timeslotData.locations[selectedLocation];
+
+    if (!locationData) {
+      console.warn(`⚠️ No schedule found for location: ${selectedLocation}`);
+      $("#date-view-ld").text("").css("color", "red");
+      $("#timeslot-view-ld").text("").css("color", "red");
+      return;
+    }
+
+    const schedule = locationData.schedule;
+    if (!schedule) {
+      console.error(`⚠️ Missing schedule for ${selectedLocation}`);
+      return;
+    }
+
+    // Always use Dubai timezone
+    const dubaiNow = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Dubai" }));
+    const targetDate = new Date(baseDate.toLocaleString("en-US", { timeZone: "Asia/Dubai" }));
+
+    const dayName = targetDate.toLocaleDateString("en-GB", { weekday: "long" }).toLowerCase();
+    const todaySlots = schedule[dayName] || [];
+
+    const validSlots = todaySlots.filter(item => {
+      const parsed = parseTimeRange(item.slot, targetDate);
+      if (!parsed) return false;
+      const cutoffTime = new Date(parsed.start.getTime() - item.cutoff_hours * 60 * 60 * 1000);
+      return dubaiNow < cutoffTime;
+    });
+
+    let nextSlot = null;
+    for (let item of validSlots) {
+      const parsed = parseTimeRange(item.slot, targetDate);
+      if (parsed && parsed.start > dubaiNow) {
+        nextSlot = item.slot;
+        break;
+      }
+    }
+
+    console.log(`📅 Checking: ${selectedLocation} | ${dayName} (${targetDate.toLocaleDateString('en-GB')})`);
+    console.log("✅ Valid Slots:", validSlots.map(i => i.slot));
+    console.log("🌟 Next Slot:", nextSlot || "None");
+
+    // If no slot today → check tomorrow recursively
+    if (!nextSlot) {
+      const nextDay = new Date(targetDate);
+      nextDay.setDate(targetDate.getDate() + 1);
+      console.log("➡️ No slot today, checking next day...");
+      return updateTimeslots(nextDay, locationName);
+    }
+
+    // Update DOM
+    const formattedDate = targetDate.toLocaleDateString("en-GB", {
+      timeZone: "Asia/Dubai",
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric"
+    });
+
+    const [startTime, endTime] = nextSlot.split(' - ').map(t => t.trim());
+    const formattedSlot = `${formatTime(startTime)} and ${formatTime(endTime)}`;
+
+    $("#date-view-ld").text(formattedDate).css("color", "");
+    $("#timeslot-view-ld").text(formattedSlot).css("color", "");
+
+    console.log("🎉 Timeslot Updated Successfully!");
+
+    // Only enable if phone number exists
+    let selectedAddress = $("input[name='shipping_address']:checked");
+    let phoneNumber = selectedAddress.attr('data-phone');
+    if (phoneNumber && phoneNumber.trim() !== '' && phoneNumber !== 'null' && phoneNumber !== 'undefined') {
+      $(".checkout-button-ctrl").prop("disabled", false);
+    } else {
+      console.warn('Cannot enable checkout - phone number is missing');
+      $(".checkout-button-ctrl").prop("disabled", true);
+      $("#checkoutButtonError").text('⚠️ Phone number is missing in your address. Please update your address.').show();
+    }
+
+    return { date: formattedDate, slot: formattedSlot };
+  }
+
+  
+  // Check delivery type and adjust starting date for Full Delivery pre-orders
+  window.initializeTimeslots = function() {
+    // Get the currently selected shipping address province
+    const selectedProvince = $('input[name="shipping_address"]:checked').attr('data-province');
+    const selectedPhone = $('input[name="shipping_address"]:checked').attr('data-phone');
+    let newselectedAddress = $("input[name='shipping_address']:checked");
+
+    if (newselectedAddress.length > 0) {
+      // Validate phone number first
+      if (!selectedPhone || selectedPhone.trim() === '' || selectedPhone === 'null' || selectedPhone === 'undefined') {
+        console.warn('⚠️ Cannot initialize timeslots - phone number is missing');
+        $(".checkout-button-ctrl").prop("disabled", true);
+        $("#checkoutButtonError").text('⚠️ Phone number is missing in your address. Please update your address.').show();
+        return;
+      }
+    }
+    
+    if (selectedProvince) {
+      console.log('🌍 Using Province for timeslot:', selectedProvince);
+    } else {
+      console.warn('⚠️ No shipping address selected');
+    }
+    
+    // Check for subscription products
+    let hasSubscription = false;
+    if ($(".subscription_message").length > 0) {
+      hasSubscription = true;
+    }
+    
+    // If subscription product exists and province is not Dubai, block checkout
+    if (hasSubscription && selectedProvince && selectedProvince !== 'Dubai') {
+      console.log('🚫 Subscription product detected with non-Dubai address');
+      $(".checkout-button-ctrl").prop("disabled", true);
+      $(".wk_pay_wallet.oncartpage").hide();
+      $(".subscription-message").show();
+      $("#subscription-warning-timeslot").show();
+      $("#save-timeslot").prop("disabled", true);
+      $("#date-view-ld").text("Not Available").css("color", "red");
+      $("#timeslot-view-ld").text("Dubai Only").css("color", "red");
+      return; // Don't proceed with timeslot initialization
+    }
+    
+    // Hide subscription message if conditions are met
+    $(".subscription-message").hide();
+    $("#subscription-warning-timeslot").hide();
+    
+    const deliveryType = $("#deliveryType").val();
+    if (deliveryType === "Full Delivery") {
+      const baseDate = new Date();
+      baseDate.setDate(baseDate.getDate() + 3); // Add 3 days for Full Delivery pre-orders
+      updateTimeslots(baseDate, selectedProvince);
+    } else {
+      updateTimeslots(new Date(), selectedProvince);
+    }
+  }
+  
+  // Initialize timeslots on page load
+  initializeTimeslots();
+  
+  // Re-initialize when delivery type changes
+  $("#deliveryType").on('change', function() {
+    resetLocalDeliverySelection();
+  });
+
+
+  // --- code ends ---
+
+      $('input[name="shipping_address"]').on('change', function () {
+       let dataCityMain = $('input[name="shipping_address"]:checked').attr('data-province');
+       console.log('Selected Province:', dataCityMain);
+      $("#location-view-ld").text(dataCityMain);
+
+      // Re-initialize timeslots when address changes to check subscription conditions
+      initializeTimeslots();
+
+      // Rebuild cart note with updated address data
+      revalidateCartAddress();
+      if (window.CartMetafields) window.CartMetafields.syncDeliveryData();
+    });
+
+
+  
+// ---------------------loader---
+
+     $("#ld_delivery_areas_div_content_box").hide();
+     $("#date_div").hide()
+  
+     $("#ld_delivery_areas_div_content_box").before('<div id="loading-message">Your address is being set up for Checkout... <div class="loader"></div> </div> ');
+    $(window).on('load', function() {
+    $("#ld_delivery_areas_div_content_box").show();
+    $("#date_div").show()
+
+    $("#loading-message").remove();
+  });
+
+
+
+
+const isPreorder = $('.preorderItem').text();
+
+$("#modal-toggle, .open-modal-btn").on("click", function(event) {
+ {% comment %} $(".close-btn").hide(); {% endcomment %}
+  if(isPreorder){
+  
+    // Function to disable next 2 days
+    function disableNextTwoDays() {
+  
+      let dT = $("#deliveryType").val();
+ 
+      if(dT == "Full Delivery"){
+
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1);
+        const dayAfterTomorrow = new Date(today);
+        dayAfterTomorrow.setDate(today.getDate() + 2);
+        
+     
+        
+        // Wait for datepicker to render, then disable dates
+        setTimeout(() => {
+        
+          const $calendarCells = $('.ui-datepicker-calendar td');
+ 
+          {% comment %} if($calendarCells.length === 0) {
+            console.log("No calendar cells found, trying alternative selectors");
+            console.log("Trying .datepicker-days td:", $('.datepicker-days td').length);
+            console.log("Trying .calendar td:", $('.calendar td').length);
+          } {% endcomment %}
+          
+          $calendarCells.each(function(index) {
+            const $cell = $(this);
+            const $link = $cell.find('a');
+            
+          
+            
+            if($link.length > 0) {
+              const cellDay = parseInt($link.text());
+             
+              
+              const cellDate = new Date(today.getFullYear(), today.getMonth(), cellDay);
+            
+              
+              // Handle cross-month dates
+              if(cellDay < today.getDate() && cellDay <= 15) {
+               
+                cellDate.setMonth(today.getMonth() + 1);
+               
+              }
+              
+           
+              
+              // Check if this date should be disabled
+              if(cellDate.toDateString() === today.toDateString() || cellDate.toDateString() === tomorrow.toDateString() || 
+                 cellDate.toDateString() === dayAfterTomorrow.toDateString()) {
+                
+               
+                
+                $cell.addClass('ui-state-disabled');
+                $link.css({
+                  'pointer-events': 'none',
+                  'color': '#ccc',
+                  'text-decoration': 'none'
+                });
+                $link.removeAttr('href');
+                
+                console.log(`Cell ${index} disabled successfully`);
+              } else {
+                console.log(`Cell ${index} NOT disabled`);
+              }
+            } else {
+              console.log(`Cell ${index} has no clickable link`);
+            }
+          });
+        }, 100);
+      } else {
+        console.log("Delivery type is not Full Delivery, no dates to disable");
+      }
+    }
+    
+    // Trigger when datepicker opens
+    $("#datepicker").on('focus click', function() {
+      disableNextTwoDays();
+    });
+    
+    // Also trigger when delivery type changes
+    $("#deliveryType").on('change', function() {
+      disableNextTwoDays();
+    });
+    
+  }
+});
+
+
+  // end of doc.ready
+});
+
+
+</script> 
+
+
+<script>
+// Before redirecting to login, set a flag
+document.addEventListener('DOMContentLoaded', function() {
+  const loginLinks = document.querySelectorAll('a[href*="account/login#cart_login"]');
+  loginLinks.forEach(link => {
+    link.addEventListener('click', function() {
+      console.log('Redirecting to login...');
+      sessionStorage.setItem('cart_login', 'true');
+    });
+  });
+});
+</script>
+
+  <style>
+  /* Save button default active state */
+  #save-timeslot {
+    background-color:   #171717;  /* Shopify blue */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  /* Disabled state styling */
+  #save-timeslot:disabled {
+    background-color: #cccccc;
+    color: #666666;
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+</style>

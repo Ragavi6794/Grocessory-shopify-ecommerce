@@ -1,0 +1,187 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "slideshow_cTbbDc": {
+      "type": "slideshow",
+      "blocks": {
+        "slide_kpmmJY": {
+          "type": "slide",
+          "settings": {
+            "content_position_desktop": "center-md middle-md ta-center",
+            "content_position_mobile": "center-xs middle-xs ta-center",
+            "image_overlay_opacity": 0,
+            "color_mask_overlay": "",
+            "color_text_overlay": "",
+            "sub_heading": "",
+            "heading": "",
+            "description": "",
+            "desktop_image": "shopify://shop_images/Back-to-school-main-head.jpg",
+            "mobile_image": "shopify://shop_images/Back-to-school-mob.jpg",
+            "slide_link": "",
+            "button_1_label": "",
+            "button_1_style": "btn-primary",
+            "button_1_link": "",
+            "button_2_label": "",
+            "button_2_style": "btn-secondary",
+            "button_2_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "slide_kpmmJY"
+      ],
+      "name": "t:sections.slideshow.name",
+      "settings": {
+        "color_scheme": "",
+        "heading_size": "h2",
+        "height_desktop": "adapt_img",
+        "height_mobile": "adapt_img",
+        "enable_pagination": false,
+        "enable_navigation": false,
+        "enable_autoplay": false,
+        "delay": 1,
+        "accessibility_content": "Slideshow about our brand"
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "color_scheme": "scheme-1",
+        "show_page_title": true,
+        "heading_size": "h2",
+        "show_page_content": true
+      }
+    },
+    "image_banner_MHAR3p": {
+      "type": "image-banner",
+      "disabled": true,
+      "name": "t:sections.image_banner.name",
+      "settings": {
+        "color_scheme": "",
+        "image_overlay_opacity": 0,
+        "color_mask_overlay": "",
+        "color_text_overlay": "",
+        "height_desktop": "adapt_img",
+        "content_position_desktop": "middle-md center-md ta-center-md",
+        "height_mobile": "adapt_img",
+        "content_position_mobile": "middle-xs center-xs ta-center",
+        "desktop_image": "shopify://shop_images/Corporate.jpg",
+        "mobile_image": "shopify://shop_images/Corporate.jpg",
+        "banner_link": ""
+      }
+    },
+    "product_lists_bYa7hK": {
+      "type": "product-lists",
+      "blocks": {
+        "collection_WePKJh": {
+          "type": "collection",
+          "settings": {
+            "collection": "cut-fruits",
+            "heading": "Collection"
+          }
+        }
+      },
+      "block_order": [
+        "collection_WePKJh"
+      ],
+      "name": "t:sections.product_lists.name",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "subheading": "",
+        "heading": "Cut Fruits",
+        "heading_size": "h4",
+        "description": "",
+        "items_to_show": 6,
+        "items_per_row_on_desktop": "6",
+        "items_per_row_on_mobile": "2",
+        "enable_carousel": true,
+        "show_progress_indicator": false,
+        "content_alignment": "ta-left",
+        "enable_view_more": true,
+        "button_text": "Show all",
+        "button_link": "shopify://collections/cut-fruits"
+      }
+    },
+    "product_lists_XfQjX7": {
+      "type": "product-lists",
+      "blocks": {
+        "collection_z43mMi": {
+          "type": "collection",
+          "settings": {
+            "collection": "cut-vegetables",
+            "heading": "Collection"
+          }
+        }
+      },
+      "block_order": [
+        "collection_z43mMi"
+      ],
+      "name": "t:sections.product_lists.name",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "subheading": "",
+        "heading": "Ready to cook",
+        "heading_size": "h4",
+        "description": "",
+        "items_to_show": 6,
+        "items_per_row_on_desktop": "6",
+        "items_per_row_on_mobile": "2",
+        "enable_carousel": true,
+        "show_progress_indicator": false,
+        "content_alignment": "ta-left",
+        "enable_view_more": true,
+        "button_text": "Show all",
+        "button_link": "shopify://collections/cut-vegetables"
+      }
+    },
+    "product_lists_aj3K6q": {
+      "type": "product-lists",
+      "blocks": {
+        "collection_WxwEqC": {
+          "type": "collection",
+          "settings": {
+            "collection": "330-ml-juice",
+            "heading": "Collection"
+          }
+        }
+      },
+      "block_order": [
+        "collection_WxwEqC"
+      ],
+      "name": "t:sections.product_lists.name",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "subheading": "",
+        "heading": "Fresh Juice",
+        "heading_size": "h4",
+        "description": "",
+        "items_to_show": 6,
+        "items_per_row_on_desktop": "6",
+        "items_per_row_on_mobile": "2",
+        "enable_carousel": true,
+        "show_progress_indicator": false,
+        "content_alignment": "ta-left",
+        "enable_view_more": true,
+        "button_text": "Show all",
+        "button_link": "shopify://collections/330-ml-juice"
+      }
+    }
+  },
+  "order": [
+    "slideshow_cTbbDc",
+    "main",
+    "image_banner_MHAR3p",
+    "product_lists_bYa7hK",
+    "product_lists_XfQjX7",
+    "product_lists_aj3K6q"
+  ]
+}

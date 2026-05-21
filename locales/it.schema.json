@@ -1,0 +1,3136 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin language editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+	 "general": {
+	  "settings": {
+	   "accent_gradient": {
+	    "info": "Gradiente lineare",
+	    "label": "Gradiente di accento"
+	   },
+	   "accent_scheme": {
+	    "label": "Schema degli accenti"
+	   },
+	   "accent": {
+	    "label": "Accento"
+	   },
+	   "background_gradient": {
+	    "info": "Il gradiente di sfondo sostituisce lo sfondo ove possibile."
+	   },
+	   "background_image": {
+	    "info": "1600 x 800px .png consigliato",
+	    "label": "Immagine di sfondo"
+	   },
+	   "background": {
+	    "label": "Sfondo"
+	   },
+	   "badge_text": {
+	    "label": "Testo del badge"
+	   },
+	   "blog_posts": {
+	    "label": "Messaggi del blog"
+	   },
+	   "button_1_label": {
+	    "label": "Etichetta Pulsante 1"
+	   },
+	   "button_1_link": {
+	    "label": "Pulsante 1 collegamento"
+	   },
+	   "button_1_style": {
+	    "label": "Stile del pulsante 1"
+	   },
+	   "button_1": {
+	    "label": "Pulsante 1"
+	   },
+	   "button_2_label": {
+	    "label": "Etichetta del pulsante 2"
+	   },
+	   "button_2_link": {
+	    "label": "Pulsante 2 link"
+	   },
+	   "button_2_style": {
+	    "label": "Stile del pulsante 2"
+	   },
+	   "button_2": {
+	    "label": "Pulsante 2"
+	   },
+	   "button_label": {
+	    "info": "Nascondi se vuoto."
+	   },
+	   "button_link": {
+	    "label": "Pulsante di collegamento"
+	   },
+	   "button_style": {
+	    "label": "Stile del pulsante"
+	   },
+	   "button_text": {
+	    "label": "Testo del pulsante"
+	   },
+	   "button": {
+	    "link": {
+	     "label": "Collegamento"
+	    },
+	    "style": {
+	     "label": "Stile"
+	    },
+	    "text": {
+	     "label": "Etichetta"
+	    }
+	   },
+	   "card_color_scheme": {
+	    "label": "Schema colori della carta"
+	   },
+	   "collection": {
+	    "label": "Collezione"
+	   },
+	   "collections": {
+	    "label": "Collezioni"
+	   },
+	   "color_scheme": {
+	    "info": "Per modificare la combinazione di colori, aggiornare le impostazioni del tema.",
+	    "label": "Schema di colore"
+	   },
+	   "communication": {
+	    "label": "Comunicazione"
+	   },
+	   "content_alignment_on_mobile": {
+	    "label": "Allineamento dei contenuti su mobile"
+	   },
+	   "content_alignment": {
+	    "label": "Allineamento del contenuto",
+	    "options": {
+	     "option_diagonal": {
+	      "label": "Diagonale"
+	     }
+	    }
+	   },
+	   "content_ordering_large_screen": {
+	    "label": "Ordinamento dei contenuti su schermo grande"
+	   },
+	   "content_ordering": {
+	    "info": "Questa impostazione funziona solo su schermi grandi",
+	    "label": "Ordinamento dei contenuti",
+	    "options": {
+	     "option_image_first": {
+	      "label": "Prima l'immagine"
+	     },
+	     "option_text_first": {
+	      "label": "Prima il testo"
+	     },
+	     "option_video_first": {
+	      "label": "Prima il video"
+	     }
+	    }
+	   },
+	   "content_position_on_large_screen": {
+	    "label": "Posizione del contenuto su schermo grande"
+	   },
+	   "content_position_on_mobile": {
+	    "label": "Posizione dei contenuti su dispositivi mobili"
+	   },
+	   "content_position": {
+	    "info": "Funziona solo quando il testo è sovrapposto all'immagine",
+	    "label": "Posizione del contenuto",
+	    "options": {
+	     "option_bottom_center": {
+	      "label": "In basso a sinistra"
+	     },
+	     "option_bottom_left": {
+	      "label": "Centro sinistra"
+	     },
+	     "option_middle_center": {
+	      "label": "Centro centrale"
+	     },
+	     "option_middle_left": {
+	      "label": "Al centro a sinistra"
+	     },
+	     "option_top_center": {
+	      "label": "In alto al centro"
+	     },
+	     "option_top_left": {
+	      "label": "In alto a sinistra"
+	     }
+	    }
+	   },
+	   "content_source": {
+	    "label": "Fonte del contenuto",
+	    "options": {
+	     "option_product_metafield": {
+	      "label": "Meta-campo prodotto"
+	     }
+	    }
+	   },
+	   "content": {
+	    "info": "Utilizzato anche per i collegamenti testuali e il pulsante Terziario.",
+	    "label": "Contenuto"
+	   },
+	   "countdown_timer": {
+	    "countdown_background": {
+	     "label": "Sfondo del conto alla rovescia"
+	    },
+	    "countdown_number": {
+	     "label": "Numero del conto alla rovescia"
+	    },
+	    "date_format": {
+	     "info": "Formato: YYYY-MM-DD. Se la data di fine è vuota, il conto alla rovescia terminerà a mezzanotte di oggi."
+	    },
+	    "enable_countdown_timer": {
+	     "label": "Abilita il timer per il conto alla rovescia"
+	    },
+	    "end_date": {
+	     "label": "Data di fine"
+	    },
+	    "end_text": {
+	     "info": {
+	      "label": "Visualizza quando il conto alla rovescia termina. Nascondi se vuoto."
+	     },
+	     "label": "Fine del testo"
+	    },
+	    "end_time_format": {
+	     "label": "Formato: HH:MM (orologio 24 ore)."
+	    },
+	    "end_time": {
+	     "label": "Ora di fine (facoltativo)"
+	    },
+	    "endtext": {
+	     "label": "Termina testo"
+	    },
+	    "hide_countdown": {
+	     "label": "Nascondi il conto alla rovescia quando termina."
+	    },
+	    "label": "Timer del conto alla rovescia"
+	   },
+	   "cta_button": {
+	    "label": "Pulsante CTA"
+	   },
+	   "custom_color_icon": {
+	    "label": "Icona di colore personalizzato"
+	   },
+	   "custom_color": {
+	    "label": "Colore personalizzato"
+	   },
+	   "custom_dot_background": {
+	    "label": "Sfondo personalizzato a punti"
+	   },
+	   "custom_dot_icon": {
+	    "label": "Icona personalizzata a punto"
+	   },
+	   "custom_icon": {
+	    "info": "L'icona personalizzata sostituirà l'icona del tema. Utilizzare un'immagine quadrata per ottenere un risultato migliore.",
+	    "label": "Icona personalizzata"
+	   },
+	   "custom_image": {
+	    "info": "Utilizzare un'immagine quadrata per ottenere un risultato migliore.",
+	    "label": "Immagine personalizzata"
+	   },
+	   "custom_liquid": {
+	    "label": "Codice del liquido"
+	   },
+	   "custom_mask_overlay": {
+	    "label": "Sovrapposizione di maschera personalizzata"
+	   },
+	   "custom_svg": {
+	    "info": "L'icona SVG sarà resa alla dimensione predefinita.",
+	    "label": "SVG personalizzato"
+	   },
+	   "custom_text_color": {
+	    "label": "Colore del testo personalizzato"
+	   },
+	   "custom_text_gradient": {
+	    "label": "Gradiente di testo personalizzato"
+	   },
+	   "custom_text_overlay": {
+	    "label": "Sovrapposizione di testo personalizzato"
+	   },
+	   "default_layout": {
+	    "label": "Layout predefinito"
+	   },
+	   "description": {
+	    "label": "Descrizione"
+	   },
+	   "desktop_filter_and_sort_layout": {
+	    "label": "Layout dei filtri e dell'ordinamento su schermo grande",
+	    "option_1": {
+	     "label": "Barra laterale verticale"
+	    },
+	    "option_2": {
+	     "label": "Barra degli strumenti orizzontale"
+	    }
+	   },
+	   "desktop_image_ratio": {
+	    "label": "Rapporto immagine desktop"
+	   },
+	   "desktop_image": {
+	    "label": "Immagine desktop"
+	   },
+	   "display_style": {
+	    "label": "Stile di visualizzazione",
+	    "options": {
+	     "option_collapsibles_content": {
+	      "label": "Contenuto dei collassabili"
+	     },
+	     "option_icon_blocks": {
+	      "label": "Blocchi di icone"
+	     }
+	    }
+	   },
+	   "display_type": {
+	    "info": "Usare 'Elenco' per un massimo di 3 voci e 'Presentazione' per più di 3 voci.",
+	    "label": "Tipo di visualizzazione",
+	    "options": {
+	     "option_list": {
+	      "label": "Elenco"
+	     },
+	     "option_slideshow": {
+	      "label": "Presentazione"
+	     }
+	    }
+	   },
+	   "enabel_grid_list_layout": {
+	    "info": "Consente agli utenti di cambiare la visualizzazione tra griglia e elenco.",
+	    "label": "Abilita l'interruttore di layout griglia/elenco"
+	   },
+	   "enable_carousel_on_mobile": {
+	    "label": "Abilita il carosello su mobile"
+	   },
+	   "enable_carousel": {
+	    "label": "Abilita il carosello"
+	   },
+	   "enable_contact": {
+	    "label": "Mostra indirizzo e-mail e numero di telefono"
+	   },
+	   "enable_filter": {
+	    "info": "Personalizzare [filtri](/admin/menu)",
+	    "label": "Abilitare il filtro"
+	   },
+	   "enable_large_heading": {
+	    "info": "Utile per le sezioni eroiche.",
+	    "label": "Abilita l'intestazione grande"
+	   },
+	   "enable_more_button": {
+	    "info": "Accorciare il contenuto della descrizione quando è troppo lungo.",
+	    "label": "Abilita il pulsante \"Altro"
+	   },
+	   "enable_pagination_mobile": {
+	    "label": "Mostra le paginate come numero su mobile"
+	   },
+	   "enable_pagination": {
+	    "label": "Mostrare le paginate come numero"
+	   },
+	   "enable_quick_buy": {
+	    "info": "Consenti agli utenti di aggiungere rapidamente i prodotti direttamente al carrello.",
+	    "label": "Abilita acquisto veloce"
+	   },
+	   "enable_quick_shop": {
+	    "label": "Abilita il negozio rapido"
+	   },
+	   "enable_quick_view": {
+	    "info": "Consentire agli utenti di visualizzare le informazioni di base in un popup ",
+	    "label": "Abilita visualizzazione rapida"
+	   },
+	   "enable_share": {
+	    "label": "Abilita la condivisione"
+	   },
+	   "enable_social": {
+	    "label": "Mostra le icone dei social media"
+	   },
+	   "enable_specifications": {
+	    "label": "Abilita le specifiche"
+	   },
+	   "enable_view_full_details": {
+	    "label": "Abilita la visualizzazione dei dettagli completi"
+	   },
+	   "external_video": {
+	    "label": "Video esterno"
+	   },
+	   "featured_products": {
+	    "label": "Prodotti in evidenza"
+	   },
+	   "field_background": {
+	    "label": "Sfondo del campo"
+	   },
+	   "field_text": {
+	    "label": "Testo del campo"
+	   },
+	   "fill": {
+	    "label": "Compilare"
+	   },
+	   "fit": {
+	    "label": "Adatta"
+	   },
+	   "functional": {
+	    "label": "Funzionale"
+	   },
+	   "header": {
+	    "header_product_layout": {
+	     "content": "Layout del prodotto"
+	    },
+	    "header_quick_links": {
+	     "content": "Collegamenti rapidi",
+	     "info": "Per visualizzare i collegamenti rapidi, collegarli nelle impostazioni del tema."
+	    },
+	    "product_attributes": {
+	     "content": "Attributi del prodotto"
+	    },
+	    "product_specifications": {
+	     "content": "Specifiche del prodotto",
+	     "info": "Per visualizzare le specifiche del prodotto, configura in Impostazioni tema > [Informazioni sul prodotto](/editor?context=theme&category=product%20information)."
+	    }
+	   },
+	   "headers": {
+	    "color_scheme": {
+	     "content": "Schema di colore"
+	    },
+	    "general": {
+	     "content": "Generale"
+	    },
+	    "header_button": {
+	     "content": "Pulsante"
+	    },
+	    "header_buttons": {
+	     "content": "Pulsanti"
+	    },
+	    "header_buy_buttons": {
+	     "content": "Pulsanti di acquisto"
+	    },
+	    "header_checkout_cart": {
+	     "content": "Carta di pagamento"
+	    },
+	    "header_collection_items": {
+	     "content": "Articoli della collezione"
+	    },
+	    "header_contact_information": {
+	     "content": "Informazioni di contatto",
+	     "info": "Per visualizzare le informazioni di contatto, collegarle alle impostazioni del tema."
+	    },
+	    "header_content": {
+	     "content": "Contenuto"
+	    },
+	    "header_currency_selector": {
+	     "content": "Selettore di valuta",
+	     "info": "Per aggiungere una valuta, andare alle [impostazioni di pagamento](/admin/settings/payments)."
+	    },
+	    "header_general": {
+	     "content": "Generale"
+	    },
+	    "header_hosted_video": {
+	     "content": "Video ospitato da Shopify"
+	    },
+	    "header_image": {
+	     "content": "Immagine"
+	    },
+	    "header_images": {
+	     "content": "Immagini"
+	    },
+	    "header_item_1": {
+	     "content": "Elemento 1"
+	    },
+	    "header_item_2": {
+	     "content": "Elemento 2"
+	    },
+	    "header_item_3": {
+	     "content": "Elemento 3"
+	    },
+	    "header_item_4": {
+	     "content": "Elemento 4"
+	    },
+	    "header_language_selector": {
+	     "content": "Selettore della lingua",
+	     "info": "Per aggiungere una lingua, andare alle [impostazioni della lingua](/admin/settings/languages)."
+	    },
+	    "header_layout": {
+	     "content": "Layout"
+	    },
+	    "header_logo": {
+	     "content": "Logo"
+	    },
+	    "header_mapcanvas": {
+	     "content": "Tela della mappa"
+	    },
+	    "header_messages": {
+	     "content": "Messaggi"
+	    },
+	    "header_newsletter": {
+	     "content": "Newsletter",
+	     "info": "I clienti che si iscrivono avranno il loro indirizzo e-mail aggiunto alla lista \"accetta il marketing\" [elenco dei clienti](https://help.shopify.com/en/manual/customers/manage-customers)."
+	    },
+	    "header_position": {
+	     "content": "Posizione"
+	    },
+	    "header_product_specifications": {
+	     "content": "Specifiche del prodotto",
+	     "info": "Per visualizzare le specifiche dei prodotti, personalizzare nelle impostazioni del tema"
+	    },
+	    "header_product": {
+	     "content": "Prodotto"
+	    },
+	    "header_products": {
+	     "content": "Prodotti"
+	    },
+	    "header_prominent_badge": {
+	     "content": "Badge in evidenza"
+	    },
+	    "header_quantity_selector": {
+	     "content": "Selettore quantità"
+	    },
+	    "header_subheading": {
+	     "content": "Sottotitolo"
+	    },
+	    "header_text": {
+	     "content": "Testo"
+	    },
+	    "header_variant_selector": {
+	     "info": "Il selettore delle varianti viene sempre visualizzato se disponibile. È possibile configurare le opzioni delle varianti da visualizzare come campioni nelle impostazioni del tema."
+	    },
+	    "header_video": {
+	     "content": "Video"
+	    },
+	    "hotspot_image": {
+	     "content": "Immagine hotspot"
+	    },
+	    "hotspot_items": {
+	     "content": "Elementi hotspot"
+	    },
+	    "position_on_desktop": {
+	     "content": "Posizione su desktop"
+	    },
+	    "position_on_mobile": {
+	     "content": "Posizione su mobile"
+	    },
+	    "testimonial_items": {
+	     "content": "Elementi di testimonianza"
+	    },
+	    "header_stock_number": {
+	     "content": "Numero di stock"
+	    },
+	    "header_submit_button": {
+	     "content": "Pulsante di invio"
+	    },
+	    "countdown_timer": {
+	     "content": "Aggiungi un timer per il conto alla rovescia a questa sezione per creare un senso di urgenza. [Scopri di più](https://docs.saleshunterthemes.com/manual/electro-countdown-timer/)"
+	    }
+	   },
+	   "heading_size": {
+	    "label": "Dimensione dell'intestazione",
+	    "options": {
+	     "h1": {
+	      "label": "H1"
+	     },
+	     "h2": {
+	      "label": "H2"
+	     },
+	     "h3": {
+	      "label": "H3"
+	     },
+	     "h4": {
+	      "label": "H4"
+	     },
+	     "h5": {
+	      "label": "H5"
+	     },
+	     "h6": {
+	      "label": "H6"
+	     },
+	     "headline": {
+	      "label": "Titolo"
+	     }
+	    }
+	   },
+	   "heading": {
+	    "info": "Lasciare vuoto per nascondere l'elemento",
+	    "label": "Rubriche"
+	   },
+	   "height_on_large_screen": {
+	    "info": "L'altezza della sezione si autoregola per testi lunghi su schermi grandi.",
+	    "label": "Altezza su schermo grande"
+	   },
+	   "height": {
+	    "info": "L'altezza è sempre impostata al 100% su mobile.",
+	    "label": "Altezza",
+	    "options": {
+	     "adapt_to_content": {
+	      "label": "Adattarsi al contenuto"
+	     },
+	     "fill_screen_height": {
+	      "label": "Riempire l'altezza dello schermo"
+	     },
+	     "option_100": {
+	      "label": "100% dell'altezza dello schermo"
+	     },
+	     "option_50": {
+	      "label": "50% altezza schermo"
+	     },
+	     "option_70": {
+	      "label": "70% di altezza dello schermo"
+	     }
+	    }
+	   },
+	   "hide_sold_out_variants": {
+	    "label": "Nascondi le varianti esaurite"
+	   },
+	   "icon_source": {
+	    "info": "Selezionare una delle tre fonti sottostanti da visualizzare come icona",
+	    "label": "Fonte dell'icona"
+	   },
+	   "icon": {
+	    "label": "Icona"
+	   },
+	   "image_background": {
+	    "info": "Visibile quando l'immagine del prodotto è trasparente",
+	    "label": "Sfondo immagine"
+	   },
+	   "image_fit_type": {
+	    "label": "Tipo di immagine",
+	    "options": {
+	     "contain": {
+	      "label": "Contenere"
+	     },
+	     "cover": {
+	      "label": "Copertina"
+	     }
+	    }
+	   },
+	   "image_height_on_large_screen": {
+	    "label": "Altezza dell'immagine su schermo grande"
+	   },
+	   "image_height_on_mobile": {
+	    "label": "Altezza dell'immagine su mobile"
+	   },
+	   "image_ratio": {
+	    "info": "Applicabile solo all'elemento principale se impilato",
+	    "label": "Rapporto immagine",
+	    "options": {
+	     "option_adapt": {
+	      "label": "Adatta all'immagine"
+	     },
+	     "option_landscape": {
+	      "label": "Paesaggio (3:2)"
+	     },
+	     "option_portrait_1": {
+	      "label": "Ritratto"
+	     },
+	     "option_portrait": {
+	      "label": "Ritratto (2:3)"
+	     },
+	     "option_square": {
+	      "label": "Quadrato"
+	     },
+	     "option_landscape_2": {
+	      "label": "Paesaggio"
+	     }
+	    }
+	   },
+	   "image_recommend_mobile": {
+	    "info": "750 x 1400px .jpg consigliato"
+	   },
+	   "image_recommend": {
+	    "info": "2880 x 1200px .jpg consigliato"
+	   },
+	   "image": {
+	    "info": "700 x 500px .png consigliato.",
+	    "label": "Immagine"
+	   },
+	   "items_per_page": {
+	    "label": "Articoli per pagina"
+	   },
+	   "items_per_row_on_desktop_2": {
+	    "info": "I risultati del post del blog hanno un massimo di 5 elementi per riga per ottimizzare la leggibilità."
+	   },
+	   "items_per_row_on_desktop": {
+	    "info": "Si applica solo alle schede nella visualizzazione a griglia.",
+	    "label": "Elementi per riga su schermo grande"
+	   },
+	   "items_per_row_on_mobile": {
+	    "info": "Si applica solo alle carte nella vista griglia.",
+	    "label": "Voci per riga su mobile"
+	   },
+	   "items_to_show": {
+	    "label": "Elementi da mostrare"
+	   },
+	   "label": {
+	    "label": "Etichetta"
+	   },
+	   "link": {
+	    "label": "Collegamento"
+	   },
+	   "logo_image": {
+	    "info": "280 x 80px .png consigliato.",
+	    "label": "Immagine del logo"
+	   },
+	   "logo_width_desktop": {
+	    "label": "Larghezza massima su schermo grande"
+	   },
+	   "logo_width_mobile": {
+	    "label": "Larghezza massima su mobile"
+	   },
+	   "low_stock_threshold": {
+	    "info": "Impostare su 0 per non avere una soglia",
+	    "label": "Soglia di scorte basse"
+	   },
+	   "maximum_items_to_show": {
+	    "label": "Numero massimo di voci da mostrare"
+	   },
+	   "media_background": {
+	    "info": "Visibile quando il supporto del prodotto è trasparente",
+	    "label": "Sfondo multimediale"
+	   },
+	   "media_ratio_mobile": {
+	    "label": "Rapporto dei media su mobile"
+	   },
+	   "media_ratio": {
+	    "label": "Rapporto multimediale"
+	   },
+	   "media": {
+	    "label": "Media in Italian is translated as \"Media\"."
+	   },
+	   "menu": {
+	    "label": "Menu"
+	   },
+	   "mobile_background_image_optional": {
+	    "label": "Immagine di sfondo per dispositivi mobili (opzionale)"
+	   },
+	   "mobile_background_image": {
+	    "info": "750 x 1100px .jpg consigliato.",
+	    "label": "Immagine di sfondo mobile"
+	   },
+	   "mobile_image_ratio": {
+	    "label": "Rapporto immagine mobile"
+	   },
+	   "mobile_image": {
+	    "label": "Immagine mobile (opzionale)"
+	   },
+	   "no_customizable": {
+	    "content": "Non sono disponibili impostazioni personalizzabili."
+	   },
+	   "option_body": {
+	    "label": "Corpo"
+	   },
+	   "option_center": {
+	    "label": "Centro"
+	   },
+	   "option_extra_accent": {
+	    "label": "Accento extra"
+	   },
+	   "option_grid": {
+	    "label": "Rete"
+	   },
+	   "option_heading": {
+	    "label": "Intestazione"
+	   },
+	   "option_large": {
+	    "label": "Grande"
+	   },
+	   "option_left": {
+	    "label": "A sinistra"
+	   },
+	   "option_list": {
+	    "label": "Elenco"
+	   },
+	   "option_main_accent": {
+	    "label": "Accento principale"
+	   },
+	   "option_none": {
+	    "label": "Nessuno"
+	   },
+	   "option_regular": {
+	    "label": "Regolare"
+	   },
+	   "option_right": {
+	    "label": "A destra"
+	   },
+	   "option_small": {
+	    "label": "Piccolo"
+	   },
+	   "other": {
+	    "label": "Altro"
+	   },
+	   "overlay_opacity": {
+	    "info": "Applica quando si utilizza l'immagine di sfondo.",
+	    "label": "Opacità della sovrapposizione"
+	   },
+	   "override_scheme_color": {
+	    "info": "Sovrascrivi il colore dello schema"
+	   },
+	   "pages": {
+	    "label": "Pagine"
+	   },
+	   "paragraph_complementary_products": {
+	    "content": "Per selezionare i prodotti complementari, utilizzare l'applicazione Search & Discovery. [Per saperne di più](https://help.shopify.com/en/manual/online-store/search-and-discovery/product-recommendations#complementary-products)"
+	   },
+	   "paragraph_no_customizable": {
+	    "content": "Non sono disponibili impostazioni personalizzabili."
+	   },
+	   "paragraph_recommend_slides": {
+	    "content": "Raccomanda di utilizzare un'immagine di sfondo con lo stesso rapporto per tutte le diapositive."
+	   },
+	   "paragraph": {
+	    "background_image_expand": {
+	     "content": "L'immagine di sfondo si espanderà se il contenuto supera l'area disponibile."
+	    },
+	    "section_expand": {
+	     "content": "La sezione si espanderà se il contenuto supera l'area disponibile."
+	    }
+	   },
+	   "popup_content": {
+	    "label": "Contenuto del popup"
+	   },
+	   "position": {
+	    "label": "posizione",
+	    "options": {
+	     "option_left": {
+	      "label": "A sinistra"
+	     },
+	     "option_top": {
+	      "label": "In alto"
+	     }
+	    }
+	   },
+	   "primary_button_label": {
+	    "label": "Etichetta del pulsante principale"
+	   },
+	   "primary_button_link": {
+	    "label": "Link del pulsante primario"
+	   },
+	   "primary": {
+	    "label": "Primario"
+	   },
+	   "product_card_style": {
+	    "options": {
+	     "option_card": {
+	      "label": "Carta"
+	     },
+	     "option_standard": {
+	      "label": "Standard"
+	     }
+	    }
+	   },
+	   "product_metafield_name": {
+	    "label": "Nome del metacampo prodotto"
+	   },
+	   "product": {
+	    "label": "Prodotto"
+	   },
+	   "products_to_show": {
+	    "label": "Prodotti da mostrare"
+	   },
+	   "products": {
+	    "label": "Prodotti"
+	   },
+	   "quick_link": {
+	    "label": "Collegamenti rapidi"
+	   },
+	   "rating": {
+	    "label": "Valutazione"
+	   },
+	   "row_revealed_by_default": {
+	    "label": "Riga rivelata per impostazione predefinita"
+	   },
+	   "scheme_1": {
+	    "label": "Schema 1"
+	   },
+	   "scheme_2": {
+	    "label": "Schema 2"
+	   },
+	   "secondary_button_label": {
+	    "label": "Etichetta del pulsante secondario"
+	   },
+	   "secondary_button_link": {
+	    "label": "Collegamento al pulsante secondario"
+	   },
+	   "secondary": {
+	    "label": "Secondario"
+	   },
+	   "section_description": {
+	    "label": "Descrizione della sezione"
+	   },
+	   "section_heading": {
+	    "label": "Titolo della sezione"
+	   },
+	   "section_height_on_large_screen": {
+	    "label": "Altezza della sezione su schermo grande"
+	   },
+	   "section_height_on_mobile": {
+	    "label": "Altezza della sezione su mobile"
+	   },
+	   "section_subheading": {
+	    "label": "Sottotitolo della sezione"
+	   },
+	   "selected_collections": {
+	    "label": "Collezioni"
+	   },
+	   "selected_page": {
+	    "info": "I moduli di contatto nella pagina selezionata non saranno visualizzati.",
+	    "label": "Pagina selezionata"
+	   },
+	   "shipping": {
+	    "label": "Spedizione"
+	   },
+	   "shop": {
+	    "label": "Negozio"
+	   },
+	   "show_badge": {
+	    "label": "Mostra badge di vendita"
+	   },
+	   "show_collections_title": {
+	    "label": "Mostra titolo della collezione"
+	   },
+	   "show_color_swatches": {
+	    "info": "Per visualizzare i campioni delle varianti, configurare in Impostazioni tema > [Informazioni sul prodotto](/editor?context=theme&category=product%20information).",
+	    "label": "Mostra campioni di colore"
+	   },
+	   "show_currency_selector": {
+	    "info": "Visualizzazione nel cassetto del menu.",
+	    "label": "Mostra selettore di valuta"
+	   },
+	   "show_dynamic_checkout_buttons": {
+	    "info": "Utilizzando i metodi di pagamento disponibili sul vostro negozio, i clienti vedono la loro opzione preferita, come PayPal o Apple Pay.  [Per saperne di più](https://help.shopify.com/vi/manual/online-store/dynamic-checkout)",
+	    "label": "Mostra pulsanti di pagamento dinamici"
+	   },
+	   "show_full_specifications": {
+	    "info": "Se si deseleziona, verranno visualizzate solo tre specifiche. Le altre saranno disponibili in un popup \"Visualizza altro\".",
+	    "label": "Mostra le specifiche complete"
+	   },
+	   "show_language_selector": {
+	    "label": "Mostra il selettore della lingua"
+	   },
+	   "show_navigation_on_mobile": {
+	    "label": "Mostra la navigazione su mobile"
+	   },
+	   "show_navigation": {
+	    "label": "Mostra navigazione"
+	   },
+	   "show_product_attributes": {
+	    "info": "Per visualizzare gli attributi del prodotto, configurare in Impostazioni del tema > [Informazioni sul prodotto](/editor?context=theme&category=product%20information).",
+	    "label": "Mostra attributi del prodotto"
+	   },
+	   "show_product_description": {
+	    "info": "Mostra fino a 5 righe su tutti i dispositivi.",
+	    "label": "Mostra la descrizione del prodotto"
+	   },
+	   "show_progress_indicator": {
+	    "label": "Mostra indicatore di avanzamento"
+	   },
+	   "show_quantity_selector": {
+	    "label": "Mostra il selettore di quantità",
+	    "options": {
+	     "option_add_to_cart": {
+	      "label": "Dopo aver aggiunto al carrello una volta"
+	     },
+	     "option_always": {
+	      "label": "Sempre"
+	     },
+	     "option_never": {
+	      "label": "Mai"
+	     }
+	    }
+	   },
+	   "show_sale_badge": {
+	    "label": "Mostra il badge di vendita"
+	   },
+	   "show_second_image_on_hover": {
+	    "label": "Mostra la seconda immagine al passaggio del mouse"
+	   },
+	   "show_shipping_policy": {
+	    "label": "Mostra la politica di spedizione"
+	   },
+	   "show_sold_out_badge": {
+	    "label": "Show Sold out badge"
+	   },
+	   "show_stock_number": {
+	    "info": "Le informazioni di base sulle scorte continuano a essere visualizzate senza il numero di scorte.",
+	    "label": "Mostra il numero di stock"
+	   },
+	   "show_tax_and_shipping_policy": {
+	    "label": "Mostra le tasse e la politica di spedizione"
+	   },
+	   "show_vendor_name": {
+	    "label": "Mostra il nome del venditore"
+	   },
+	   "show_vendor": {
+	    "label": "Mostra il venditore"
+	   },
+	   "size_guide_paragraph": {
+	    "content": "Visualizzare informazioni sulle dimensioni del prodotto, che possono supportare la decisione di acquisto dell'acquirente nella scelta dell'opzione giusta. [Per saperne di più](https://help.shopify.com/en/manual/online-store/dynamic-checkout)"
+	   },
+	   "social_media": {
+	    "label": "Social media"
+	   },
+	   "static_page": {
+	    "label": "Pagina statica"
+	   },
+	   "style": {
+	    "label": "Stile"
+	   },
+	   "subheading": {
+	    "label": "Sottotitolo"
+	   },
+	   "submit_button_text": {
+	    "label": "Testo del pulsante Invia"
+	   },
+	   "tech": {
+	    "label": "Tecnica"
+	   },
+	   "tertiary": {
+	    "label": "Terziario"
+	   },
+	   "text_size": {
+	    "label": "Dimensione del testo"
+	   },
+	   "text_style": {
+	    "label": "Stile del testo",
+	    "options": {
+	     "option_body_light": {
+	      "label": "Corpo luce"
+	     },
+	     "option_body": {
+	      "label": "Corpo"
+	     }
+	    }
+	   },
+	   "text": {
+	    "info": "3 parole consigliate",
+	    "label": "Testo"
+	   },
+	   "theme_library": {
+	    "label": "Libreria del tema"
+	   },
+	   "video_hosted": {
+	    "info": "Il video ospitato da Shopify sostituisce il video esterno."
+	   },
+	   "video_link": {
+	    "info": "Accetta il link di YouTube o Vimeo",
+	    "label": "Link video"
+	   },
+	   "text_label": {
+	    "label": "Etichetta di testo"
+	   },
+	   "mobile_image_2": {
+	    "label": "Immagine mobile (opzionale)"
+	   },
+	   "show_variant_swatches": {
+	    "label": "Mostra le varianti"
+	   },
+	   "image_height_expand": {
+	    "info": "L'altezza dell'immagine si espanderà se il contenuto supera l'area disponibile."
+	   },
+	   "image_ratio_on_mobile": {
+	    "label": "Proporzioni dell'immagine su mobile"
+	   },
+	   "submit_button_style": {
+	    "label": "Stile del pulsante di invio"
+	   },
+	   "title_size": {
+	    "label": "Dimensione del titolo"
+	   },
+	   "item_color_scheme": {
+	    "label": "Schema di colori degli articoli"
+	   },
+	   "metafield_row_revealed": {
+	    "label": "Riga del metafield rivelata per impostazione predefinita"
+	   },
+	   "show_product_quantity": {
+	    "label": "Mostra quantità del prodotto"
+	   },
+	   "variant_selector_type": {
+	    "label": "Tipo di selettore di variante"
+	   }
+	  }
+	 },
+	 "section": {
+	  "product_sticky_bar": {
+	   "name": "BARRA ADESIVA DEL PRODOTTO"
+	  }
+	 },
+	 "sections": {
+	  "account_activate": {
+	   "name": "Attivare l'account"
+	  },
+	  "account_addresses": {
+	   "name": "Indirizzi"
+	  },
+	  "account_login": {
+	   "name": "Accesso"
+	  },
+	  "account_order": {
+	   "name": "Ordine"
+	  },
+	  "account_register": {
+	   "name": "Registrazione"
+	  },
+	  "account_reset_password": {
+	   "name": "Ripristina la password"
+	  },
+	  "account": {
+	   "name": "Conto"
+	  },
+	  "address_list": {
+	   "blocks": {
+	    "address_item": {
+	     "name": "Elemento indirizzo",
+	     "settings": {
+	      "address": {
+	       "label": "Indirizzo"
+	      },
+	      "google_maps_link": {
+	       "label": "Collegamento a Google Maps"
+	      },
+	      "header_direction_button": {
+	       "content": "Il link a Google Maps deve essere compilato affinché il pulsante venga visualizzato."
+	      },
+	      "image": {
+	       "info": "720 x 480px .jpg consigliato"
+	      }
+	     }
+	    }
+	   },
+	   "name": "Elenco indirizzi",
+	   "settings": {
+	    "show_address_description": {
+	     "label": "Mostra la descrizione dell'indirizzo nel popup"
+	    }
+	   }
+	  },
+	  "announcement_bar": {
+	   "name": "Barra degli annunci",
+	   "settings": {
+	    "change_message_every": {
+	     "label": "Cambia messaggio ogni"
+	    },
+	    "enable_message_autoplay": {
+	     "label": "Abilita la riproduzione automatica dei messaggi"
+	    }
+	   }
+	  },
+	  "apps": {
+	   "name": "Applicazioni",
+	   "settings": {
+	    "enable_layout_fullwidth": {
+	     "label": "Abilita larghezza completa del contenuto"
+	    },
+	    "remove_padding_bottom": {
+	     "label": "Rimuovi il padding inferiore"
+	    },
+	    "remove_padding_top": {
+	     "label": "Rimuovi l'imbottitura superiore"
+	    }
+	   }
+	  },
+	  "blog_post_list": {
+	   "name": "Elenco dei post del blog",
+	   "settings": {
+	    "blog": {
+	     "label": "Blog"
+	    },
+	    "show_view_all": {
+	     "label": "Mostrare il pulsante \"Visualizza tutto\" se il blog ha più post di quelli mostrati"
+	    }
+	   }
+	  },
+	  "breadcrumb": {
+	   "name": "Briciola di pane"
+	  },
+	  "collapsible_content": {
+	   "blocks": {
+	    "settings": {
+	     "content_from_page": {
+	      "label": "Contenuto della pagina"
+	     }
+	    }
+	   },
+	   "name": "Contenuto pieghevole",
+	   "settings": {
+	    "enter_name": {
+	     "label": "Inserire il nome"
+	    },
+	    "expand_first_item_initially": {
+	     "label": "Espandere inizialmente il primo elemento"
+	    },
+	    "headers": {
+	     "header_collapsible_items": {
+	      "content": "Articoli collassabili"
+	     }
+	    },
+	    "show_icon": {
+	     "label": "Mostra icone"
+	    }
+	   }
+	  },
+	  "collection_header": {
+	   "name": "Intestazione della raccolta",
+	   "settings": {
+	    "header_collection_image": {
+	     "content": "Disposizione delle immagini della collezione"
+	    },
+	    "show_collection_image": {
+	     "label": "Mostra l'immagine della raccolta"
+	    },
+	    "show_description": {
+	     "info": "Modificare la collezione per aggiungere una descrizione o un'immagine. [Per saperne di più](https://help.shopify.com/en/manual/products/collections/collection-layout)",
+	     "label": "Mostra la descrizione della raccolta"
+	    }
+	   }
+	  },
+	  "collection_list": {
+	   "name": "Elenco delle collezioni",
+	   "settings": {
+	    "show_view_all_button": {
+	     "label": "Mostrare il pulsante \"Visualizza tutto\"."
+	    }
+	   }
+	  },
+	  "contact_form": {
+	   "blocks": {
+	    "custom_dropdown": {
+	     "name": "Discesa personalizzata",
+	     "settings": {
+	      "value": {
+	       "info": "Separare ogni valore con una virgola.",
+	       "label": "Valore"
+	      }
+	     }
+	    },
+	    "custom_text_field": {
+	     "name": "Campo di testo personalizzato",
+	     "settings": {
+	      "use_textarea": {
+	       "label": "Piccolo"
+	      }
+	     }
+	    }
+	   },
+	   "general": {
+	    "blocks": {
+	     "settings": {
+	      "field_is_required": {
+	       "label": "Il campo è obbligatorio"
+	      },
+	      "placeholder": {
+	       "label": "Segnaposto"
+	      }
+	     }
+	    }
+	   },
+	   "name": "Modulo di contatto"
+	  },
+	  "content_collage": {
+	   "blocks": {
+	    "collection": {
+	     "name": "Collezione",
+	     "settings": {
+	      "show_number_of_products": {
+	       "label": "Mostra il numero di prodotti"
+	      }
+	     }
+	    },
+	    "image": {
+	     "name": "Immagine",
+	     "settings": {
+	      "image": {
+	       "info": "Consigliato .png 1620 x 1800px."
+	      }
+	     }
+	    },
+	    "product": {
+	     "name": "Prodotto"
+	    }
+	   },
+	   "name": "Collage di contenuti",
+	   "settings": {
+	    "enable_full_width_content": {
+	     "label": "Abilita il contenuto a tutta larghezza"
+	    },
+	    "enable_stacked_layout": {
+	     "info": "Non applicabile con ordinamento uguale",
+	     "label": "Abilita il layout impilato"
+	    },
+	    "headers": {
+	     "header_items": {
+	      "content": "Elementi"
+	     }
+	    },
+	    "item_heading_size": {
+	     "label": "Dimensione dell'intestazione dell'elemento"
+	    },
+	    "items_ordering": {
+	     "label": "Ordinamento degli articoli",
+	     "options": {
+	      "option_equal": {
+	       "label": "Uguale"
+	      },
+	      "option_main_item_first": {
+	       "label": "Articolo principale per primo"
+	      },
+	      "option_main_item_last": {
+	       "label": "Elemento principale per ultimo"
+	      }
+	     }
+	    },
+	    "options": {
+	     "option_portrait": {
+	      "label": "Ritratto (4:5)"
+	     }
+	    },
+	    "show_items_button": {
+	     "info": "Link ancora disponibili senza pulsante",
+	     "label": "Pulsante per mostrare l'articolo"
+	    }
+	   }
+	  },
+	  "custom_html": {
+	   "name": "HTML personalizzato",
+	   "settings": {
+	    "html_code": {
+	     "label": "Codice HTML"
+	    }
+	   }
+	  },
+	  "custom_liquid": {
+	   "name": "Liquido personalizzato"
+	  },
+	  "detailed_specifications": {
+	   "blocks": {
+	    "file_download": {
+	     "name": "Scarica il file",
+	     "settings": {
+	      "file_download": {
+	       "info": "Per la visualizzazione dei download di file sono supportati solo i tipi di contenuto \"File\". Impostare \"Accetta tutti i tipi di file\" per la convalida dei file. Supportiamo solo il tipo di meta-campo \"Un valore\". [Per saperne di più](https://docs.saleshunterthemes.com/manual/electro-detailed-specification/#File_download)"
+	      },
+	      "metafield_keys": {
+	       "info": "Elencare le chiavi di metacampo per la visualizzazione del pulsante di download, separate da virgole (ad esempio, altezza, larghezza, profondità).",
+	       "label": "Tasti del metacampo"
+	      }
+	     }
+	    },
+	    "specifications": {
+	     "name": "SPECIFICHE",
+	     "settings": {
+	      "collapse_specifications": {
+	       "label": "Crolla le specifiche"
+	      },
+	      "display_style": {
+	       "options": {
+	        "option_collapsibles": {
+	         "label": "Elementi collassabili"
+	        },
+	        "option_table": {
+	         "label": "Tabella"
+	        }
+	       }
+	      },
+	      "metafield_keys": {
+	       "info": "Elencare le chiavi del meta-campo prodotto che si desidera visualizzare (ad esempio, altezza, larghezza, profondità) separate da virgole. Nota: è supportato solo il tipo di metacampo \"Un valore\", che verrà visualizzato come titolo e valore nel confronto. [Per saperne di più](https://docs.saleshunterthemes.com/manual/electro-detailed-specification/#Specifications)",
+	       "label": "Tasti metacampo"
+	      },
+	      "specifications": {
+	       "info": "Per visualizzare le specifiche del prodotto, personalizzare nelle impostazioni del tema"
+	      }
+	     }
+	    }
+	   },
+	   "name": "Specifiche dettagliate"
+	  },
+	  "featured_product_list": {
+	   "name": "Elenco di prodotti in primo piano",
+	   "settings": {
+	    "headers": {
+	     "header_product_items": {
+	      "content": "Articoli del prodotto"
+	     }
+	    },
+	    "metafield_keys": {
+	     "info": "Inserire le chiavi del metacampo prodotto da mostrare (ad es. altezza, larghezza, profondità). Si consigliano 3 chiavi. [Per saperne di più](https://docs.saleshunterthemes.com/manual/feature-product-list/#Product_specifications)",
+	     "label": "Tasti del metacampo"
+	    },
+	    "show_specification_label": {
+	     "label": "Mostra l'etichetta delle specifiche"
+	    }
+	   }
+	  },
+	  "featured_product": {
+	   "blocks": {
+	    "custom_text": {
+	     "name": "Testo personalizzato"
+	    },
+	    "description": {
+	     "name": "Descrizione"
+	    },
+	    "highlights": {
+	     "name": "Informazioni extra"
+	    },
+	    "price": {
+	     "name": "Prezzo"
+	    },
+	    "product_cross_sell": {
+	     "name": "Vendita incrociata di prodotti"
+	    },
+	    "purchasing": {
+	     "name": "Acquisto"
+	    },
+	    "size_guide": {
+	     "name": "Guida alle taglie"
+	    },
+	    "SKU": {
+	     "name": "SKU"
+	    },
+	    "title": {
+	     "name": "Titolo"
+	    },
+	    "variants": {
+	     "name": "Selettore di varianti"
+	    },
+	    "vendor": {
+	     "name": "Venditore"
+	    },
+	    "view_details_button": {
+	     "name": "Pulsante Visualizza dettagli",
+	     "settings": {
+	      "button_style": {
+	       "label": "Stile",
+	       "options": {
+	        "option_1": {
+	         "label": "Primario"
+	        },
+	        "option_2": {
+	         "label": "Secondario"
+	        }
+	       }
+	      }
+	     }
+	    }
+	   },
+	   "name": "Prodotto in primo piano",
+	   "settings": {
+	    "media_ratio": {
+	     "label": "Rapporto media"
+	    },
+	    "product_title_size": {
+	     "label": "Dimensione del titolo del prodotto"
+	    },
+	    "show_thumbnails_on_mobile": {
+	     "label": "Mostra miniature su mobile"
+	    },
+	    "view_details_button_paragraph": {
+	     "content": "Utilizzatelo per indirizzare gli utenti alla pagina del prodotto."
+	    }
+	   }
+	  },
+	  "footer": {
+	   "blocks": {
+	    "menu": {
+	     "settings": {
+	      "displays_items": {
+	       "info": "Visualizza solo le voci del menu di primo livello"
+	      },
+	      "menu_group": {
+	       "info": "Nota: il menu di livello 1 viene utilizzato come intestazione senza link (vale solo per i menu con sottomenu)."
+	      }
+	     }
+	    },
+	    "text": {
+	     "settings": {
+	      "enable_collapse_on_mobile": {
+	       "info": "Applicabile solo con l'intestazione del menu",
+	       "label": "Abilita il menu a scomparsa su mobile"
+	      }
+	     }
+	    }
+	   },
+	   "name": "Piè di pagina",
+	   "settings": {
+	    "enable_back_to_top": {
+	     "label": "Abilita il pulsante \"torna all'inizio\"."
+	    },
+	    "enable_follow_on_shop": {
+	     "label": "Abilita l'opzione Segui sul negozio"
+	    },
+	    "enable_newsletter": {
+	     "label": "Abilita la newsletter"
+	    },
+	    "footer_logo_max_width": {
+	     "label": "Larghezza massima del logo"
+	    },
+	    "headers": {
+	     "header__social": {
+	      "content": "Icone dei social media"
+	     },
+	     "header_follow_on_shop": {
+	      "content": "Segui il negozio",
+	      "info": "Visualizza il pulsante di follow per la vetrina del negozio sull'app Negozio. [Per saperne di più](https://help.shopify.com/vi/manual/online-store/themes/customizing-themes/follow-on-shop)"
+	     },
+	     "header_newsletter": {
+	      "info": "I clienti che si iscrivono avranno il loro indirizzo e-mail aggiunto all'\"accetta marketing\" [lista clienti](https://help.shopify.com/en/manual/customers/manage-customers)"
+	     },
+	     "header_payment_methods": {
+	      "content": "Metodi di pagamento",
+	      "info": "Per aggiungere un metodo di pagamento, andate nelle vostre [impostazioni di pagamento](/admin/settings/payments)"
+	     },
+	     "header_store_contact": {
+	      "content": "Contatto del negozio"
+	     },
+	     "header_store_information": {
+	      "content": "Informazioni sul negozio"
+	     }
+	    },
+	    "menu_group_layout": {
+	     "label": "Layout del menu"
+	    },
+	    "menu_group": {
+	     "label": "Gruppo di menu"
+	    },
+	    "newsletter": {
+	     "label": "Newsletter"
+	    },
+	    "options": {
+	     "option_flexible": {
+	      "label": "Flessibile"
+	     },
+	     "option_hybrid": {
+	      "label": "Ibrido"
+	     },
+	     "option_stacked": {
+	      "label": "Impilato"
+	     }
+	    },
+	    "paragraph_contact": {
+	     "content": "Per visualizzare l'indirizzo e-mail e il numero di telefono, collegarli nelle impostazioni del tema."
+	    },
+	    "paragraph_newsletter": {
+	     "content": "I clienti che si iscrivono avranno il loro indirizzo e-mail aggiunto a \"accetta marketing\" [elenco clienti](https://help.shopify.com/en/manual/customers/manage-customers)"
+	    },
+	    "paragraph_social": {
+	     "content": "Per visualizzare gli account dei social media, collegarli nelle impostazioni del tema."
+	    },
+	    "show_payment": {
+	     "info": "Le icone vengono visualizzate in base ai metodi di pagamento Shopify.",
+	     "label": "Mostra icone di pagamento"
+	    },
+	    "single_menu": {
+	     "label": "Menu singolo"
+	    },
+	    "social_media": {
+	     "label": "Media sociali"
+	    },
+	    "store_contact": {
+	     "label": "Contatto del negozio"
+	    },
+	    "store_information": {
+	     "label": "Informazioni sul negozio"
+	    }
+	   }
+	  },
+	  "giftcard": {
+	   "name": "Carta regalo"
+	  },
+	  "header": {
+	   "blocks": {
+	    "mega_menu": {
+	     "name": "Menu Mega",
+	     "settings": {
+	      "headers": {
+	       "promotional_content_1": {
+	        "content": "Contenuto promozionale 1"
+	       },
+	       "promotional_content_2": {
+	        "content": "Contenuto promozionale 2"
+	       }
+	      },
+	      "image": {
+	       "info": "900 x 500px .jpg consigliato"
+	      },
+	      "menu_item_name": {
+	       "info": "Inserire il nome della voce di menu per questo mega menu. [Per saperne di più](https://docs.saleshunterthemes.com/manual/electro-header/#Mega_menu)",
+	       "label": "Nome della voce di menu"
+	      }
+	     }
+	    }
+	   },
+	   "name": "Intestazione",
+	   "settings": {
+	    "contact_info": {
+	     "info": "Per visualizzare le informazioni di contatto, collegarle nelle impostazioni del tema.",
+	     "label": "Informazioni di contatto"
+	    },
+	    "enable_contact": {
+	     "label": "Mostra l'indirizzo e-mail e il numero di telefono nel cassetto del menu."
+	    },
+	    "enable_drawer": {
+	     "label": "Abilita il menu a cassetto su schermi grandi"
+	    },
+	    "enable_quick_link": {
+	     "info": "Per visualizzare i collegamenti rapidi, collegarli nelle impostazioni del tema.",
+	     "label": "Mostra collegamenti rapidi nel menu a scomparsa"
+	    },
+	    "enable_search": {
+	     "label": "Mostra la casella di ricerca completa invece dell'icona"
+	    },
+	    "enable_sticky": {
+	     "info": "L'intestazione viene visualizzata sullo schermo mentre i clienti scorrono verso l'alto.",
+	     "label": "Abilita l'intestazione adesiva"
+	    },
+	    "headers": {
+	     "header_navigation": {
+	      "content": "Navigazione"
+	     },
+	     "search": {
+	      "content": "Ricerca"
+	     }
+	    },
+	    "options": {
+	     "option_always": {
+	      "label": "Sempre"
+	     },
+	     "option_none": {
+	      "label": "Non utilizzare"
+	     },
+	     "option_when_scroll_up": {
+	      "label": "Quando scorri verso l'alto"
+	     }
+	    },
+	    "sticky_header": {
+	     "label": "Intestazione adesiva"
+	    }
+	   }
+	  },
+	  "hero_image_with_text": {
+	   "name": "Immagine principale con testo",
+	   "settings": {
+	    "desktop_background_image": {
+	     "info": "1000 x 1000px .png consigliato"
+	    },
+	    "enable_highlighted_collections": {
+	     "info": "Mostra l'elenco delle collezioni di prodotti accanto al menu per una migliore navigazione nel catalogo.",
+	     "label": "Abilita le collezioni evidenziate"
+	    },
+	    "enable_view_all": {
+	     "label": "Mostra il pulsante per visualizzare tutte le collezioni"
+	    },
+	    "headers": {
+	     "header_highlighted_collections": {
+	      "content": "Collezioni evidenziate"
+	     }
+	    },
+	    "selected_collections": {
+	     "info": "6 raccolte consigliate"
+	    }
+	   }
+	  },
+	  "icon_with_text": {
+	   "blocks": {
+	    "icon_with_text_item": {
+	     "name": "Icona con elemento di testo"
+	    }
+	   },
+	   "name": "Icona con testo",
+	   "settings": {
+	    "headers": {
+	     "header_icon": {
+	      "content": "Icona"
+	     }
+	    }
+	   }
+	  },
+	  "image_banner": {
+	   "name": "Immagine banner",
+	   "settings": {
+	    "height": {
+	     "info": "70% e 100% di altezza dello schermo funzionano solo su schermi di grandi dimensioni (il cellulare è sempre impostato su 100% di altezza)."
+	    }
+	   }
+	  },
+	  "image_with_text_columns": {
+	   "blocks": {
+	    "column": {
+	     "name": "Colonna"
+	    }
+	   },
+	   "name": "Immagine con colonne di testo"
+	  },
+	  "image_with_text": {
+	   "name": "Immagine con testo",
+	   "settings": {
+	    "options": {
+	     "option_landscape": {
+	      "label": "Paesaggio (4:3)"
+	     },
+	     "option_portrait": {
+	      "label": "Ritratto (3:4)"
+	     }
+	    },
+	    "primary_image_ratio": {
+	     "label": "Rapporto immagine primaria"
+	    },
+	    "primary_image": {
+	     "label": "Immagine primaria"
+	    },
+	    "secondary_image_ratio": {
+	     "label": "Rapporto immagine secondaria"
+	    },
+	    "secondary_image": {
+	     "label": "Immagine secondaria"
+	    }
+	   }
+	  },
+	  "logo_list": {
+	   "blocks": {
+	    "logo": {
+	     "name": "Logo",
+	     "settings": {
+	      "image": {
+	       "info": "120 x 90px .png consigliato"
+	      }
+	     }
+	    }
+	   },
+	   "name": "Elenco dei logo",
+	   "settings": {
+	    "items_per_row_on_desktop": {
+	     "label": "Voci per riga su schermo grande"
+	    }
+	   }
+	  },
+	  "main_404": {
+	   "name": "Pagina 404",
+	   "settings": {
+	    "catalogue_link_text": {
+	     "label": "Etichetta del pulsante del catalogo"
+	    },
+	    "enable_search": {
+	     "label": "Abilita la ricerca"
+	    },
+	    "general": {
+	     "link_text": {
+	      "info": "Nascondi se vuoto."
+	     }
+	    },
+	    "headers": {
+	     "header_functions": {
+	      "content": "Funzioni"
+	     }
+	    },
+	    "home_page_link_text": {
+	     "label": "Etichetta del pulsante della pagina iniziale"
+	    }
+	   }
+	  },
+	  "main_article": {
+	   "blocks": {
+	    "content": {
+	     "name": "Contenuto",
+	     "settings": {
+	      "show_tag": {
+	       "label": "Mostra i tag"
+	      }
+	     }
+	    },
+	    "featured_image": {
+	     "name": "Immagine in primo piano"
+	    },
+	    "title": {
+	     "name": "Titolo del blog",
+	     "settings": {
+	      "paragraph_first": {
+	       "content": "Se si include un link nei post sui social media, l'immagine in primo piano della pagina verrà mostrata come immagine di anteprima.[Per saperne di più](https://help.shopify.com/en/manual/online-store/images/showing-social-media-thumbnail-images)"
+	      },
+	      "paragraph_second": {
+	       "content": "Il titolo e la descrizione del negozio sono inclusi nell'immagine di anteprima.[Per saperne di più](https://help.shopify.com/en/manual/promoting-marketing/seo/adding-keywords#set-a-title-and-description-for-your-online-store)"
+	      },
+	      "show_author": {
+	       "label": "Mostra l'autore"
+	      },
+	      "show_date": {
+	       "label": "Mostra la data"
+	      }
+	     }
+	    }
+	   },
+	   "name": "Dettagli del post del blog",
+	   "settings": {
+	    "paragraph": {
+	     "content": "Questo contenuto proviene dal post del blog."
+	    },
+	    "text_size": {
+	     "label": "Dimensione del testo del post sul blog"
+	    }
+	   }
+	  },
+	  "main_blog": {
+	   "name": "Pagina del blog",
+	   "settings": {
+	    "headers": {
+	     "header_blog_post": {
+	      "content": "Intestazione del post del blog"
+	     }
+	    },
+	    "show_rss": {
+	     "label": "Mostra RSS"
+	    },
+	    "show_tags_filter": {
+	     "label": "Mostra il filtro dei tag"
+	    }
+	   }
+	  },
+	  "main_cart": {
+	   "name": "Pagina del carrello"
+	  },
+	  "main_collection_list": {
+	   "name": "Pagina dell'elenco delle collezioni",
+	   "settings": {
+	    "sort_collections_by": {
+	     "label": "Ordinare le collezioni per",
+	     "options": {
+	      "option_alphabetical_reversed": {
+	       "label": "In ordine alfabetico, Z-A"
+	      },
+	      "option_alphabetically": {
+	       "label": "In ordine alfabetico, A-Z"
+	      },
+	      "option_date_reversed": {
+	       "label": "Data, da vecchio a nuovo"
+	      },
+	      "option_date": {
+	       "label": "Data, da nuovo a vecchio"
+	      },
+	      "option_product_high": {
+	       "label": "Numero di prodotti, da alto a basso"
+	      },
+	      "option_product_low": {
+	       "label": "Numero di prodotti, da basso ad alto"
+	      }
+	     }
+	    }
+	   }
+	  },
+	  "main_collection_product_list": {
+	   "name": "Prodotti della raccolta"
+	  },
+	  "main_collection_products": {
+	   "settings": {
+	    "add_info": {
+	     "info": "Inserisci l'elenco delle chiavi dei metafield del prodotto che desideri confrontare nella tabella, separate da virgole (ad es.: altezza, larghezza, profondità). [Scopri di più](#)",
+	     "label": "Informazioni aggiuntive"
+	    },
+	    "enable_filter": {
+	     "info": "Per personalizzare i filtri, utilizza l'app Ricerca e Scoperta. [Per saperne di più](https://help.shopify.com/en/manual/online-store/search-and-discovery/filters)",
+	     "label": "Abilita il filtro prodotto"
+	    },
+	    "enable_sort": {
+	     "label": "Abilita ordinamento"
+	    },
+	    "filter_sort_layout": {
+	     "label": "Filtro e disposizione di ordinamento su schermo grande",
+	     "options_1": {
+	      "label": "Barra laterale"
+	     },
+	     "options_2": {
+	      "label": "Topbar in Italian is \"Barra superiore.\""
+	     },
+	     "options_3": {
+	      "label": "Cassetto"
+	     }
+	    },
+	    "header": {
+	     "enable_comparison": {
+	      "content": "Abilita confronto"
+	     },
+	     "filter_and_sort": {
+	      "content": "Filtra e ordina"
+	     }
+	    },
+	    "mobile_expand_all_filter": {
+	     "label": "Espandi tutti i filtri per impostazione predefinita"
+	    },
+	    "product_comparison": {
+	     "info": "Consenti agli acquirenti di confrontare i prodotti in questa collezione.",
+	     "label": "Confronto del prodotto"
+	    }
+	   }
+	  },
+	  "main_page": {
+	   "name": "Pagina",
+	   "settings": {
+	    "show_page_content": {
+	     "label": "Mostra il contenuto della pagina"
+	    },
+	    "show_page_title": {
+	     "label": "Mostra il titolo della pagina"
+	    }
+	   }
+	  },
+	  "main_password": {
+	   "blocks": {
+	    "content": {
+	     "name": "Contenuto"
+	    }
+	   },
+	   "name": "Pagina della password",
+	   "settings": {
+	    "enable_footer_background": {
+	     "label": "Abilita lo sfondo del piè di pagina"
+	    },
+	    "headers": {
+	     "header_email_form": {
+	      "content": "Modulo e-mail"
+	     },
+	     "headers_footer": {
+	      "content": "Piè di pagina"
+	     }
+	    },
+	    "submit_button_text": {
+	     "label": "Testo del pulsante Invia"
+	    }
+	   }
+	  },
+	  "main_product_comparison": {
+	   "name": "Confronto prodotti (Pagina prodotto)",
+	   "settings": {
+	    "current_badge_background": {
+	     "label": "Sfondo attuale del distintivo"
+	    },
+	    "current_badge_text": {
+	     "label": "Testo attuale del badge"
+	    },
+	    "number_of_related_products": {
+	     "info": "Utilizzeremo questo indirizzo se abbiamo bisogno di contattarti riguardo al tuo account.",
+	     "label": "Numero di prodotti correlati"
+	    },
+	    "paragraph": {
+	     "content": "Aiuta a trovare dinamicamente i prodotti da confrontare nella pagina del prodotto utilizzando i loro prodotti correlati nell'app Ricerca e Scoperta [Scopri di più](#)"
+	    }
+	   }
+	  },
+	  "main_product": {
+	   "blocks": {
+	    "basic_description": {
+	     "settings": {
+	      "enable_more_button": {
+	       "info": "Accorciare il contenuto della descrizione quando supera i 150 caratteri",
+	       "label": "Abilita il pulsante \"Per saperne di più\""
+	      }
+	     }
+	    },
+	    "complementary_products": {
+	     "name": "Prodotti complementari"
+	    },
+	    "custom_badges": {
+	     "name": "Badge personalizzati"
+	    },
+	    "custom_text": {
+	     "name": "Testo personalizzato"
+	    },
+	    "description": {
+	     "name": "Descrizione"
+	    },
+	    "highlights": {
+	     "name": "In evidenza"
+	    },
+	    "pickup_availability": {
+	     "name": "Disponibilità del ritiro",
+	     "settings": {
+	      "paragraph": {
+	       "content": "Mostra i negozi offline disponibili per la variante selezionata. [Per saperne di più](https://help.shopify.com/en/manual/shipping/setting-up-and-managing-your-shipping/local-methods/local-pickup)"
+	      },
+	      "show_expected_pickup_time": {
+	       "label": "Mostra l'orario di ritiro previsto"
+	      }
+	     }
+	    },
+	    "popup_content": {
+	     "name": "Contenuto del popup"
+	    },
+	    "price": {
+	     "name": "Prezzo"
+	    },
+	    "purchasing": {
+	     "name": "Acquisto",
+	     "settings": {
+	      "show_gift_card_recipient": {
+	       "info": "I prodotti con carta regalo possono essere inviati direttamente al destinatario con un messaggio personale.",
+	       "label": "Mostra il modulo di informazioni sul destinatario per i prodotti con carta regalo"
+	      }
+	     }
+	    },
+	    "size_guide": {
+	     "name": "Guida alle taglie"
+	    },
+	    "SKU": {
+	     "name": "SKU"
+	    },
+	    "specifications": {
+	     "metafield_keys": {
+	      "info": "Elenca le chiavi dei metafield del prodotto che desideri visualizzare (ad es. altezza, larghezza, profondità) separate da virgole. [Scopri di più](#)"
+	     },
+	     "name": "Specifiche",
+	     "settings": {
+	      "show_as_collapsible_content": {
+	       "label": "Mostra come contenuto comprimibile"
+	      }
+	     }
+	    },
+	    "title": {
+	     "name": "Titolo"
+	    },
+	    "variants": {
+	     "name": "Selettore di varianti",
+	     "selector_type": {
+	      "content": "Selettore",
+	      "label": "Tipo di selettore",
+	      "option_1": {
+	       "label": "Pulsante"
+	      },
+	      "option_2": {
+	       "label": "Tendina"
+	      }
+	     }
+	    },
+	    "vendor": {
+	     "name": "Venditore"
+	    },
+	    "product_attributes": {
+	     "name": "Attributi del prodotto"
+	    },
+	    "product_specifications": {
+	     "name": "Specifiche del prodotto"
+	    }
+	   },
+	   "name": "Dettagli del prodotto",
+	   "settings": {
+	    "button_type": {
+	     "label": "Tipo di pulsante",
+	     "options": {
+	      "option_add_to_cart": {
+	       "label": "Aggiungi al carrello"
+	      },
+	      "option_dynamic_checkout": {
+	       "label": "Pulsante di pagamento dinamico"
+	      }
+	     }
+	    },
+	    "desktop_media_layout": {
+	     "enable_media_zoom": {
+	      "label": "Abilita la funzione di zoom"
+	     },
+	     "label": "Layout dei media su schermo grande",
+	     "options": {
+	      "option_gallery_grid": {
+	       "label": "Griglia della galleria"
+	      },
+	      "option_single_with_thumbnails": {
+	       "label": "Singolo con miniature"
+	      }
+	     }
+	    },
+	    "headers": {
+	     "header_advanced_description": {
+	      "content": "Descrizione avanzata"
+	     },
+	     "header_media": {
+	      "content": "media",
+	      "info": "Per saperne di più su [tipi di media](https://help.shopify.com/en/manual/products/product-media)"
+	     },
+	     "sticky_bar": {
+	      "content": "Barra acquisti appiccicosa"
+	     }
+	    },
+	    "show_product_information_on_mobile": {
+	     "label": "Mostra le informazioni sul prodotto su mobile"
+	    },
+	    "show_sticky_purchasing_bar": {
+	     "label": "Mostra la barra degli acquisti quando si scorre verso il basso"
+	    },
+	    "thumbnails_ratio": {
+	     "label": "Rapporto miniature"
+	    }
+	   }
+	  },
+	  "main_search": {
+	   "header": {
+	    "info": "Utilizzare l'app Ricerca e scoperta per personalizzare i risultati della ricerca per i clienti. [Per saperne di più](https://help.shopify.com/en/manual/online-store/search-and-discovery/settings)"
+	   },
+	   "name": "Pagina di ricerca",
+	   "product_results_per_row": {
+	    "info": "I risultati della ricerca possono visualizzare i prodotti in 2 voci per riga, mentre i post e le pagine del blog sono visualizzati in 1 voce per riga.",
+	    "label": "Risultati dei prodotti per riga su mobile"
+	   },
+	   "settings": {
+	    "header_page_card": {
+	     "content": "Scheda pagina"
+	    }
+	   }
+	  },
+	  "map": {
+	   "name": "Mappa",
+	   "settings": {
+	    "custom_map_image_mobile": {
+	     "info": "750 x 900px .jpg consigliato. Sovrascrive il canvas della mappa di Google.",
+	     "label": "Immagine della mappa personalizzata mobile"
+	    },
+	    "custom_map_image": {
+	     "info": "Sovrascrive la tela della mappa di Google.",
+	     "label": "Immagine mappa personalizzata"
+	    },
+	    "header_direction_button": {
+	     "content": "Compilare il campo Indirizzo mappa per far apparire il link alle indicazioni stradali."
+	    },
+	    "map_address": {
+	     "info": "Google Maps caricherà questa posizione.",
+	     "label": "Indirizzo"
+	    },
+	    "map_mobile_ratio": {
+	     "label": "Rapporto della mappa mobile"
+	    },
+	    "map_height": {
+	     "label": "Altezza della mappa su schermo grande"
+	    }
+	   }
+	  },
+	  "moving_image_banner": {
+	   "blocks": {
+	    "image": {
+	     "settings": {
+	      "background_image": {
+	       "info": "Per garantire il corretto funzionamento dell'effetto di spostamento, la larghezza combinata di tutte le immagini deve essere maggiore della larghezza del contenitore."
+	      }
+	     }
+	    }
+	   },
+	   "name": "Banner con immagine in movimento",
+	   "settings": {
+	    "background_image": {
+	     "info": "Per garantire il corretto funzionamento dell'effetto mobile, la larghezza combinata di tutte le immagini deve essere superiore alla larghezza del contenitore."
+	    }
+	   }
+	  },
+	  "newsletter": {
+	   "name": "Newsletter",
+	   "settings": {
+	    "image_desktop": {
+	     "info": "2880 x 1200px .jpg consigliato"
+	    },
+	    "image_mobile": {
+	     "info": "750 x 1400px .jpg consigliato"
+	    }
+	   }
+	  },
+	  "popup": {
+	   "blocks": {
+	    "call_to_action": {
+	     "name": "Chiamata all'azione"
+	    },
+	    "newsletter": {
+	     "name": "Modulo newsletter",
+	     "settings": {
+	      "paragraph_one": {
+	       "content": "Abbonati aggiunti automaticamente alla vostra lista clienti \"Abbonati e-mail\". [Per saperne di più](https://help.shopify.com/en/manual/customers/manage-customers)"
+	      },
+	      "paragraph_two": {
+	       "content": "Non sono disponibili impostazioni personalizzabili."
+	      }
+	     }
+	    }
+	   },
+	   "name": "Popup",
+	   "settings": {
+	    "enable_popup": {
+	     "info": "I popup chiusi senza invio non appariranno fino alla prossima visita.",
+	     "label": "Abilita il popup"
+	    },
+	    "enable_sticky": {
+	     "info": "Il popup viene visualizzato come etichetta adesiva dopo la prima chiusura.",
+	     "label": "Abilita popup appiccicoso quando si chiude"
+	    },
+	    "headers": {
+	     "header_sticky": {
+	      "content": "Appiccicoso"
+	     },
+	     "header_trigger": {
+	      "content": "Innesco"
+	     }
+	    },
+	    "popup_image_recoments": {
+	     "info": "1300 x 730px .jpg consigliato"
+	    },
+	    "popup_position": {
+	     "label": "Posizione del popup",
+	     "options": {
+	      "option_left": {
+	       "label": "A sinistra"
+	      },
+	      "option_right": {
+	       "label": "A destra"
+	      }
+	     }
+	    },
+	    "show_only_for_non_login_visitors": {
+	     "label": "Mostra solo per i visitatori non loggati"
+	    },
+	    "show_only_on_home_page": {
+	     "label": "Mostra solo sulla home page"
+	    },
+	    "sticky_heading_size": {
+	     "label": "Dimensioni dell'intestazione adesiva"
+	    },
+	    "sticky_label": {
+	     "label": "Etichetta intestazione adesiva"
+	    },
+	    "visibility": {
+	     "label": "Visibilità",
+	     "options": {
+	      "all_pages": {
+	       "label": "Tutte le pagine"
+	      },
+	      "cart_page_only": {
+	       "label": "Pagina del carrello solo"
+	      },
+	      "collection_page_only": {
+	       "label": "Pagina di raccolta soltanto"
+	      },
+	      "home_page_only": {
+	       "label": "Pagina principale solamente"
+	      },
+	      "product_page_only": {
+	       "label": "Pagina del prodotto solamente"
+	      }
+	     }
+	    },
+	    "when_to_show": {
+	     "info": "Dopo l'aggiunta al carrello attiverà il popup una volta che i visitatori chiuderanno il cassetto del carrello.",
+	     "label": "Quando mostrare",
+	     "options": {
+	      "option_after_add_to_cart": {
+	       "label": "Dopo la chiusura della notifica del carrello"
+	      },
+	      "option_reaching_the_footer": {
+	       "label": "Raggiungere il piè di pagina"
+	      },
+	      "time_on_page": {
+	       "label": "Tempo sulla pagina"
+	      }
+	     },
+	     "show_after": {
+	      "info": "Applica l'opzione \"Tempo sulla pagina\"",
+	      "label": "Mostra dopo"
+	     }
+	    }
+	   }
+	  },
+	  "product_comparison": {
+	   "name": "Confronto tra prodotti",
+	   "settings": {
+	    "display_in_product_page": {
+	     "info": "Genera automaticamente una colonna per il prodotto attualmente visualizzato.",
+	     "label": "Visualizzazione nella pagina del prodotto"
+	    },
+	    "headers": {
+	     "header_table": {
+	      "content": "Tabella"
+	     }
+	    },
+	    "paragraph": {
+	     "content": "Si prega di utilizzare la sezione \"Confronto dei prodotti (Pagina del prodotto)\" per confrontare i prodotti nella Pagina del prodotto."
+	    },
+	    "product_comparison_metafield_keys": {
+	     "info": "Inserire le chiavi del metacampo prodotto da confrontare nella tabella (ad es. altezza, larghezza, profondità). [Per saperne di più](https://docs.saleshunterthemes.com/manual/eletro-product-comparison/#Table)",
+	     "label": "Chiavi di metacampo a confronto"
+	    }
+	   }
+	  },
+	  "product_hotspots": {
+	   "blocks": {
+	    "hotspot_item": {
+	     "name": "Articolo hotspot",
+	     "settings": {
+	      "content_position": {
+	       "label": "Posizione del contenuto su schermo grande"
+	      },
+	      "left_offset": {
+	       "label": "Spostamento a sinistra"
+	      },
+	      "top_offset": {
+	       "label": "Sfalsamento in alto"
+	      }
+	     }
+	    },
+	    "product_hotspot": {
+	     "name": "Elemento hotspot"
+	    },
+	    "text_hotspot": {
+	     "name": "Hotspot di testo"
+	    }
+	   },
+	   "name": "Hotspot dei prodotti",
+	   "settings": {
+	    "select_image": {
+	     "info": "800 x 500px .png consigliato."
+	    }
+	   }
+	  },
+	  "product_lists": {
+	   "blocks": {
+	    "collection": {
+	     "name": "Elenco prodotti",
+	     "settings": {
+	      "heading": {
+	       "info": "Il titolo della collezione viene utilizzato se non è impostato."
+	      }
+	     }
+	    }
+	   },
+	   "name": "Elenchi di prodotti",
+	   "settings": {
+	    "blog_post_list": {
+	     "info": "Appare se l'elenco dei post del blog ha più post di quelli visualizzati."
+	    },
+	    "enable_view_more": {
+	     "info": "Appare se la collezione ha più prodotti di quelli mostrati.",
+	     "label": "Abilitare il pulsante \"Visualizza tutto\"."
+	    }
+	   }
+	  },
+	  "product_recommendation": {
+	   "name": "Raccomandazione di prodotti",
+	   "settings": {
+	    "items_to_show": {
+	     "label": "Elementi da mostrare"
+	    },
+	    "paragraph_1": {
+	     "content": "Per scegliere i prodotti correlati a uno specifico, utilizzare l'app Ricerca e scoperta.[Per saperne di più](https://help.shopify.com/en/manual/online-store/search-and-discovery/product-recommendations#related-products)"
+	    },
+	    "paragraph": {
+	     "content": "La raccomandazione dei prodotti mostra i prodotti correlati per impostazione predefinita in base alle informazioni sul prodotto e agli ordini. Per selezionare i prodotti correlati per uno specifico prodotto, utilizzare l'applicazione Search & Discovery. [Per saperne di più](https://help.shopify.com/en/manual/online-store/search-and-discovery/product-recommendations#related-products)"
+	    }
+	   }
+	  },
+	  "product_sticky_bar": {
+	   "settings": {
+	    "headers": {
+	     "header_menu_item": {
+	      "content": "Voce di menu"
+	     },
+	     "header_purchasing": {
+	      "content": "Acquisto"
+	     }
+	    },
+	    "menu_label": {
+	     "label": "Etichetta del menu"
+	    },
+	    "menu": {
+	     "info": "Il menu appiccicoso consente di scorrere a sezioni specifiche tramite le voci di menu."
+	    },
+	    "paragraph_menu": {
+	     "content": "Abbinare l'ID della sezione di destinazione con l'ID visualizzato in fondo alla sezione per collegarla alla voce di menu. Per mostrare l'ID della sezione, configurare Aspetto nelle impostazioni del tema. [Per saperne di più](https://docs.saleshunterthemes.com/manual/electro-product-template/)"
+	    },
+	    "show_product_menu_items": {
+	     "label": "Mostra le voci di menu dei prodotti"
+	    },
+	    "show_purchasing": {
+	     "label": "Mostra gli acquisti nel menu appiccicoso dei prodotti"
+	    },
+	    "target_section_id": {
+	     "label": "ID sezione di destinazione"
+	    }
+	   }
+	  },
+	  "running_content": {
+	   "name": "Testo in esecuzione",
+	   "settings": {
+	    "moving_direction": {
+	     "label": "Direzione di movimento",
+	     "option_1": {
+	      "label": "Destra a sinistra"
+	     },
+	     "option_2": {
+	      "label": "Da sinistra a destra"
+	     }
+	    },
+	    "pause_when_hover": {
+	     "label": "Abilita pausa al passaggio del mouse"
+	    },
+	    "speed": {
+	     "label": "Velocità",
+	     "option_1": {
+	      "label": "Molto lento"
+	     },
+	     "option_2": {
+	      "label": "Lento"
+	     },
+	     "option_3": {
+	      "label": "Normale"
+	     },
+	     "option_4": {
+	      "label": "Veloce"
+	     }
+	    }
+	   }
+	  },
+	  "running_text": {
+	   "name": "Testo scorrevole",
+	   "settings": {
+	    "show_play_button": {
+	     "label": "Mostra pulsante di riproduzione"
+	    },
+	    "slope_style": {
+	     "label": "Stile di inclinazione",
+	     "options": {
+	      "option_down": {
+	       "label": "Inclinazione verso il basso"
+	      },
+	      "option_up": {
+	       "label": "Inclinazione verso l'alto"
+	      }
+	     }
+	    }
+	   }
+	  },
+	  "slideshow": {
+	   "blocks": {
+	    "slide": {
+	     "name": "Diapositiva"
+	    }
+	   },
+	   "name": "Slideshow",
+	   "settings": {
+	    "accessibility": {
+	     "description": {
+	      "info": "Descrivere la presentazione per gli utenti di screen reader.",
+	      "label": "Descrizione della presentazione"
+	     },
+	     "label": "Accessibilità"
+	    },
+	    "autoplay_delay": {
+	     "label": "Cambia le diapositive ogni"
+	    },
+	    "controller": {
+	     "label": "Controllore"
+	    },
+	    "enable_autoplay": {
+	     "label": "Abilita l'autoplay"
+	    }
+	   }
+	  },
+	  "testimonials": {
+	   "blocks": {
+	    "item": {
+	     "name": "Testimonianza",
+	     "settings": {
+	      "avatar": {
+	       "info": "360px x 360px .jpg consigliato",
+	       "label": "Avatar"
+	      },
+	      "header_bought_product": {
+	       "content": "Prodotto acquistato",
+	       "info": "Usare i testimonial come feedback del prodotto."
+	      },
+	      "job_title": {
+	       "label": "Titolo dell'autore"
+	      },
+	      "name": {
+	       "label": "Autore"
+	      },
+	      "testimonial_content": {
+	       "label": "Contenuto della testimonianza"
+	      }
+	     }
+	    }
+	   },
+	   "settings": {
+	    "show_rating": {
+	     "label": "Mostra la valutazione"
+	    },
+	    "header_testimonial_items": {
+	     "content": "Elementi delle testimonianze"
+	    },
+	    "icon_color_scheme": {
+	     "label": "Schema di colori delle icone"
+	    },
+	    "show_bought_products": {
+	     "info": "Usare le testimonianze come feedback del prodotto.",
+	     "label": "Mostra i prodotti acquistati"
+	    }
+	   },
+	   "name": "Testimonianze"
+	  },
+	  "text_hotspot": {
+	   "blocks": {
+	    "product_hotspot": {
+	     "name": "Punto caldo"
+	    }
+	   }
+	  },
+	  "text_hotspots": {
+	   "name": "Hotspot di testo",
+	   "settings": {
+	    "collapse_hotspots_description_for_list": {
+	     "label": "Crolla la descrizione degli hotspot per l'elenco"
+	    },
+	    "enable_autoplay_for_slideshow": {
+	     "label": "Abilita l'autoplay per la presentazione"
+	    },
+	    "headers": {
+	     "header_hotspots": {
+	      "content": "Hotspot"
+	     }
+	    },
+	    "show_navigation_number_for_slideshow": {
+	     "label": "Mostra la navigazione per la presentazione"
+	    },
+	    "show_pagination_number_for_slideshow": {
+	     "label": "Mostra la paginazione per la presentazione"
+	    }
+	   }
+	  },
+	  "text": {
+	   "name": "Testo",
+	   "settings": {
+	    "heading_size": {
+	     "label": "Dimensione dell'intestazione",
+	     "options": {
+	      "large": {
+	       "label": "Grande"
+	      },
+	      "regular": {
+	       "label": "Regolare"
+	      },
+	      "small": {
+	       "label": "Piccolo"
+	      }
+	     }
+	    }
+	   }
+	  },
+	  "timeline": {
+	   "blocks": {
+	    "timeline_item": {
+	     "name": "Voce della timeline",
+	     "settings": {
+	      "image": {
+	       "info": "Larghezza 800px .png consigliato"
+	      }
+	     }
+	    }
+	   },
+	   "name": "Linea temporale",
+	   "settings": {
+	    "collapse_on_mobile": {
+	     "label": "Collassare per impostazione predefinita su mobile"
+	    },
+	    "headers": {
+	     "header_timeline": {
+	      "content": "Linea temporale"
+	     }
+	    }
+	   }
+	  },
+	  "top_bar": {
+	   "blocks": {
+	    "annoucement": {
+	     "name": "Messaggio"
+	    },
+	    "content_ordering": {
+	     "options": {
+	      "option_content_info_first": {
+	       "label": "Prima le informazioni di contatto"
+	      },
+	      "option_links_first": {
+	       "label": "Collegamenti rapidi prima"
+	      }
+	     }
+	    },
+	    "paragraph_store_info": {
+	     "content": "Le informazioni sul negozio nella barra superiore sono visibili solo su schermi grandi."
+	    },
+	    "quick_links": {
+	     "info": "Si consiglia di limitare a 3 il numero di collegamenti rapidi nel menu.",
+	     "label": "Collegamenti rapidi"
+	    },
+	    "show_quick_links_on_desktop": {
+	     "label": "Show quick links on large screen"
+	    },
+	    "store_info": {
+	     "name": "Informazioni sul negozio"
+	    }
+	   },
+	   "name": "Barra superiore"
+	  },
+	  "video_banner": {
+	   "name": "Banner video",
+	   "settings": {
+	    "header_main_video": {
+	     "content": "Video principale"
+	    },
+	    "header_mobile_video": {
+	     "content": "Video mobile (opzionale)",
+	     "info": "Visualizza il video principale se il video mobile non è presente"
+	    },
+	    "video_hosted": {
+	     "info": "Sostituisce il video esterno"
+	    }
+	   }
+	  },
+	  "video_with_text": {
+	   "name": "Video con testo",
+	   "settings": {
+	    "aspect_ratio": {
+	     "label": "Rapporto d'aspetto"
+	    },
+	    "enable_video_loop": {
+	     "label": "Abilita il video in loop"
+	    },
+	    "enable_video_mute": {
+	     "label": "Abilita l'esclusione del video"
+	    },
+	    "video_alt_text": {
+	     "info": "Fornire una descrizione video per gli utenti di screen reader. [Per saperne di più](https://help.shopify.com/en/manual/online-store/themes/theme-structure/theme-features#video)",
+	     "label": "Testo alt del video"
+	    },
+	    "video_thumbnail_mobile": {
+	     "label": "Miniatura mobile"
+	    },
+	    "video_thumbnail": {
+	     "info": "1280 x 720px .png consigliato.",
+	     "label": "Miniature"
+	    }
+	   }
+	  }
+	 },
+	 "settings_schema": {
+	  "appearance": {
+	   "name": "Aspetto",
+	   "settings": {
+	    "content_max_width": "Content max width",
+	    "enable_parallax_scrolling_prominent_badge": {
+	     "label": "Abilita lo scorrimento in parallasse per il badge Prominent"
+	    },
+	    "headers": {
+	     "header_animation": {
+	      "content": "Animazione"
+	     },
+	     "header_image_cards": {
+	      "content": "Schede immagine"
+	     }
+	    },
+	    "show_background_grid_lines": {
+	     "label": "Mostra le linee della griglia di sfondo"
+	    },
+	    "subheading_accent_scheme": {
+	     "label": "Schema di accento del sottotitolo"
+	    },
+	    "subheading_style": {
+	     "label": "Stile dei sottotitoli",
+	     "options": {
+	      "option_badge": "Distintivo",
+	      "option_text": "Testo"
+	     }
+	    },
+	    "use_text_color": {
+	     "label": "Utilizzare il colore del testo per il contenuto della scheda immagine"
+	    },
+	    "header_spacing": {
+	     "content": "Spaziatura"
+	    }
+	   }
+	  },
+	  "blog_post_card": {
+	   "name": "Scheda post del blog",
+	   "settings": {
+	    "featured_image_ratio": {
+	     "label": "Rapporto immagine in primo piano"
+	    },
+	    "show_author": {
+	     "label": "Mostra l'autore"
+	    },
+	    "show_blog_tag": {
+	     "label": "Mostra i tag del blog"
+	    },
+	    "show_excerpt": {
+	     "info": "Modificare gli estratti modificando i post del blog. [Per saperne di più](https://help.shopify.com/manual/online-store/blogs/writing-blogs#display-an-excerpt-from-a-blog-post)",
+	     "label": "Mostra estratto"
+	    },
+	    "show_featured_image": {
+	     "label": "Mostra l'immagine in primo piano"
+	    },
+	    "show_published_date": {
+	     "label": "Mostra la data di pubblicazione"
+	    },
+	    "show_read_more": {
+	     "label": "Mostra \"Leggi di più"
+	    }
+	   }
+	  },
+	  "breadcrumb": {
+	   "name": "Briciola di pane",
+	   "settings": {
+	    "enable_breadcrumb": {
+	     "label": "Mostra la barra del pane"
+	    }
+	   }
+	  },
+	  "cart": {
+	   "name": "Carrello",
+	   "settings": {
+	    "cart_type": {
+	     "label": "Tipo di carrello",
+	     "options": {
+	      "option_drawer": "Cassetto",
+	      "option_page": "Pagina"
+	     }
+	    },
+	    "enable_dynamic_checkout_button": {
+	     "label": "Abilita il pulsante di checkout dinamico"
+	    },
+	    "enable_order_notes": {
+	     "label": "Abilita le note dell'ordine"
+	    },
+	    "minimum_order_price_for_free_shipping": {
+	     "label": "Prezzo minimo dell'ordine per la spedizione gratuita"
+	    },
+	    "show_cart_tax_info": {
+	     "label": "Mostra informazioni su tasse e spedizione"
+	    },
+	    "show_free_shipping_notification": {
+	     "info": "Incoraggiare i clienti ad aggiungere più prodotti al carrello per ottenere la spedizione gratuita.",
+	     "label": "Mostra la notifica di spedizione gratuita"
+	    },
+	    "show_product_vendor": {
+	     "label": "Mostra il venditore del prodotto"
+	    }
+	   }
+	  },
+	  "collection_card": {
+	   "name": "Scheda collezione",
+	   "settings": {
+	    "enable_prominent_badges": {
+	     "info": "Creare un metaoggetto \"Badge\" con i campi \"content\" e \"color\", utilizzando rispettivamente i tipi di contenuto \"Single line text\" e \"Color\". Quindi, aggiungere una nuova definizione di collection_metafields con la chiave \"collection.badge\" e il tipo di meta-campo 'Metaobject'. Infine, assegnare il metaoggetto creato ai meta-campi della collezione e configurare l'aspetto del badge nelle impostazioni della collezione. [Per saperne di più](https://docs.saleshunterthemes.com/manual/electro-theme-settings/#prominent-badge)",
+	     "label": "Abilita i badge in evidenza"
+	    },
+	    "headers": {
+	     "header_prominent_badge": {
+	      "content": "Badge prominente"
+	     }
+	    },
+	    "show_product_count": {
+	     "label": "Mostra il numero di prodotti"
+	    }
+	   }
+	  },
+	  "colors": {
+	   "name": "I colori",
+	   "settings": {
+	    "background_solid_gradient": {
+	     "label": "Gradiente di sfondo"
+	    },
+	    "card_color_scheme": {
+	     "info": "Mostra solo se lo stile della carta è abilitato",
+	     "label": "Schema colori carta"
+	    },
+	    "color_low_stock_badge_background": {
+	     "label": "Sfondo del badge a basso stock"
+	    },
+	    "color_low_stock_badge": {
+	     "label": "Etichetta del badge a basso stock"
+	    },
+	    "color_sale_badge_background": {
+	     "label": "Sfondo del badge di vendita"
+	    },
+	    "color_sale_badge_label": {
+	     "label": "Etichetta del badge di vendita"
+	    },
+	    "color_scheme_background_1": {
+	     "label": "Sfondo"
+	    },
+	    "color_scheme_background_2": {
+	     "label": "Sfondo"
+	    },
+	    "color_scheme_content_1": {
+	     "label": "Contenuto"
+	    },
+	    "color_scheme_content_2": {
+	     "label": "Contenuto"
+	    },
+	    "color_scheme_drawer_popover": {
+	     "info": "Per componenti a comparsa come notifiche, menu, finestre modali, ecc.",
+	     "label": "Finestra pop-up"
+	    },
+	    "colors_accent_gradient": {
+	     "label": "Gradiente d'accento"
+	    },
+	    "colors_accent": {
+	     "label": "Accento"
+	    },
+	    "colors_background": {
+	     "label": "Sfondo della pagina"
+	    },
+	    "colors_body_text": {
+	     "info": "Utilizzato anche per i link di testo e il pulsante di contorno",
+	     "label": "Testo"
+	    },
+	    "colors_button_background_gradient": {
+	     "label": "Sfondo del pulsante sfumato"
+	    },
+	    "colors_button_background": {
+	     "label": "Sfondo del pulsante"
+	    },
+	    "colors_button_text": {
+	     "label": "Etichetta del pulsante"
+	    },
+	    "colors_field_background": {
+	     "info": "Si applica solo senza schema",
+	     "label": "Sfondo del campo"
+	    },
+	    "colors_test": {
+	     "label": "Prova colore"
+	    },
+	    "headers": {
+	     "accent": {
+	      "content": "Accento"
+	     },
+	     "header_general_colors": {
+	      "content": "Generale"
+	     },
+	     "header_product_badges": {
+	      "content": "Distintivo del prodotto"
+	     },
+	     "primary_button": {
+	      "content": "Pulsante primario"
+	     },
+	     "scheme_1": {
+	      "content": "Schema 1"
+	     },
+	     "scheme_2": {
+	      "content": "Schema 2"
+	     },
+	     "secondary_button": {
+	      "content": "Pulsante secondario"
+	     }
+	    },
+	    "page_background": {
+	     "label": "Sfondo della pagina"
+	    },
+	    "sale_bage": {
+	     "label": "Distintivo di vendita"
+	    },
+	    "shadow": {
+	     "label": "Ombra"
+	    },
+	    "sold_out_badge": {
+	     "label": "Distintivo esaurito"
+	    },
+	    "background_gradient": {
+	     "label": "Gradiente di sfondo"
+	    }
+	   }
+	  },
+	  "currency": {
+	   "name": "Valuta",
+	   "settings": {
+	    "currency_code_enabled": {
+	     "label": "Mostra codice valuta"
+	    },
+	    "headers": {
+	     "header_currency_code": {
+	      "content": "CODICE DI VALUTA"
+	     }
+	    },
+	    "paragraph": "I prezzi del carrello e del checkout mostrano sempre il codice della valuta. Esempio: $1,00 USD."
+	   }
+	  },
+	  "email_phone": {
+	   "content": "Per impostazione predefinita, Electro utilizza le informazioni di contatto del negozio, ma è possibile inserire dettagli alternativi nei campi sottostanti.",
+	   "name": "Indirizzo e-mail e numero di telefono",
+	   "settings": {
+	    "email_address": {
+	     "label": "Indirizzo e-mail"
+	    },
+	    "phone_number": {
+	     "label": "Numero di telefono"
+	    }
+	   }
+	  },
+	  "favicon": {
+	   "name": "Favicon",
+	   "settings": {
+	    "favicon": {
+	     "info": "Verrà ridimensionata a 32 x 32px",
+	     "label": "Immagine Favicon"
+	    }
+	   }
+	  },
+	  "filter_and_sort": {
+	   "name": "Filtro e ordinamento",
+	   "settings": {
+	    "enable_product_filter": {
+	     "info": "Per personalizzare i filtri, utilizzare l'applicazione Search & Discovery. [Per saperne di più](https://help.shopify.com/en/manual/online-store/search-and-discovery/filters)",
+	     "label": "Abilita il filtro prodotti"
+	    },
+	    "enable_sort": {
+	     "label": "Abilita l'ordinamento"
+	    },
+	    "expand_all_filter_options": {
+	     "label": "Espansione predefinita di tutte le opzioni di filtro su mobile"
+	    },
+	    "paragraph_filter_and_sort": {
+	     "content": "Applicato alla pagina Collezione e Ricerca."
+	    }
+	   }
+	  },
+	  "product_card": {
+	   "name": "Scheda prodotto"
+	  },
+	  "product_comparison": {
+	   "name": "Confronto tra prodotti",
+	   "settings": {
+	    "enable_add_to_cart": {
+	     "label": "Abilita aggiunta al carrello"
+	    }
+	   }
+	  },
+	  "product_information": {
+	   "name": "Informazioni sui prodotti",
+	   "settings": {
+	    "colors_swatches_rules": {
+	     "info": "Formato: <Opzione variabile>: <valore> (separato da righe). Esempio: Deep Purple: #7000AA Plastica: plastic.png. [Per saperne di più](https://docs.saleshunterthemes.com/manual/electro-theme-settings/#Product_information)",
+	     "label": "Regole per le varianti dei campionari"
+	    },
+	    "enable_variant_swatches": {
+	     "label": "Abilita i campioni di colore"
+	    },
+	    "headers": {
+	     "header_color_swatches": {
+	      "content": "SCHEMI DI COLORE",
+	      "info": "Electro supporta opzioni di colore che vengono visualizzate come campioni. Configurare le regole personalizzate di seguito."
+	     },
+	     "header_specification": {
+	      "content": "Specifiche tecniche"
+	     },
+	     "header_variant_swatches": {
+	      "content": "Varianti di campioni",
+	      "info": "Electro supporta una singola variante da visualizzare come campioni.[Scopri di più](https://docs.saleshunterthemes.com/manual/electro-theme-settings/#variant-swatches)"
+	     }
+	    },
+	    "product_attributes_metafield_namespace": {
+	     "info": "Esempio: attributi_prodotto_personalizzati",
+	     "label": "Namespace e chiave del campo meta"
+	    },
+	    "product_attributes": {
+	     "label": "Attributi del prodotto"
+	    },
+	    "product_badge": {
+	     "content": "Distintivo del prodotto"
+	    },
+	    "product_specification_metafield_keys": {
+	     "label": "Tasti del metacampo"
+	    },
+	    "product_specification_metafield_namespace": {
+	     "label": "Spazio dei nomi del meta-campo"
+	    },
+	    "specification": {
+	     "content": "Per visualizzare le specifiche del prodotto, fornire il namespace del metacampo del prodotto. È supportato solo il tipo di meta-campo \"Un valore\". [Per saperne di più](https://docs.saleshunterthemes.com/manual/electro-theme-settings/#product-specifications)"
+	    },
+	    "variant_swatches_option": {
+	     "label": "Opzione variante",
+	     "info": "Inserisci l'etichetta della variante che desideri visualizzare come campioni"
+	    },
+	    "display_type": {
+	     "label": "Tipo di display",
+	     "info": "La modalità immagine variante richiede che tutte le varianti abbiano un'immagine associata."
+	    },
+	    "custom_value": {
+	     "label": "Valore personalizzato",
+	     "info": "Format: <Variant name>: <value> (separated by lines) Example: Deep Purple: #7000AA Plastic: plastic.png"
+	    },
+	    "options_variant_image": {
+	     "label": "Immagine variante"
+	    }
+	   }
+	  },
+	  "quick_buy": {
+	   "name": "Negozio rapido",
+	   "settings": {
+	    "headers": {
+	     "header_product": {
+	      "content": "Prodotto"
+	     }
+	    },
+	    "show_product_quantity": {
+	     "label": "Mostra il selettore della quantità di prodotti"
+	    },
+	    "show_sale_badge": {
+	     "label": "Mostra il badge di vendita"
+	    }
+	   }
+	  },
+	  "quick_links": {
+	   "name": "Collegamenti rapidi",
+	   "settings": {
+	    "paragraph_quick_links": {
+	     "content": "I collegamenti rapidi possono essere visualizzati nella barra superiore, nel cassetto dei menu e nel piè di pagina."
+	    },
+	    "quick_links_menu": {
+	     "info": "Si consiglia di limitare a 3 il numero di collegamenti rapidi nel menu.",
+	     "label": "Menu dei collegamenti rapidi"
+	    }
+	   }
+	  },
+	  "quickview": {
+	   "name": "Vista rapida",
+	   "paragraph": {
+	    "content": "Visibile quando è abilitata la visualizzazione rapida nella scheda prodotto"
+	   }
+	  },
+	  "search": {
+	   "name": "Ricerca",
+	   "settings": {
+	    "appearance": {
+	     "popup": {
+	      "heading": "Finestra pop-up",
+	      "info": "Per componenti a comparsa come notifiche, menu, modali, ecc."
+	     },
+	     "product_sticky_bar": {
+	      "heading": "Barra adesiva dei prodotti"
+	     },
+	     "show_section_id_in_product_page": {
+	      "info": "Utilizzare l'ID della sezione per mappare la voce di menu Prodotto. Gli ID delle sezioni sono visibili solo nell'editor del tema. Per saperne di più [Per saperne di più](https://docs.saleshunterthemes.com/manual/electro-theme-settings/#Appearance)",
+	      "label": "Mostra l'ID della sezione nel modello di prodotto"
+	     }
+	    },
+	    "predictive_search": {
+	     "heading": "Risultati di ricerca predittivi",
+	     "info": "Scegliere i risultati della ricerca per i clienti. I prodotti sono selezionati per impostazione predefinita."
+	    },
+	    "search_result": {
+	     "heading": "Risultati di ricerca"
+	    },
+	    "show_search_filter": {
+	     "info": "Il filtro di ricerca verrà generato in base al tipo di prodotto. [Per saperne di più](https://docs.saleshunterthemes.com/manual/electro-theme-settings/#Search)",
+	     "label": "Mostra il filtro dei prodotti"
+	    }
+	   }
+	  },
+	  "settings": {
+	   "headers": {
+	    "header_button": {
+	     "content": "Pulsante"
+	    },
+	    "header_general": {
+	     "content": "Generale"
+	    },
+	    "header_product_badges": {
+	     "content": "Badge di prodotto"
+	    },
+	    "product_attributes": {
+	     "content": "Attributi del prodotto",
+	     "info": "Per visualizzare gli attributi del prodotto come badge, fornisci il metafield del prodotto con il tipo 'Testo su una singola riga'. [Per saperne di più ](https://docs.saleshunterthemes.com/manual/electro-theme-settings/#product-attributes)"
+	    },
+	    "scheme_1": {
+	     "content": "SCHEMA 1"
+	    },
+	    "scheme_2": {
+	     "content": "SCHEMA 2"
+	    }
+	   },
+	   "show_dynamic_checkout_buttons": {
+	    "info": "I clienti possono vedere la loro opzione di pagamento preferita, come PayPal o Apple Pay, in base ai metodi di pagamento disponibili nel tuo negozio. [Scopri di più ](https://help.shopify.com/en/manual/online-store/dynamic-checkout)"
+	   }
+	  },
+	  "social_media": {
+	   "name": "Media sociali",
+	   "settings": {
+	    "social_facebook_link": {
+	     "info": "https://www.facebook.com/shopify",
+	     "label": "Facebook"
+	    },
+	    "social_instagram_link": {
+	     "info": "http://instagram.com/shopify",
+	     "label": "Instagram"
+	    },
+	    "social_linkedin_link": {
+	     "info": "https://linkedin.com/in/shopify",
+	     "label": "LinkedIn"
+	    },
+	    "social_pinterest_link": {
+	     "info": "https://www.pinterest.com/shopify",
+	     "label": "Pinterest"
+	    },
+	    "social_snapchat_link": {
+	     "info": "https://www.snapchat.com/add/shopify",
+	     "label": "Snapchat"
+	    },
+	    "social_tiktok_link": {
+	     "info": "https://www.tiktok.com/shopify",
+	     "label": "TikTok"
+	    },
+	    "social_tumblr_link": {
+	     "info": "https://shopify.tumblr.com",
+	     "label": "Tumblr"
+	    },
+	    "social_twitter_link": {
+	     "info": "https://twitter.com/shopify",
+	     "label": "X"
+	    },
+	    "social_vimeo_link": {
+	     "info": "https://vimeo.com/shopify",
+	     "label": "Vimeo"
+	    },
+	    "social_youtube_link": {
+	     "info": "https://www.youtube.com/shopify",
+	     "label": "YouTube"
+	    }
+	   }
+	  },
+	  "typography": {
+	   "name": "Tipografia",
+	   "settings": {
+	    "base_text_size": {
+	     "label": "Dimensioni di base"
+	    },
+	    "body_font": {
+	     "info": "La dimensione del testo base verrà utilizzata come dimensione base per scalare le dimensioni dei caratteri degli altri elementi.",
+	     "label": "Carattere del corpo"
+	    },
+	    "font": {
+	     "label": "Carattere"
+	    },
+	    "header_body": {
+	     "content": "Corpo"
+	    },
+	    "header_headings": {
+	     "content": "Intestazioni"
+	    },
+	    "header_menu_item": {
+	     "content": "Voce di menu"
+	    },
+	    "heading_font": {
+	     "label": "Font di intestazione"
+	    },
+	    "heading_scale": {
+	     "info": "Livello di scala superiore rende più grande la dimensione dell'intestazione",
+	     "label": "Scala dell'intestazione"
+	    },
+	    "paragraph_apply_to_product": {
+	     "content": "Applica alla scheda prodotto, alla scheda collezione,..."
+	    },
+	    "paragraph_menu_item": {
+	     "content": "Applicato agli elementi del menu di primo livello"
+	    },
+	    "regular_card_heading": {
+	     "content": "Intestazione regolare della carta"
+	    },
+	    "tabs_heading": {
+	     "content": "Intestazioni delle schede"
+	    },
+	    "text_size": {
+	     "label": "Dimensione testo"
+	    },
+	    "typography_paragraph": {
+	     "content": "Selezionare caratteri diversi può influire sulla velocità del tuo negozio online. Scopri di più riguardo ai [caratteri di sistema.](https://help.shopify.com/en/manual/online-store/web-performance/improving-web-performance#fonts)"
+	    }
+	   }
+	  }
+	 }
+	}
+	

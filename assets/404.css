@@ -1,0 +1,9 @@
+ .section-404 .field__text {
+  padding-right: 56px;
+}
+
+@media(min-width: 769px){
+  .section-404__media{
+    order: 2;
+  }
+}

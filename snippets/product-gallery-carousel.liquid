@@ -1,0 +1,117 @@
+<style>
+
+  p#pre-order-badge , p.product-promo-badge {
+    padding: 3px 8px;
+    line-height: 1.09;
+    font-size: 13px !important;
+    font-weight: 400;
+    {% comment %} margin-right: 115px; {% endcomment %}
+    background: green;
+    color: white;
+    text-align: center;
+    left:1%;
+  }
+  .product-slideshow__slider p.product-promo-badge {
+    margin: 0 0 5px 0;
+    width: fit-content;
+    border-radius:10px;
+  }
+  .product-badges {
+    position: absolute;
+    z-index: 1;
+    right:0;
+  }
+</style>
+
+<sht-carousel-wrapper data-on-mobile-only="true" data-css-class-on-container="p-zero m-zero ox-auto p-relative disable-scrollbars fw-nowrap scrollable scrollable-x scrl-bhvr-auto{{ carousel_class | default: '' }}" data-css-class-on-item="w-100 p-relative scrollable-aln-start ta-center d-flex aln-itm-ctr fg-1 fs-0{{ carousel_item_class | default: '' }}">
+  <sht-carousel class="" id="productGalleryCarousel-{{ section.id }}" data-section-id="{{ section.id }}">
+  
+    {% assign possible_badges = "Pre-Order-Item,Seasonal,By Air,Flash Sale,Must Buy,Offer,Organic,Ramadan,Ripe,Ripe at Home,Sanitized,Winter,Diwali" | split: "," %}
+                  {% if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price  %}
+                    {%- liquid
+                      assign discount_cost = product.selected_or_first_available_variant.compare_at_price | minus: product.selected_or_first_available_variant.price
+                      assign discount_percent = discount_cost | times: 100.0 | divided_by: product.selected_or_first_available_variant.compare_at_price | round: 2
+                    -%}
+                    <div class="product__badge">
+                      <span class="badge badge--sale subtext d-inline-block p-relative fw-700 color-{{ settings.color_scheme_sale_badge }}">
+                        <span class="p-relative zi-1 tt-up">
+                          {{- 'products.product.on_sale' | t }}
+                            {{ discount_percent }}%
+                          <span class="d-none-important">
+                          {% if settings.currency_code_enabled %}
+                            {{- discount_cost | money_with_currency -}}
+                          {% else %}
+                            {{- discount_cost | money -}}
+                          {% endif %}
+                            ({{ discount_percent }}%)
+                          </span>
+                        </span>
+                      </span>
+                    </div>
+                  {% endif %}
+        <div class="product-badges">
+          {% for badge_tag in possible_badges %}
+            {% if product.tags contains badge_tag %}
+              <p class="product-promo-badge promo-{{ badge_tag | replace: ' ', '-' }}">
+                {% if badge_tag == "Pre-Order-Item" %}
+                  Pre-Order
+                {% else %}
+                  {{ badge_tag }}
+                {% endif %}
+              </p>
+            {% endif %}
+          {% endfor %}
+
+          {% for tag in product.tags %}
+            {% if tag contains "badge:" %}
+              {% assign badge_label = tag | split: "badge:" | last | strip %}
+              {% assign badge_class = badge_label | replace: ' ', '-' | downcase %}
+                <p class="product-promo-badge promo-{{ badge_class }}">
+                  {{ badge_label }}
+                </p>
+            {% endif %}
+          {% endfor %}
+        </div>
+    <div class="product-slideshow__items js-product-slideshow js-carousel-items progress-indicator-fw d-flex" role="list" aria-label="{{ 'accessibility.slider' | t }}">
+
+      {%-liquid
+        assign product_media_index = 1
+        assign featured_media = 'image' | placeholder_svg_tag: 'placeholder media d-block w-100 h-100 of-cover'
+        if product.selected_or_first_available_variant.featured_media != null
+          assign featured_media = product.selected_or_first_available_variant.featured_media
+          assign is_first_image = true
+          render 'product-slideshow-image', xr_button: true, section: section, media: featured_media, is_first_image: is_first_image, product: product, place_holder: place_holder, product_media_index: product_media_index, is_first_item: true, rand: rand, hide_variant_image: hide_variant_image, open_zoom_modal: open_zoom_modal, ratio: ratio, media_background: media_background
+        else
+          render 'image', image_item: featured_media, image_wrap_classes: "w-100", image_classes: "h-100 w-100", ratio: ratio
+        endif
+
+        for media in product.media
+          unless media.id == product.selected_or_first_available_variant.featured_media.id
+            if forloop.first and is_first_image == false
+              assign is_first_image = true
+            else
+              assign is_first_image = false
+            endif
+
+            assign product_media_index = product_media_index | plus: 1
+            render 'product-slideshow-image', xr_button: true, section: section, media: media, is_first_image: is_first_image, product: product, place_holder: place_holder, product_media_index: product_media_index, is_first_item: forloop.first, rand: rand, hide_variant_image: hide_variant_image, open_zoom_modal: open_zoom_modal, ratio: ratio, media_background: media_background
+          endunless
+        endfor
+      -%}
+    </div>
+    <div class="carousel-pagination js-carousel-pagination center-xs d-none no-js-hidden">
+      <button type="button" data-step="1" class="carousel__btn p-absolute middle-y zi-1 left-0 ml-12 js-carousel-prev-btn btn btn-secondary btn-small btn-icon {{ nav_mobile }}" aria-label="{{ 'accessibility.previous_slide' | t }}" name="previous" disabled>
+        {% render 'icon-chevron-left' %}
+      </button>
+      <div class="carousel__counter zi-1 p-absolute btn-secondary pe-none {{ pg_mobile }}">
+        <span class="js-carousel-counter-current">1</span>
+        <span aria-hidden="true"> / </span>
+        <span class="visually-hidden">{{ "accessibility.of" | t }}</span>
+        <span class="js-carousel-counter-total">{{ product.media.size }}</span>
+      </div>
+      <button type="button" data-step="1" class="carousel__btn p-absolute middle-y zi-1 right-0 mr-12 js-carousel-next-btn btn btn-secondary btn-small btn-icon {{ nav_mobile }}" aria-label="{{ 'accessibility.next_slide' | t }}" name="next">
+        {% render 'icon-chevron-right' %}
+      </button>
+    </div>
+  </sht-carousel>
+</sht-carousel-wrapper>

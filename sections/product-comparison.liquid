@@ -1,0 +1,323 @@
+{%- liquid
+  assign product_comparison_metafield_keys = section.settings.product_comparison_metafield_keys | downcase | remove: " " | split: ','
+  assign row_revealed = section.settings.row_revealed
+  assign show_view_more = false
+  assign block_size = section.blocks.size
+  if block_size > 2
+    assign carousel = "carousel ox-auto scrollable scrollable-x disable-scrollbars"
+    assign carousel_item = "carousel__item"
+  endif
+  if block_size > 1
+    assign carousel_style = " --w-xs: 9"
+  endif
+-%}
+{% if request.page_type == 'product'%}
+  {%- liquid
+    assign product_id = product.id
+  -%}
+{% endif %}
+<div class="section section-index--{{section.index |  replace: '1', 'first' }} {% render 'sections-spacing' %} color-{{- section.settings.color_scheme }}" data-ui-component="Product Comparison Section" role="region" aria-labelledby="sectionHeading-{{ section.id | md5 | truncate: 12, "" }}">
+  <div class="ctnr background">
+    {%- render 'section-header',
+      content_align: section.settings.content_align,
+      subheading: section.settings.subheading,
+      heading: section.settings.heading,
+      heading_size: section.settings.heading_size,
+      description: section.settings.description,
+      section: section
+    -%}
+    <sht-product-comparison class="product-comparison-content s-content js-animate d-flex fd-column gap-unequal {{ carousel }}">
+      <div class="pcn__row {{ carousel_item }} d-grid c-gap" style="--gtc-equal-md: {{ block_size }}; {{ carousel_style }}; --block-size: {{ block_size }};">
+        {%- for block in section.blocks -%}
+          {% liquid
+            assign sectionID = section.id
+            assign blockID = block.id
+          %}
+          {%- render 'product-comparison-info', product: block.settings.product, sectionID: sectionID, blockID: blockID, productID: product_id -%}
+        {%- endfor -%}
+      </div>
+      <div class="product-comparison-variants pcn__row anm anm-fadeInUpLarge {{ carousel_item }} d-grid c-gap" style="--gtc-equal-md: {{ block_size }}; {{ carousel_style }}; --block-size: {{ block_size }};  --delay: .15s; --duration: .7s">
+        <div class="pb-12 pb-md-20 wb-break-word" style="--gr-xs: 1; --gc-xs: 1/{{ block_size | plus: 1 }}">
+          <span class="h5 p-sticky left-0 ">{{ 'sections.product_comparison.options' | t }}</span>
+        </div>
+        {%- for block in section.blocks -%}
+          {% liquid
+            assign sectionID = section.id
+            assign blockID = block.id
+          %}
+          {%- render 'product-comparison-variants', product: block.settings.product, sectionID: sectionID, blockID: blockID -%}
+        {%- endfor -%}
+      </div>
+      <div class="pcn__row anm anm-fadeInUpLarge {{ settings.product_comparison_show_description | default: 'd-none-important' | replace: 'true', '' }} {{ carousel_item }} d-grid c-gap" style="--gtc-equal-md: {{ block_size }}; {{ carousel_style }}; --block-size: {{ block_size }};  --delay: .15s; --duration: .7s">
+        <div class="pb-12 pb-md-20 wb-break-word" style="--gr-xs: 1; --gc-xs: 1/{{ block_size | plus: 1 }}">
+          <span class="h5 p-sticky left-0 ">{{ 'sections.product_comparison.descriptions' | t }}</span>
+        </div>
+        {%- for block in section.blocks -%}
+          <div class="product-card-desc anm anm-fadeInUpLarge" style=" --duration: .7s; --delay: {{ forloop.index | plus: 3 | times: 0.05 -}}s;">
+            {{- block.settings.product.description -}}
+          </div>
+        {%- endfor -%}
+      </div>
+      {%- if product_comparison_metafield_keys.size > 0 -%}
+        {%- for k in product_comparison_metafield_keys -%}
+          {%- liquid
+            assign dislay_cls = ''
+            if forloop.index > row_revealed
+              assign show_view_more = true
+              assign dislay_cls = 'js-product-comparison-hidden-item d-none-important'
+            endif
+            -%}
+          <div class="pcn__row anm anm-fadeInUpLarge {{ carousel_item }} d-grid c-gap {{ dislay_cls }}" style="--gtc-equal-md: {{ block_size }}; {{ carousel_style }}; --block-size: {{ block_size }}; --delay: {{ forloop.index | plus: 2 | times: 0.05 -}}s; --duration: .7s">
+            <div class="pcn__row-title pb-12 pb-md-20 wb-break-word" style="--gr-xs: 1; --gc-xs: 1/{{ block_size | plus: 1 }}">
+              <span class="h5 p-sticky left-0 tt-cap">
+                {{ k | replace: '_', ' ' }}
+              </span>
+            </div>
+            {%- liquid
+              for block in section.blocks
+                render 'product-compairsion-specifications', product: block.settings.product, metafield_key: k, product_specifications_style: "--gr-xs: 2;"
+              endfor
+            -%}
+          </div>
+        {%- endfor -%}
+        {%- if show_view_more -%}
+          <div class="pcn__row anm anm-fadeInUpSmall pt-20 pb-md-8 d-grid c-gap {{ carousel_item }}" style="--gtc-equal-md: {{ block_size }}; {{ carousel_style }}; --block-size: {{ block_size }}; --duration: .7s; --delay: .05s">
+            <div class="product-comparison-btn" style="--gr-xs: 1; --gc-xs: 1/{{ block_size | plus: 1 }}">
+              <button class="js-product-comparison-view-more-btn left-0 btn btn-large btn-secondary p-sticky" data-view-more="{{ 'sections.product_comparison.view_more' | t }}" data-view-less="{{ 'sections.product_comparison.view_less' | t }}" type="button">
+                <span class="js-product-comparison-view-more-btn-label">{{ 'sections.product_comparison.view_more' | t }}</span>
+                {% render 'icon-chevron-down', size: 24, class: 'icon-chevron-down ml-8' %}
+              </button>
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endif -%}
+      <div class="pcn__row anm anm-fadeInUpLarge {{ settings.product_comparison_enable_view_full_details | default: 'd-none-important' | replace: 'true', '' }} {{ carousel_item }} d-grid c-gap" style="--gtc-equal-md: {{ block_size }}; {{ carousel_style }}; --block-size: {{ block_size }};  --delay: .15s; --duration: .7s">
+        {%- for block in section.blocks -%}
+          <div>
+            <a href="{{- block.settings.product.url | within: collection | default: '#' -}}" class="btn btn-link btn-small btn-view-details ta-left" aria-label="{{ "products.product.view_full_details" | t }}">
+              {{ 'products.product.view_full_details' | t }}
+              {% render 'icon-arrow-right', size: 16, class: 'ml-8' %}
+            </a>
+          </div>
+        {%- endfor -%}
+      </div>
+    </sht-product-comparison>
+    <div class="s-header__buttons d-inline-flex gap-12 fw-wrap js-animate anm anm-fadeInUpSmall hide-empty w-100 {{ section.settings.content_align | replace: 'ta-center', 'center-xs' }}" style="--duration: .7s; --delay: .05s">
+      {%- if section.settings.button_1_label != blank -%}
+        <a class="btn btn-large {{ section.settings.button_1_style }}" href="{{- section.settings.button_1_link | default: '#' -}}">{{- section.settings.button_1_label | escape -}}</a>
+      {%- endif -%}
+      {%- if section.settings.button_2_label != blank -%}
+        <a class="btn btn-large {{ section.settings.button_2_style }}" href="{{- section.settings.button_2_link | default: '#' -}}">{{- section.settings.button_2_label | escape -}}</a>
+      {%- endif -%}
+    </div>
+
+  </div>
+  {%- render 'section-id', section: section -%}
+</div>
+{% schema %}
+{
+  "name": "t:sections.product_comparison.name",
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer"
+    ]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "t:sections.product_comparison.settings.paragraph.content"
+    },
+    {
+      "type": "header",
+      "content": "t:general.settings.headers.header_general.content"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:general.settings.color_scheme.label",
+      "default": "scheme-3"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "t:general.settings.subheading.label",
+      "default": "Add a tagline"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:general.settings.heading.label",
+      "default": "Product comparison"
+    },
+    {
+      "type": "select",
+      "label": "t:general.settings.heading_size.label",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:general.settings.heading_size.options.h2.label"
+        },
+        {
+          "value": "h3",
+          "label": "t:general.settings.heading_size.options.h3.label"
+        },
+        {
+          "value": "h4",
+          "label": "t:general.settings.heading_size.options.h4.label"
+        },
+        {
+          "value": "h5",
+          "label": "t:general.settings.heading_size.options.h5.label"
+        }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "t:general.settings.description.label"
+    },
+    {
+      "type": "header",
+      "content": "t:general.settings.headers.header_layout.content"
+    },
+    {
+      "type": "select",
+      "id": "content_align",
+      "label": "t:general.settings.content_alignment.label",
+      "default": "ta-left",
+      "options": [
+        {
+          "value": "ta-left",
+          "label": "t:general.settings.option_left.label"
+        },
+        {
+          "value": "ta-center",
+          "label": "t:general.settings.option_center.label"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "t:sections.product_comparison.settings.headers.header_table.content",
+      "info": "t:general.settings.headers.header_product_specifications.info"
+    },
+    {
+      "type": "text",
+      "id": "product_comparison_metafield_keys",
+      "label": "t:sections.product_comparison.settings.product_comparison_metafield_keys.label",
+      "info": "t:sections.product_comparison.settings.product_comparison_metafield_keys.info"
+    },
+    {
+      "type": "range",
+      "id": "row_revealed",
+      "label": "t:general.settings.metafield_row_revealed.label",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "header",
+      "content": "t:general.settings.headers.header_buttons.content"
+    },
+    {
+      "type": "text",
+      "id": "button_1_label",
+      "label": "t:general.settings.button_1_label.label",
+      "info": "t:general.settings.button_label.info",
+      "default": "Check now"
+    },
+    {
+      "type": "select",
+      "id": "button_1_style",
+      "label": "t:general.settings.button_1_style.label",
+      "default": "btn-primary",
+      "options": [
+        {
+          "value": "btn-primary",
+          "label": "t:general.settings.primary.label"
+        },
+        {
+          "value": "btn-secondary",
+          "label": "t:general.settings.secondary.label"
+        },
+        {
+          "value": "btn-link",
+          "label": "t:general.settings.tertiary.label"
+        }
+      ]
+    },
+    {
+      "type": "url",
+      "id": "button_1_link",
+      "label": "t:general.settings.button_1_link.label"
+    },
+    {
+      "type": "text",
+      "id": "button_2_label",
+      "label": "t:general.settings.button_2_label.label",
+      "info": "t:general.settings.button_label.info",
+      "default": "View details"
+    },
+    {
+      "type": "select",
+      "id": "button_2_style",
+      "label": "t:general.settings.button_2_style.label",
+      "default": "btn-secondary",
+      "options": [
+        {
+          "value": "btn-primary",
+          "label": "t:general.settings.primary.label"
+        },
+        {
+          "value": "btn-secondary",
+          "label": "t:general.settings.secondary.label"
+        },
+        {
+          "value": "btn-link",
+          "label": "t:general.settings.tertiary.label"
+        }
+      ]
+    },
+    {
+      "type": "url",
+      "id": "button_2_link",
+      "label": "t:general.settings.button_2_link.label"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "t:general.settings.headers.header_product.content",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "t:general.settings.product.label",
+          "info": "t:general.settings.headers.header_product_specifications.info"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.product_comparison.name",
+      "blocks": [
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,134 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "show_page_title": true,
+        "heading_size": "h2",
+        "show_page_content": true
+      }
+    },
+    "video_banner_yyq8XW": {
+      "type": "video-banner",
+      "settings": {
+        "color_scheme": "",
+        "image_overlay_opacity": 0,
+        "color_mask_overlay": "",
+        "color_text_overlay": "",
+        "height_desktop": "50vh",
+        "content_position_desktop": "middle-md center-md ta-center-md",
+        "height_mobile": "50vh",
+        "content_position_mobile": "middle-xs center-xs ta-center",
+        "video_url_desktop": "https://youtu.be/lm92orXU9Ww",
+        "video_url_mobile": ""
+      }
+    },
+    "image_banner_FwPrX3": {
+      "type": "image-banner",
+      "blocks": {
+        "subheading_dJi9gH": {
+          "type": "subheading",
+          "disabled": true,
+          "settings": {
+            "subheading": "Add a tagline"
+          }
+        },
+        "heading_FJEig4": {
+          "type": "heading",
+          "disabled": true,
+          "settings": {
+            "heading": "Banner heading",
+            "heading_size": "h2"
+          }
+        },
+        "description_6dKg87": {
+          "type": "description",
+          "disabled": true,
+          "settings": {
+            "description": "<p>Highlight your new collection or share content related to this image.</p>"
+          }
+        },
+        "countdown_YpdPdm": {
+          "type": "countdown",
+          "disabled": true,
+          "settings": {
+            "hide_on_end": true,
+            "end_date": "",
+            "end_time": "",
+            "end_text": "<p>This event is finished</p>",
+            "countdown_background_color": "",
+            "countdown_number_color": "",
+            "countdown_end_text_color": "#ff0000"
+          }
+        },
+        "buttons_rxQkKL": {
+          "type": "buttons",
+          "disabled": true,
+          "settings": {
+            "button_1_label": "Check now",
+            "button_1_style": "btn-primary",
+            "button_1_link": "",
+            "button_2_label": "View detail",
+            "button_2_style": "btn-secondary",
+            "button_2_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "subheading_dJi9gH",
+        "heading_FJEig4",
+        "description_6dKg87",
+        "countdown_YpdPdm",
+        "buttons_rxQkKL"
+      ],
+      "name": "t:sections.image_banner.name",
+      "settings": {
+        "color_scheme": "",
+        "image_overlay_opacity": 0,
+        "color_mask_overlay": "",
+        "color_text_overlay": "",
+        "height_desktop": "adapt_img",
+        "content_position_desktop": "middle-md center-md ta-center-md",
+        "height_mobile": "adapt_img",
+        "content_position_mobile": "middle-xs center-xs ta-center",
+        "desktop_image": "shopify://shop_images/Company-about-banner_05c85cd0-2031-451b-8ce2-7d96b7b41b23.jpg",
+        "mobile_image": "shopify://shop_images/Company-about-banner-mob_4da93ce1-1336-41b4-9b30-50bdb118c36c.jpg",
+        "banner_link": ""
+      }
+    },
+    "text_dPGjzJ": {
+      "type": "text",
+      "blocks": {
+        "description_RaELfD": {
+          "type": "description",
+          "settings": {
+            "description": "<p>About us<br/>Gulf Fruits is among the leading fruits and vegetable suppliers in UAE. Importing fresh produce from around the globe we mainly trade in fresh fruits & vegetables along with bespoke culinary solutions for pre-cut produce and fresh juices.<br/><br/>For the past 22 years our services, experience, and expertise have served our esteemed clients with utmost satisfaction and reliability for all their fresh needs.<br/><br/>Our Vision <br/>We believe in serving our clients with only the best produce, the widest range and options as well as the freshest options. Gulf fruits holds values of partnership, customer service and community building as its core values and it is testimony to our long-standing continued business relations with our valued clients</p><p></p><p></p><p></p><p></p>"
+          }
+        }
+      },
+      "block_order": [
+        "description_RaELfD"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "content_alignment": "start-xs ta-start"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "video_banner_yyq8XW",
+    "image_banner_FwPrX3",
+    "text_dPGjzJ"
+  ]
+}

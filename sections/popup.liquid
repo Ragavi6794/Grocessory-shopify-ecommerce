@@ -1,0 +1,617 @@
+{%- liquid
+  assign popup_visible = false
+  assign popup_visible_on = section.settings.popup_visible_on
+  assign page_type = request.page_type
+  if popup_visible_on == 'all' or popup_visible_on == page_type
+    assign popup_visible = true
+  endif
+
+-%}
+{%- if section.settings.show_popup and popup_visible -%}
+  {%- liquid
+    assign media_alt = section.settings.image.alt | default: section.settings.image.image | split: '/' | last
+    assign popup_sticky_position = section.settings.popup_position | replace: '--', '-sticky--'
+    assign section_id = section.id | md5 | truncate: 12, ""
+    assign frm_id = section_id | prepend: 'newsletterPopupForm-'
+  -%}
+ 
+  
+  <div class="section-popup p-fixed zi-8 hidden-xs {{ section.settings.popup_position }} color-{{ section.settings.color_scheme }} background corner-radius-m" style="z-index: 100;">
+    <sht-popup class="popup w-100 d-block p-relative zi-6 no-js-hidden no-focus-visible"
+      data-props='{"triggerOn":"{{ section.settings.trigger }}", "showSticky": {{ section.settings.enable_sticky_popup }}, "delayTime": {{ section.settings.delay_time }}}'
+      tabindex="-1"
+      data-ui-component="Popup Section">
+
+      {%- comment -%} Close Button {%- endcomment -%}
+      <button class="btn-popup--close js-popup-close-btn"
+              type="button"
+              aria-label="{{ 'accessibility.close_popup' | t }}"
+              style="position: absolute; top: 10px; right: 10px; z-index: 99; background: none; border: none; padding: 10px; cursor: pointer;">
+        {%- render 'icon-close' -%}
+      </button>
+
+      {%- comment -%} Background Image {%- endcomment -%}
+      {% if section.settings.image %}
+        <div class="popup-image-background"
+             style="pointer-events: none; background-image: url({{ section.settings.image | image_url: width: 1500 }}); background-size: cover; background-position: center; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.3;">
+        </div>
+      {% endif %}
+
+      {%- comment -%} Content {%- endcomment -%}
+      <div class="p-20 popup-content s-header__content" style="position: relative; z-index: 1;" {{ section.blocks.size | replace: '0', 'hidden' }}>
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when '@app' -%}
++              {% render block %}
+            {%- when 'subheading' -%}
+              <span class="s-header__subheading d-inline-block fw-700 popup-subheading">{{ block.settings.subheading }}</span>
+            {%- when 'heading' -%}
+              <h2 class="s-header__heading popup-mainheading {{ block.settings.heading_size }}" {{ block.shopify_attributes }}>
+                {{ block.settings.heading }}
+              </h2>
+            {%- when 'description' -%}
+              <div class="s-header__description" {{ block.shopify_attributes }}>
+                {{ block.settings.description }}
+              </div>
+            {%- when 'countdown' -%}
+              <div class="popup__countdown countdown-wrapper d-grid" {{ block.shopify_attributes }}>
+                {%- if block.settings.enable_countdown_timer -%}
+                  {%- render 'countdown', block: block -%}
+                {%- endif -%}
+                <a class="btn {{ block.settings.button_style }} btn-large w-100 hide-empty" href="{{ block.settings.button_link }}">{{ block.settings.button_text }}</a>
+              </div>
+            {%- when 'newsletter' -%}
+              <div class="popup-newsletter" {{ block.shopify_attributes }}>
+                {% liquid
+                  assign button_label = block.settings.button_text
+                  if button_label == ''
+                    assign button_label = 'Subscribe'
+                  endif
+                %}
+                {%- render 'newsletter-form', form_name: 'contactPopup', form_id: frm_id, classes: 'fd-column-sm gap-1x', button_style: block.settings.button_style, button_label: button_label -%}
+              </div>
+{%- when 'coupon' -%}
+  <div class="popup-coupon" style="display: flex; align-items: center; justify-content: start; gap: 0.5rem;" {{ block.shopify_attributes }}>
+    <span style="font-weight: 600;">{{ block.settings.coupon_label }}</span>
+    <div style="font-size: 1.2rem; font-weight: bold;">
+      {{ block.settings.coupon_code }}
+    </div>
+  </div>
+
+  {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </sht-popup>
+  </div>
+
+  {%- if section.settings.enable_sticky_popup and section.settings.sticky_label != blank -%}
+    <sht-sticky-popup class="popup-sticky zi-2 popup-sticky-hide p-fixed gap-1x corner-radius-m {{ popup_sticky_position }} color-{{ section.settings.color_scheme }} background">
+      <button class="button-reopen-popup js-sticky-popup-reopen-btn btn-plain {{ section.settings.sticky_heading_size }} m-zero p-zero ta-left c-pointer pl-20 pr-20 pt-12 pb-12">{{ section.settings.sticky_label }}</button>
+      <button class="button-close-sticky-popup js-sticky-popup-close-btn btn btn-small btn-secondary btn-icon icon"
+              type="button"
+              style="position: relative; z-index: 99;"
+              aria-label="{{ 'accessibility.close_popup' | t }}">
+        {%- render 'icon-close' -%}
+      </button>
+    </sht-sticky-popup>
+  {%- endif -%}
+  </div>
+<!-- Separate JavaScript -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const overlay = document.getElementById("popup-overlay");
+    const popup = document.querySelector(".section-popup");
+    const closeBtns = document.querySelectorAll(".js-popup-close-btn");
+
+
+  // setTimeout(()=>{
+  //   overlay.style.display="block";
+  // },10000)
+    
+  setTimeout(()=>{
+    overlay.style.display="none";
+  },8000)
+    
+
+  
+    // Close popup + overlay on button click
+    closeBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        if (popup && overlay) {
+          popup.style.display = "none";
+          overlay.style.display = "none";
+          document.body.classList.remove("popup-open");
+        }
+      });
+    });
+  });
+</script>
+
+{%- endif -%}
+
+
+{% schema %}
+{
+  "name": "t:sections.popup.name",
+  "max_blocks": 10,
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:general.settings.headers.header_general.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_popup",
+      "label": "t:sections.popup.settings.enable_popup.label",
+      "info": "t:sections.popup.settings.enable_popup.info",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "popup_position",
+      "label": "t:sections.popup.settings.popup_position.label",
+      "options": [
+        {
+          "value": "popup--left",
+          "label": "t:sections.popup.settings.popup_position.options.option_left.label"
+        },
+        {
+          "value": "popup--right",
+          "label": "t:sections.popup.settings.popup_position.options.option_right.label"
+        },
+        {
+          "value": "popup--center",
+          "label": "Center"
+        }
+      ],
+      "default": "popup--left"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:general.settings.color_scheme.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "select",
+      "id": "popup_visible_on",
+      "default": "all",
+      "options": [
+        {
+          "value": "all",
+          "label": "t:sections.popup.settings.visibility.options.all_pages.label"
+        },
+        {
+          "value": "index",
+          "label": "t:sections.popup.settings.visibility.options.home_page_only.label"
+        },
+        {
+          "value": "product",
+          "label": "t:sections.popup.settings.visibility.options.product_page_only.label"
+        },
+        {
+          "value": "collection",
+          "label": "t:sections.popup.settings.visibility.options.collection_page_only.label"
+        },
+        {
+          "value": "cart",
+          "label": "t:sections.popup.settings.visibility.options.cart_page_only.label"
+        }
+      ],
+      "label": "t:sections.popup.settings.visibility.label"
+    },
+    {
+      "type": "select",
+      "id": "trigger",
+      "label": "t:sections.popup.settings.when_to_show.label",
+      "options": [
+        {
+          "value": "reaching-to-footer",
+          "label": "t:sections.popup.settings.when_to_show.options.option_reaching_the_footer.label"
+        },
+        {
+          "value": "time-on-page",
+          "label": "t:sections.popup.settings.when_to_show.options.time_on_page.label"
+        },
+        {
+          "value": "after-closing-cart-notification",
+          "label": "t:sections.popup.settings.when_to_show.options.option_after_add_to_cart.label"
+        }
+      ],
+      "default": "reaching-to-footer"
+    },
+    {
+      "type": "range",
+      "id": "delay_time",
+      "default": 5,
+      "max": 30,
+      "min": 0,
+      "step": 5,
+      "unit": "s",
+      "label": "t:sections.popup.settings.when_to_show.show_after.label",
+      "info": "t:sections.popup.settings.when_to_show.show_after.info"
+    },
+    {
+      "type": "header",
+      "content": "t:general.settings.headers.header_image.content"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:general.settings.image.label",
+      "info": "t:sections.popup.settings.popup_image_recoments.info"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.popup.settings.headers.header_sticky.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_popup",
+      "label": "t:sections.popup.settings.enable_sticky.label",
+      "info": "t:sections.popup.settings.enable_sticky.info"
+    },
+    {
+      "type": "text",
+      "id": "sticky_label",
+      "label": "t:sections.popup.settings.sticky_label.label",
+      "default": "Sticky header"
+    },
+    {
+      "type": "select",
+      "label": "t:sections.popup.settings.sticky_heading_size.label",
+      "id": "sticky_heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:general.settings.heading_size.options.h2.label"
+        },
+        {
+          "value": "h3",
+          "label": "t:general.settings.heading_size.options.h3.label"
+        },
+        {
+          "value": "h4",
+          "label": "t:general.settings.heading_size.options.h4.label"
+        },
+        {
+          "value": "h5",
+          "label": "t:general.settings.heading_size.options.h5.label"
+        },
+        {
+          "value": "h6",
+          "label": "t:general.settings.heading_size.options.h6.label"
+        }
+      ],
+      "default": "h2"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "subheading",
+      "name": "t:general.settings.subheading.label",
+      "settings": [
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "t:general.settings.text.label"
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "name": "t:general.settings.heading.label",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "t:general.settings.text.label",
+          "default": "Subscribe"
+        },
+        {
+          "type": "select",
+          "label": "t:general.settings.heading_size.label",
+          "id": "heading_size",
+          "options": [
+            {
+              "value": "h2",
+              "label": "t:general.settings.heading_size.options.h2.label"
+            },
+            {
+              "value": "h3",
+              "label": "t:general.settings.heading_size.options.h3.label"
+            },
+            {
+              "value": "h4",
+              "label": "t:general.settings.heading_size.options.h4.label"
+            },
+            {
+              "value": "h5",
+              "label": "t:general.settings.heading_size.options.h5.label"
+            },
+            {
+              "value": "h6",
+              "label": "t:general.settings.heading_size.options.h6.label"
+            }
+          ],
+          "default": "h2"
+        }
+      ]
+    },
+    {
+      "type": "description",
+      "name": "t:general.settings.description.label",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "t:general.settings.text.label",
+          "default": "<p>Promotions, new products and sales. Directly to your inbox.</p>"
+        }
+      ]
+    },
+    {
+      "type": "countdown",
+      "name": "t:sections.popup.blocks.call_to_action.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "t:general.settings.countdown_timer.label"
+        },
+        {
+          "type": "paragraph",
+          "content": "t:general.settings.headers.countdown_timer.content"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_countdown_timer",
+          "label": "t:general.settings.countdown_timer.enable_countdown_timer.label",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_end",
+          "label": "t:general.settings.countdown_timer.hide_countdown.label",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "end_date",
+          "label": "t:general.settings.countdown_timer.end_date.label",
+          "info": "t:general.settings.countdown_timer.date_format.info"
+        },
+        {
+          "type": "text",
+          "id": "end_time",
+          "label": "t:general.settings.countdown_timer.end_time.label",
+          "info": "t:general.settings.countdown_timer.end_time_format.label"
+        },
+        {
+          "type": "richtext",
+          "id": "end_text",
+          "label": "t:general.settings.countdown_timer.end_text.label",
+          "info": "t:general.settings.countdown_timer.end_text.info.label",
+          "default": "<p>This event is finished</p>"
+        },
+        {
+          "type": "header",
+          "content": "t:general.settings.headers.header_button.content"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "t:general.settings.button.text.label",
+          "info": "t:general.settings.button_label.info"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "default": "btn-primary",
+          "options": [
+            {
+              "value": "btn-primary",
+              "label": "t:general.settings.primary.label"
+            },
+            {
+              "value": "btn-secondary",
+              "label": "t:general.settings.secondary.label"
+            },
+            {
+              "value": "btn-link",
+              "label": "t:general.settings.tertiary.label"
+            }
+          ],
+          "label": "t:general.settings.button.style.label"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "t:general.settings.button.link.label"
+        },
+        {
+          "type": "header",
+          "content": "t:general.settings.custom_color.label"
+        },
+        {
+          "type": "color",
+          "id": "countdown_background_color",
+          "label": "t:general.settings.countdown_timer.countdown_background.label"
+        },
+        {
+          "type": "color",
+          "id": "countdown_number_color",
+          "label": "t:general.settings.countdown_timer.countdown_number.label"
+        },
+        {
+          "type": "color",
+          "id": "countdown_end_text_color",
+          "label": "t:general.settings.countdown_timer.endtext.label",
+          "default": "#FF0000"
+        }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "t:sections.popup.blocks.newsletter.name",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "t:sections.popup.blocks.newsletter.settings.paragraph_one.content"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "t:general.settings.submit_button_text.label"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "default": "btn-primary",
+          "options": [
+            {
+              "value": "btn-primary",
+              "label": "t:general.settings.primary.label"
+            },
+            {
+              "value": "btn-secondary",
+              "label": "t:general.settings.secondary.label"
+            },
+            {
+              "value": "btn-link",
+              "label": "t:general.settings.tertiary.label"
+            }
+          ],
+          "label": "t:general.settings.submit_button_style.label"
+        }
+      ],
+      "limit": 1
+    },
+    {
+      "type": "coupon",
+      "name": "Coupon Code",
+      "settings": [
+        {
+          "type": "text",
+          "id": "coupon_label",
+          "label": "Label",
+          "default": "Coupon:"
+        },
+        {
+          "type": "text",
+          "id": "coupon_code",
+          "label": "Coupon Code",
+          "default": "WELCOME"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+  .popup--center {
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  position: fixed;
+  margin: 0 auto;
+  height:fit-content;  
+}
+.popup-mainheading{
+  font-size:31px;
+  font-weight:800;
+  padding:0;
+}
+  .popup-subheading{
+    font-size:16px;
+    font-weight:300;
+    margin-bottom:0;
+  }
+  .popup__countdown.countdown-wrapper.d-grid {
+    width: 126px;
+}
+</style>
+ <style>
+    /* Overlay styling */
+    #popup-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 100;
+      pointer-events: auto;
+
+      display:none;
+    }
+
+    /* Hide overlay by default */
+    /* #popup-overlay[style*="display:none"] {
+      display: none !important;
+    } */
+
+    /* Prevent background scroll when popup open */
+    body.popup-open {
+      overflow: hidden;
+    }
+  </style>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    {% if customer %}
+      const customerId = {{ customer.id }};
+      const popupKey = 'popup_shown_' + customerId;
+
+      if (!localStorage.getItem(popupKey)) {
+        // Show the popup
+        const popup = document.querySelector('.section-popup');
+        if (popup) {
+          popup.classList.remove('hidden-xs'); // unhide popup
+        }
+
+        // Set key so it doesn't show again
+        localStorage.setItem(popupKey, 'true');
+      } else {
+        // Hide it just in case
+        const popup = document.querySelector('.section-popup');
+        if (popup) {
+          popup.classList.add('hidden-xs');
+        }
+      }
+    {% endif %}
+  });
+
+
+
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const overlay = document.getElementById("popup-overlay");
+    const popup = document.querySelector(".section-popup");
+    const closeBtns = document.querySelectorAll(".js-popup-close-btn");
+
+    // Always show popup + overlay on every page load
+    if (popup && overlay) {
+      popup.style.display = "block";
+      overlay.style.display = "block";
+      document.body.classList.add("popup-open");
+    }
+
+    // Close popup + overlay on button click
+    closeBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        if (popup && overlay) {
+          popup.style.display = "none";
+          overlay.style.display = "none";
+          document.body.classList.remove("popup-open");
+        }
+      });
+    });
+  });
+</script>

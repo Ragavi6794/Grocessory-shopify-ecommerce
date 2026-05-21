@@ -1,0 +1,168 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "slideshow_cTbbDc": {
+      "type": "slideshow",
+      "blocks": {
+        "slide_kpmmJY": {
+          "type": "slide",
+          "settings": {
+            "content_position_desktop": "center-md middle-md ta-center",
+            "content_position_mobile": "center-xs middle-xs ta-center",
+            "image_overlay_opacity": 0,
+            "color_mask_overlay": "",
+            "color_text_overlay": "",
+            "sub_heading": "",
+            "heading": "",
+            "description": "",
+            "desktop_image": "shopify://shop_images/Diwali-LW.jpg",
+            "mobile_image": "shopify://shop_images/Diwali-LM.jpg",
+            "slide_link": "",
+            "button_1_label": "",
+            "button_1_style": "btn-primary",
+            "button_1_link": "",
+            "button_2_label": "",
+            "button_2_style": "btn-secondary",
+            "button_2_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "slide_kpmmJY"
+      ],
+      "name": "t:sections.slideshow.name",
+      "settings": {
+        "color_scheme": "",
+        "heading_size": "h2",
+        "height_desktop": "adapt_img",
+        "height_mobile": "adapt_img",
+        "enable_pagination": false,
+        "enable_navigation": false,
+        "enable_autoplay": false,
+        "delay": 1,
+        "accessibility_content": "Slideshow about our brand"
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "color_scheme": "scheme-1",
+        "show_page_title": true,
+        "heading_size": "h2",
+        "show_page_content": true
+      }
+    },
+    "product_lists_qyp89e": {
+      "type": "product-lists",
+      "blocks": {
+        "collection_8cLFMB": {
+          "type": "collection",
+          "settings": {
+            "collection": "platters",
+            "heading": "Collection"
+          }
+        }
+      },
+      "block_order": [
+        "collection_8cLFMB"
+      ],
+      "name": "t:sections.product_lists.name",
+      "settings": {
+        "color_scheme": "scheme-2",
+        "subheading": "",
+        "heading": "Platters",
+        "heading_size": "h5",
+        "description": "",
+        "items_to_show": 12,
+        "items_per_row_on_desktop": "6",
+        "items_per_row_on_mobile": "2",
+        "enable_carousel": true,
+        "show_progress_indicator": false,
+        "content_alignment": "ta-center",
+        "enable_view_more": true,
+        "button_text": "View all",
+        "button_link": "shopify://collections/platters"
+      }
+    },
+    "product_lists_9eiALi": {
+      "type": "product-lists",
+      "blocks": {
+        "collection_hKHMJj": {
+          "type": "collection",
+          "settings": {
+            "collection": "sweets",
+            "heading": "Collection"
+          }
+        }
+      },
+      "block_order": [
+        "collection_hKHMJj"
+      ],
+      "name": "t:sections.product_lists.name",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "subheading": "",
+        "heading": "Diwali Sweets",
+        "heading_size": "h5",
+        "description": "",
+        "items_to_show": 12,
+        "items_per_row_on_desktop": "6",
+        "items_per_row_on_mobile": "2",
+        "enable_carousel": true,
+        "show_progress_indicator": false,
+        "content_alignment": "ta-center",
+        "enable_view_more": true,
+        "button_text": "View all",
+        "button_link": "shopify://collections/sweets"
+      }
+    },
+    "product_lists_JmVebz": {
+      "type": "product-lists",
+      "blocks": {
+        "collection_6gAKTk": {
+          "type": "collection",
+          "settings": {
+            "collection": "fruit-basket",
+            "heading": "Collection"
+          }
+        }
+      },
+      "block_order": [
+        "collection_6gAKTk"
+      ],
+      "name": "t:sections.product_lists.name",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "subheading": "",
+        "heading": "Baskets",
+        "heading_size": "h5",
+        "description": "",
+        "items_to_show": 12,
+        "items_per_row_on_desktop": "6",
+        "items_per_row_on_mobile": "2",
+        "enable_carousel": true,
+        "show_progress_indicator": false,
+        "content_alignment": "ta-center",
+        "enable_view_more": true,
+        "button_text": "View all",
+        "button_link": "shopify://collections/fruit-basket"
+      }
+    }
+  },
+  "order": [
+    "slideshow_cTbbDc",
+    "main",
+    "product_lists_qyp89e",
+    "product_lists_9eiALi",
+    "product_lists_JmVebz"
+  ]
+}

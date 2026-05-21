@@ -1,0 +1,150 @@
+{%- if settings.product_specification_metafield_namespace != blank and product.metafields[settings.product_specification_metafield_namespace].size > 0 -%}
+  {%- liquid
+    assign html = ''
+    assign key_array = metafield_keys | remove: " " | downcase | split: ","
+    assign product_id = product.id | md5 | truncate: 12, ''
+    capture icon_check
+      render 'icon-check', size: 24, class: 'color-success'
+    endcapture
+    capture icon_close
+      render 'icon-close', size: 24, class: 'color-error'
+    endcapture
+  -%}
+  {%- if metafield_keys.size > 0 -%}
+    {%- for k in key_array -%}
+      {%- liquid
+          assign specification_value = ''
+          assign specification_name = k | upcase | replace: '_', ' '
+
+          case product.metafields[settings.product_specification_metafield_namespace][k].type
+            when 'file_reference'
+                assign file_value = product.metafields[settings.product_specification_metafield_namespace][k].value | downcase
+                if file_value != 'videodrop' and file_value contains 'files/'
+                  assign get_file = product.metafields[settings.product_specification_metafield_namespace][k].value
+                  assign file_url = get_file | image_url: width: get_file.width | image_tag: widths: '320', sizes: "(min-width: 361px) calc(100vw/2), calc(100vw/3)", loading: 'lazy', decoding: 'async', class: 'h-100 w-100 of-cover'
+                  assign specification_value = '<span class="product-spec--image d-block">SHT_PRODUCT_IMG_SPEC</span>' | replace: 'SHT_PRODUCT_IMG_SPEC', file_url
+                endif
+            when 'boolean'
+              if product.metafields[settings.product_specification_metafield_namespace][k].value
+                assign specification_value = icon_check
+              else
+                assign specification_value = icon_close
+              endif
+            when 'rich_text_field'
+              assign specification_value = product.metafields[settings.product_specification_metafield_namespace][k] | metafield_tag | replace: 'metafield-rich_text_field', 'metafield-rich_text_field rte'
+            when 'color'
+              assign specification_value = '<span class="product-spec--color d-block" style="background-color: SHT_PRODUCT_COLOR_SPEC;"></span>' | replace: 'SHT_PRODUCT_COLOR_SPEC', product.metafields[settings.product_specification_metafield_namespace][k].value
+            when 'date'
+              assign specification_value = '<span class="product-spec--date">SHT_PRODUCT_DATE_SPEC</span>' | replace: 'SHT_PRODUCT_DATE_SPEC', product.metafields[settings.product_specification_metafield_namespace][k].value
+            when 'date_time'
+              assign specification_value = '<span class="product-spec--date-time">SHT_PRODUCT_DATE_TIME_SPEC</span>' | replace: 'SHT_PRODUCT_DATE_TIME_SPEC', product.metafields[settings.product_specification_metafield_namespace][k].value
+            when 'dimension'
+              assign specification_value = '<span class="product-spec--dimension">SHT_PRODUCT_DIMENSION_VALUE_SPEC<span class="color-light">SHT_PRODUCT_DIMENSION_UNIT_SPEC</span></span>' | replace: 'SHT_PRODUCT_DIMENSION_VALUE_SPEC', product.metafields[settings.product_specification_metafield_namespace][k].value['value'] | replace: 'SHT_PRODUCT_DIMENSION_UNIT_SPEC', product.metafields[settings.product_specification_metafield_namespace][k].value['unit']
+            when 'multi_line_text_field'
+              assign specification_value = '<span class="product-spec--multi-line-text">SHT_PRODUCT_MULTI_LINE_TEXT_SPEC</span>' | replace: 'SHT_PRODUCT_MULTI_LINE_TEXT_SPEC', product.metafields[settings.product_specification_metafield_namespace][k].value
+            when 'single_line_text_field'
+              assign specification_value = '<span class="product-spec--signle-line-text">SHT_PRODUCT_SINGLE_LINE_TEXT_SPEC</span>' | replace: 'SHT_PRODUCT_SINGLE_LINE_TEXT_SPEC', product.metafields[settings.product_specification_metafield_namespace][k].value
+            when 'url'
+              assign specification_value = '<span class="product-spec--url td-underline"><a href="SHT_PRODUCT_URL_SPEC" rel="noopener noreferrer nofollow" target="_blank">SHT_PRODUCT_URL_SPEC</a></span>' | replace: 'SHT_PRODUCT_URL_SPEC', product.metafields[settings.product_specification_metafield_namespace][k].value
+            when 'volume'
+              assign specification_value = '<span class="product-spec--volumn">SHT_PRODUCT_VOLUMN_VALUE_SPEC<span class="color-light">SHT_PRODUCT_VOLUMN_UNIT_SPEC</span></span>' | replace: 'SHT_PRODUCT_VOLUMN_VALUE_SPEC', product.metafields[settings.product_specification_metafield_namespace][k].value['value'] | replace: 'SHT_PRODUCT_VOLUMN_UNIT_SPEC', product.metafields[settings.product_specification_metafield_namespace][k].value['unit']
+            when 'weight'
+              assign specification_value = '<span class="product-spec--weight">SHT_PRODUCT_WEIGHT_VALUE_SPEC<span class="color-light">SHT_PRODUCT_WEIGHT_UNIT_SPEC</span></span>' | replace: 'SHT_PRODUCT_WEIGHT_VALUE_SPEC', product.metafields[settings.product_specification_metafield_namespace][k].value['value'] | replace: 'SHT_PRODUCT_WEIGHT_UNIT_SPEC', product.metafields[settings.product_specification_metafield_namespace][k].value['unit']
+            when 'rating'
+              assign specification_value = '<span class="product-spec--rating stars" style="--rating: SHT_PRODUCT_RATING_VALUE;--rating-max: SHT_PRODUCT_RATING_MAX_VALUE;--rating-decimal: 0;"><span class="product-spec--rating-value">SHT_PRODUCT_RATING_SPEC</span></span>' | replace: 'SHT_PRODUCT_RATING_SPEC', product.metafields[settings.product_specification_metafield_namespace][k].value | replace: 'SHT_PRODUCT_RATING_MAX_VALUE', product.metafields[settings.product_specification_metafield_namespace][k].value['scale_max'] | replace: 'SHT_PRODUCT_RATING_VALUE', product.metafields[settings.product_specification_metafield_namespace][k].value
+            when 'metaobject_reference'
+              assign metaobject_reference = ''
+              assign json_meta_objects_json = product.metafields[settings.product_specification_metafield_namespace][k].value | json
+              assign meta_objects = json_meta_objects_json | split: ','
+              assign tmp_keys = ''
+              for meta_object in meta_objects
+                assign tmp_res = meta_object | split: ':'
+                assign tmp_res = tmp_res.first | replace: '{"', '' | replace: '"', ''
+                assign tmp_keys = tmp_keys | append: tmp_res | append: ','
+              endfor
+              assign tmp_keys = tmp_keys | append: "#END"
+              assign tmp_keys = tmp_keys | remove: ",#END"
+              assign tmp_key_array = tmp_keys | split: ","
+              for tmp_k in tmp_key_array
+                assign metaobj_specification_name = tmp_k | upcase | replace: '_', ' '
+                assign metaobj_specification_value = ''
+
+                case product.metafields[settings.product_specification_metafield_namespace][k].value[tmp_k].type
+                  when 'boolean'
+                    if product.metafields[settings.product_specification_metafield_namespace][k].value[tmp_k]
+                      assign metaobj_specification_value = '<span class="d-block fw-700 mb-12">SHT_PRODUCT_SPEC_NAME</span>' | replace: 'SHT_PRODUCT_SPEC_NAME', metaobj_specification_name | append: icon_check
+                    else
+                      assign metaobj_specification_value = '<span class="d-block fw-700 mb-12">SHT_PRODUCT_SPEC_NAME</span>' | replace: 'SHT_PRODUCT_SPEC_NAME', metaobj_specification_name | append: icon_close
+                    endif
+                  when 'rich_text_field'
+                    assign metaobj_specification_value = product.metafields[settings.product_specification_metafield_namespace][k].value[tmp_k] | metafield_tag | replace: 'metafield-rich_text_field', 'metafield-rich_text_field rte'
+                  when 'color'
+                    assign metaobj_specification_value = '<span class="d-block fw-700 mb-12"> SHT_PRODUCT_SPEC_NAME </span> <span class="product-spec--color d-block" style="background-color: SHT_PRODUCT_COLOR_SPEC"></span>' | replace: 'SHT_PRODUCT_COLOR_SPEC', product.metafields[settings.product_specification_metafield_namespace][k].value[tmp_k] | replace: 'SHT_PRODUCT_SPEC_NAME', metaobj_specification_name
+                  when 'date'
+                    assign metaobj_specification_value = '<span class="d-block fw-700 mb-12"> SHT_PRODUCT_SPEC_NAME </span> SHT_PRODUCT_DATE_SPEC' | replace: 'SHT_PRODUCT_DATE_SPEC', product.metafields[settings.product_specification_metafield_namespace][k].value[tmp_k] | replace: 'SHT_PRODUCT_SPEC_NAME', metaobj_specification_name
+                  when 'date_time'
+                    assign metaobj_specification_value = '<span class="d-block fw-700 mb-12"> SHT_PRODUCT_SPEC_NAME </span> SHT_PRODUCT_DATE_TIME_SPEC' | replace: 'SHT_PRODUCT_DATE_TIME_SPEC', product.metafields[settings.product_specification_metafield_namespace][k].value[tmp_k] | replace: 'SHT_PRODUCT_SPEC_NAME', metaobj_specification_name
+                  when 'dimension'
+                    assign metaobj_specification_value = '<span class="d-block fw-700 mb-12"> SHT_PRODUCT_SPEC_NAME </span> SHT_PRODUCT_DIMENSION_VALUE_SPEC<span class="color-light">SHT_PRODUCT_DIMENSION_UNIT_SPEC</span>' | replace: 'SHT_PRODUCT_DIMENSION_VALUE_SPEC', product.metafields[settings.product_specification_metafield_namespace][k].value[tmp_k].value['value'] | replace: 'SHT_PRODUCT_DIMENSION_UNIT_SPEC', product.metafields[settings.product_specification_metafield_namespace][k].value[tmp_k].value['unit'] | replace: 'SHT_PRODUCT_SPEC_NAME', metaobj_specification_name
+                  when 'multi_line_text_field'
+                    assign metaobj_specification_value = '<span class="d-block fw-700 mb-12"> SHT_PRODUCT_SPEC_NAME </span> SHT_PRODUCT_MULTI_LINE_TEXT_SPEC' | replace: 'SHT_PRODUCT_MULTI_LINE_TEXT_SPEC', product.metafields[settings.product_specification_metafield_namespace][k].value[tmp_k] | replace: 'SHT_PRODUCT_SPEC_NAME', metaobj_specification_name
+                  when 'single_line_text_field'
+                    assign metaobj_specification_value = '<span class="d-block fw-700 mb-12"> SHT_PRODUCT_SPEC_NAME </span> <span>SHT_PRODUCT_SINGLE_LINE_TEXT_SPEC</span>' | replace: 'SHT_PRODUCT_SINGLE_LINE_TEXT_SPEC', product.metafields[settings.product_specification_metafield_namespace][k].value[tmp_k] | replace: 'SHT_PRODUCT_SPEC_NAME', metaobj_specification_name
+                  when 'url'
+                    assign metaobj_specification_value = '<span class="d-block fw-700 mb-12"> SHT_PRODUCT_SPEC_NAME </span> <a class="td-underline" href="SHT_PRODUCT_URL_SPEC" rel="noopener noreferrer nofollow" target="_blank">SHT_PRODUCT_URL_SPEC</a>' | replace: 'SHT_PRODUCT_URL_SPEC', product.metafields[settings.product_specification_metafield_namespace][k].value[tmp_k] | replace: 'SHT_PRODUCT_SPEC_NAME', metaobj_specification_name
+                  when 'volume'
+                    assign metaobj_specification_value = '<span class="d-block fw-700 mb-12"> SHT_PRODUCT_SPEC_NAME </span> SHT_PRODUCT_VOLUMN_VALUE_SPEC<span class="color-light">SHT_PRODUCT_VOLUMN_UNIT_SPEC</span>' | replace: 'SHT_PRODUCT_VOLUMN_VALUE_SPEC', product.metafields[settings.product_specification_metafield_namespace][k].value[tmp_k].value['value'] | replace: 'SHT_PRODUCT_VOLUMN_UNIT_SPEC', product.metafields[settings.product_specification_metafield_namespace][k].value[tmp_k].value['unit'] | replace: 'SHT_PRODUCT_SPEC_NAME', metaobj_specification_name
+                  when 'weight'
+                    assign metaobj_specification_value = '<span class="d-block fw-700 mb-12"> SHT_PRODUCT_SPEC_NAME </span> SHT_PRODUCT_WEIGHT_VALUE_SPEC<span class="color-light">SHT_PRODUCT_WEIGHT_UNIT_SPEC</span>' | replace: 'SHT_PRODUCT_WEIGHT_VALUE_SPEC', product.metafields[settings.product_specification_metafield_namespace][k].value[tmp_k].value['value'] | replace: 'SHT_PRODUCT_WEIGHT_UNIT_SPEC', product.metafields[settings.product_specification_metafield_namespace][k].value[tmp_k].value['unit'] | replace: 'SHT_PRODUCT_SPEC_NAME', metaobj_specification_name
+                  when 'rating'
+                    assign metaobj_specification_value = '<span class="d-block fw-700 mb-12"> SHT_PRODUCT_SPEC_NAME </span> <span class="product-spec--rating stars" style="--rating: SHT_PRODUCT_RATING_VALUE;--rating-max: SHT_PRODUCT_RATING_MAX_VALUE;--rating-decimal: 0;"><span class="product-spec--rating-value">SHT_PRODUCT_RATING_SPEC</span></span>' | replace: 'SHT_PRODUCT_RATING_SPEC', product.metafields[settings.product_specification_metafield_namespace][k].value[tmp_k].value | replace: 'SHT_PRODUCT_SPEC_NAME', metaobj_specification_name | replace: 'SHT_PRODUCT_RATING_MAX_VALUE', product.metafields[settings.product_specification_metafield_namespace][k].value[tmp_k].value['scale_max'] | replace: 'SHT_PRODUCT_RATING_VALUE', product.metafields[settings.product_specification_metafield_namespace][k].value[tmp_k].value
+                  when 'file_reference'
+                  assign metaobj_file_value = product.metafields[settings.product_specification_metafield_namespace][k].value[tmp_k] | downcase
+                  if metaobj_file_value != 'videodrop' and metaobj_file_value contains 'gid://shopify/mediaimage/'
+                    assign get_metaobj_file = product.metafields[settings.product_specification_metafield_namespace][k].value[tmp_k]
+                    assign file_metaobject_url = get_metaobj_file | image_url: width: get_file.width | image_tag: widths: '750, 950', sizes: "(min-width: 361px) calc(100vw/2), calc(100vw/3)", loading: 'lazy', decoding: 'async', class: 'h-100 w-100 of-cover'
+                    assign metaobj_specification_value = '<span class="d-block fw-700 mb-12"> SHT_PRODUCT_SPEC_NAME </span> <span class="product-spec--image d-block">SHT_PRODUCT_IMG_SPEC</span>' | replace: 'SHT_PRODUCT_IMG_SPEC', file_metaobject_url | replace: 'SHT_PRODUCT_SPEC_NAME', metaobj_specification_name
+                  endif
+                endcase
+                if  metaobj_specification_name != '' and metaobj_specification_value != ''
+                  capture metaobject_reference
+                      echo metaobject_reference
+                      echo metaobj_specification_value | prepend: '<li class="mb-32 mb-md-48 product-spec__item">' | append: '</li>'
+                  endcapture
+                endif
+              endfor
+              assign specification_value = '<ul class="ls-none p-zero">' | append: metaobject_reference | append: '</ul>'
+          endcase
+      -%}
+      {%- if specification_name != '' and specification_value != '' -%}
+        {%- capture html -%}
+          {{ html }}
+          <div class="specification-item accordion__item js-accordion-item">
+            <div class="accordion__header wb-break-word">
+              <button class="btn-plain w-100 p-zero js-accordion-trigger d-flex middle-xs p-relative pt-16 pb-16 zi-1 c-pointer" id="acdnTgr-{{ forloop.index }}-{{ product_id }}" aria-expanded="false" aria-controls="acdnCtt-{{ forloop.index }}-{{ product_id }}">
+                <span class="card__heading mb-0 fg-1 pr-12 ta-left fw-700">{{ specification_name }}</span>
+                <span class="zi-1 btn btn-large btn-icon">
+                  {% render 'icon-chevron-down', class: 'icon-chevron-down' %}
+                </span>
+              </button>
+            </div>
+            <div class="accordion__content pr-36 mb-24 js-accordion-content accordion-content ac-{{ forloop.index }}-{{ product_id }}" id="acdnCtt-{{ forloop.index }}-{{ product_id }}" role="region" aria-describedby="acdnTgr-{{ forloop.index }}-{{ product_id }}" tabindex="-1" style="max-height: 0px;">
+              {{ specification_value }}
+            </div>
+          </div>
+        {%- endcapture -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- if html != '' -%}
+      <div class="d-block product-specifications">
+        <div class="js-product-specification-list">
+          <sht-accordion data-properties='{"multiple": true}'>
+            <div class="accordion">
+              {{ html }}
+            </div>
+          </sht-accordion>
+        </div>
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+{%- endif -%}

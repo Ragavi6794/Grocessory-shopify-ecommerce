@@ -1,0 +1,33 @@
+<script>
+// Clear cart login session on pages where it shouldn't persist
+document.addEventListener('DOMContentLoaded', function() {
+  const currentPath = window.location.pathname;
+  const currentTemplate = '{{ template }}';
+  
+  // Pages where we should NOT clear the session
+  const allowedPages = [
+    '/cart',
+    '/account/login', 
+    '/account',
+    '/customers/login'
+  ];
+  
+  const allowedTemplates = [
+    'cart',
+    'customers/login',
+    'customers/account'
+  ];
+  
+  // Check if current page/template is in allowed list
+  const isAllowedPage = allowedPages.some(page => currentPath.includes(page));
+  const isAllowedTemplate = allowedTemplates.includes(currentTemplate);
+  
+  // If not on allowed pages/templates, clear the session
+  if (!isAllowedPage && !isAllowedTemplate) {
+    if (sessionStorage.getItem('cart_login')) {
+      console.log('Clearing cart_login session from:', currentPath);
+      sessionStorage.removeItem('cart_login');
+    }
+  }
+});
+</script>

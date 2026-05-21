@@ -1,0 +1,331 @@
+{% doc %}
+  @prompt
+    Educational Reminder
+    
+    Card layout with simple awareness tips:
+    
+    ✅ Check regularly
+    
+    ✅ Support loved ones
+    
+    ✅ Spread awareness
+    
+    CTA: “Learn More →” (link to external trusted source like UAE Cancer Society or WHO)., make the points parallaly and center align button on the bottom of the point
+
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-awareness-card-{{ ai_gen_id }} {
+    background-color: {{ block.settings.background_color }};
+    border-radius: {{ block.settings.border_radius }}px;
+    padding: {{ block.settings.padding }}px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .ai-awareness-card__header-{{ ai_gen_id }} {
+    margin-bottom: 32px;
+  }
+
+  .ai-awareness-card__title-{{ ai_gen_id }} {
+    color: {{ block.settings.title_color }};
+    font-size: {{ block.settings.title_size }}px;
+    margin: 0 0 8px 0;
+    font-weight: 600;
+  }
+
+  .ai-awareness-card__subtitle-{{ ai_gen_id }} {
+    color: {{ block.settings.text_color }};
+    font-size: {{ block.settings.text_size }}px;
+    margin: 0;
+    opacity: 0.8;
+  }
+
+  .ai-awareness-card__tips-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+    margin: 0 0 32px 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ai-awareness-card__tip-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    color: {{ block.settings.text_color }};
+    font-size: {{ block.settings.text_size }}px;
+  }
+
+  .ai-awareness-card__checkmark-{{ ai_gen_id }} {
+    width: 40px;
+    height: 40px;
+    background-color: {{ block.settings.checkmark_color }};
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+  }
+
+  .ai-awareness-card__tip-text-{{ ai_gen_id }} {
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  .ai-awareness-card__cta-{{ ai_gen_id }} {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: {{ block.settings.button_background }};
+    color: {{ block.settings.button_text_color }};
+    text-decoration: none;
+    padding: 12px 20px;
+    border-radius: {{ block.settings.button_border_radius }}px;
+    font-size: {{ block.settings.text_size }}px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+  }
+
+  .ai-awareness-card__cta-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_background }};
+  }
+
+  .ai-awareness-card__arrow-{{ ai_gen_id }} {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s ease;
+  }
+
+  .ai-awareness-card__cta-{{ ai_gen_id }}:hover .ai-awareness-card__arrow-{{ ai_gen_id }} {
+    transform: translateX(4px);
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-awareness-card-{{ ai_gen_id }} {
+      padding: {{ block.settings.padding | times: 0.8 }}px;
+    }
+
+    .ai-awareness-card__title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.title_size | times: 0.9 }}px;
+    }
+
+    .ai-awareness-card__tips-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .ai-awareness-card__checkmark-{{ ai_gen_id }} {
+      width: 36px;
+      height: 36px;
+      font-size: 16px;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-awareness-card-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-awareness-card__header-{{ ai_gen_id }}">
+    {% if block.settings.title != blank %}
+      <h3 class="ai-awareness-card__title-{{ ai_gen_id }}">{{ block.settings.title }}</h3>
+    {% endif %}
+    {% if block.settings.subtitle != blank %}
+      <p class="ai-awareness-card__subtitle-{{ ai_gen_id }}">{{ block.settings.subtitle }}</p>
+    {% endif %}
+  </div>
+
+  <ul class="ai-awareness-card__tips-{{ ai_gen_id }}">
+    {% if block.settings.tip_1 != blank %}
+      <li class="ai-awareness-card__tip-{{ ai_gen_id }}">
+        <span class="ai-awareness-card__checkmark-{{ ai_gen_id }}">✓</span>
+        <span class="ai-awareness-card__tip-text-{{ ai_gen_id }}">{{ block.settings.tip_1 }}</span>
+      </li>
+    {% endif %}
+    {% if block.settings.tip_2 != blank %}
+      <li class="ai-awareness-card__tip-{{ ai_gen_id }}">
+        <span class="ai-awareness-card__checkmark-{{ ai_gen_id }}">✓</span>
+        <span class="ai-awareness-card__tip-text-{{ ai_gen_id }}">{{ block.settings.tip_2 }}</span>
+      </li>
+    {% endif %}
+    {% if block.settings.tip_3 != blank %}
+      <li class="ai-awareness-card__tip-{{ ai_gen_id }}">
+        <span class="ai-awareness-card__checkmark-{{ ai_gen_id }}">✓</span>
+        <span class="ai-awareness-card__tip-text-{{ ai_gen_id }}">{{ block.settings.tip_3 }}</span>
+      </li>
+    {% endif %}
+  </ul>
+
+  {% if block.settings.cta_text != blank and block.settings.cta_link != blank %}
+    <a href="{{ block.settings.cta_link }}" class="ai-awareness-card__cta-{{ ai_gen_id }}" target="_blank" rel="noopener">
+      {{ block.settings.cta_text }}
+      <svg class="ai-awareness-card__arrow-{{ ai_gen_id }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12h14"></path>
+        <path d="M12 5l7 7-7 7"></path>
+      </svg>
+    </a>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Educational reminder card",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Health Awareness"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Simple steps for better health"
+    },
+    {
+      "type": "text",
+      "id": "tip_1",
+      "label": "Tip 1",
+      "default": "Check regularly"
+    },
+    {
+      "type": "text",
+      "id": "tip_2",
+      "label": "Tip 2",
+      "default": "Support loved ones"
+    },
+    {
+      "type": "text",
+      "id": "tip_3",
+      "label": "Tip 3",
+      "default": "Spread awareness"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Button text",
+      "default": "Learn More"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title",
+      "default": "#2c3e50"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#34495e"
+    },
+    {
+      "type": "color",
+      "id": "checkmark_color",
+      "label": "Checkmark",
+      "default": "#27ae60"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button background",
+      "default": "#3498db"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_background",
+      "label": "Button hover background",
+      "default": "#2980b9"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size",
+      "min": 16,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "label": "Text size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding",
+      "label": "Padding",
+      "min": 16,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "label": "Button border radius",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    }
+  ],
+  "presets": [
+    {
+      "name": "Educational reminder card"
+    }
+  ]
+}
+{% endschema %}

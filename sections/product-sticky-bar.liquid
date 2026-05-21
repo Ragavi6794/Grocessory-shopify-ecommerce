@@ -1,0 +1,150 @@
+{% liquid
+  assign sticky_bar_grid = 'sticky-bar--1-column'
+	if section.settings.show_purchasing
+    assign sticky_bar_grid = 'sticky-bar--12-column'
+		capture product_title
+      echo '<div class="product-title">'
+			echo '<div class="product__title h6 m-zero">'
+			echo	product.title
+			echo	'</div>'
+      echo '</div>'
+		endcapture
+		capture product_add_to_cart
+      echo '<div class="product-purchase">'
+      render 'product-sticky-purchasing-bar', product: product, section: section, purchase_type: section.settings.sticky_button_type
+      echo '</div>'
+		endcapture
+    if section.settings.show_menu_item and section.blocks.size > 0
+      assign sticky_bar_grid = 'sticky-bar--3-column'
+    endif
+	endif
+
+  assign page_background_color = settings.page_background | downcase
+  assign section_background_color = section.settings.color_scheme.settings.color_background | downcase
+
+%}
+{% if page_background_color == section_background_color or section.settings.color_scheme.settings.color_background.alpha == 0.0 %}
+  <style>
+    .product-sticky-bar {
+      padding-inline: var(--s-outer-p-x);
+      padding-block: var(--s-outer-p-y);
+      background-color: var(--color-background);
+    }
+  </style>
+{% else %}
+  <style>
+    .product-sticky-bar-main {
+      margin-inline: var(--s-outer-p-x);
+      margin-block: var(--s-outer-p-y);
+    }
+  </style>
+{% endif %}
+
+<sht-product-sticky-bar class="product-sticky-bar d-block p-relative s-specific {% render 'sections-spacing' %} color-{{ section.settings.color_scheme }}" data-ui-component="Product Sticky Bar">
+  <div class="ctnr background">
+    <div class="d-grid sticky-bar-grid {{ sticky_bar_grid }} middle-xs">
+        {{ product_title }}
+        {% if section.settings.show_menu_item and section.blocks.size > 0 %}
+          <div class="product-sticky-nav">
+            <div class="js-product-sticky-bar-menu-items sticky-nav--desktop d-none d-flex-md center-xs">
+              <ul class="sticky-nav d-flex fw-wrap ls-none zi-1 dropdown">
+                {% for block in section.blocks %}
+                  <li class="sticky-nav__item dropdown-item">
+                    <button data-menu-key="{{ block.settings.menu_key | escape }}" class="sticky-nav__button menu__heading fw-700 hide-empty {% if block.settings.menu_key == blank %} sticky-nav__button--disable {% endif %} c-pointer w-100 ta-left js-product-sticky-bar-trigger" type="button">{{- block.settings.menu_label | escape -}}</button>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+            <details class="sticky-nav--mobile d-inline-block d-none-md js-product-sticky-bar-details">
+              <summary class="ls-none d-flex between-xs middle-xs c-pointer">
+                <span class="mr-16 subtext"> {{ 'sections.product_sticky_bar.scroll_to_section' | t }} </span>
+                  {% render 'icon-chevron-down', size: '20', class: 'icon icon-chevron-down' %}
+              </summary>
+              <div class="js-product-sticky-bar-mobile-content color-{{ settings.color_scheme_drawer_popover }}"></div>
+            </details>
+          </div>
+        {% endif %}
+        {{ product_add_to_cart }}
+      </div>
+  </div>
+</sht-product-sticky-bar>
+
+{% schema %}
+{
+  "name": "t:section.product_sticky_bar.name",
+  "class": "s-outer-padding-small product-sticky-bar-main js-product-sticky-bar",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:general.settings.headers.header_general.content"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:general.settings.color_scheme.label",
+      "default": "scheme-3"
+    },
+    {
+      "type": "header",
+      "content": "t:general.settings.menu.label",
+      "info": "t:sections.product_sticky_bar.settings.menu.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_menu_item",
+      "label": "t:sections.product_sticky_bar.settings.show_product_menu_items.label",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:sections.product_sticky_bar.settings.headers.header_purchasing.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_purchasing",
+      "label": "t:sections.product_sticky_bar.settings.show_purchasing.label",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "sticky_button_type",
+      "label": "t:general.settings.cta_button.label",
+      "options": [
+        {
+          "value": "add_to_cart",
+          "label": "t:sections.main_product.settings.button_type.options.option_add_to_cart.label"
+        },
+        {
+          "value": "dynamic_checkout",
+          "label": "t:sections.main_product.settings.button_type.options.option_dynamic_checkout.label"
+        }
+      ],
+      "default": "add_to_cart"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "menu_item",
+      "name": "t:sections.product_sticky_bar.settings.headers.header_menu_item.content",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "t:sections.product_sticky_bar.settings.paragraph_menu.content"
+        },
+        {
+          "type": "text",
+          "id": "menu_label",
+          "label": "t:sections.product_sticky_bar.settings.menu_label.label",
+          "info": "t:general.settings.button_label.info",
+          "default": "Product details"
+        },
+        {
+          "type": "text",
+          "id": "menu_key",
+          "label": "t:sections.product_sticky_bar.settings.target_section_id.label"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

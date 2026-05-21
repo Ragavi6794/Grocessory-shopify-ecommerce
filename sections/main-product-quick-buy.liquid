@@ -1,0 +1,155 @@
+{%- liquid
+  layout none
+  assign variant_label = settings.variant_swatches_option | downcase
+  assign product_form_id = 'productQuickBuyForm-' | append: section.id
+-%}
+<div class="product__quickbuy h-100 d-flex fd-column" data-ui-component="Product Quick Buy Section">
+  <div class="product__info d-flex fd-column">
+    <div class="product__details h-100 w-100 d-flex fd-column gap-20 oy-scroll disable-scrollbars p-relative">
+      {%- unless product.has_only_default_variant -%}
+        <div class="product__variants" id="productQuickBuyVariantPicker-{{ section.id }}">
+          <sht-prd-qck-buy-variant-radios class="product__variants--radios d-flex fd-column gap-16 no-js-hidden" data-section="{{ section.id }}" data-url="{{ product.url }}">
+            {%- for option in product.options_with_values -%}
+              {% assign index = forloop.index | minus: 1 %}
+              <fieldset class="js-variant-radio-container form__fields product-option d-flex fw-wrap p-zero m-zero b-zero">
+                <legend class="p-zero product-option__name mb-12">
+                  <span class="fw-700 mr-8">{{ option.name }}</span>
+                  <span class="js-variant-radio-option-name hide-empty" data-option-name="{{ option.name }}">
+                    {{ product.selected_or_first_available_variant.options[index] }}
+                  </span>
+                </legend>
+                {%- assign variant_name = option.name | downcase -%}
+                {%- if variant_label contains variant_name -%}
+                  {% render 'card-product-quick-view-color-swatch', product: product, option: option, section: section, product_form_id: product_form_id, index: index %}
+                {%- else -%}
+                  <ul class="ls-none d-flex fw-wrap gap-8">
+                    {%- for value in option.values -%}
+                      <li class="form__field js-variant-option-value product-option__value {% if product.selected_or_first_available_variant.available == false and option.selected_value == value %}product-option--sold-out{% endif %}" data-value="{{ value | escape }}-{{ index }}" data-option-index="{{ index }}">
+                        <input
+                          type="radio"
+                          class="js-variant-radio-item js-variant-item form__control input--variant js-variant-radio-option-name visually-hidden"
+                          id="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
+                          name="{{ option.name }}"
+                          value="{{ value | escape }}"
+                          data-variant-value="{{ value | escape }}-{{ index }}"
+                          form="{{ product_form_id }}"
+                          {% if option.selected_value == value %}
+                            checked
+                          {% endif %}
+                        >
+                        <label class="form__label product-option__label d-block" for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}">{{ value }}</label>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                {%- endif -%}
+              </fieldset>
+            {%- endfor -%}
+            <script type="application/json">
+              {{ product.variants | json }}
+            </script>
+          </sht-prd-qck-buy-variant-radios>
+        </div>
+      {%- endunless -%}
+      <div class="hide-empty fw-700" id="productQuickBuyInventoryTracking-{{ section.id }}">
+        {%- if product.selected_or_first_available_variant.inventory_quantity > 0 -%}
+          {%- liquid
+            assign stock_status = 'product--instock color-success'
+            if settings.product_information_low_stock_threshold > 0 and settings.product_information_low_stock_threshold >= product.selected_or_first_available_variant.inventory_quantity
+              assign stock_status = 'product--lowstock color-warning'
+            endif
+          -%}
+          <span class="product-inventory-tracking icon-dot-shadow {{ stock_status }} p-relative">
+            {%- if settings.quick_buy_show_stock_number and settings.product_information_low_stock_threshold -%}
+              {{ 'products.product.in_stock_html' | t: stock: product.selected_or_first_available_variant.inventory_quantity }}
+            {%- else -%}
+              {{ 'products.product.in_stock' | t }}
+            {%- endif -%}
+          </span>
+        {%- else -%}
+          {%- if product.selected_or_first_available_variant.inventory_policy != 'continue' and product.selected_or_first_available_variant.inventory_management != blank -%}
+            <span class="product-inventory-tracking icon-dot-shadow product--outstock p-relative color-error">{{ 'products.product.out_of_stock' | t }}</span>
+          {% else %}
+            <span class="product-inventory-tracking icon-dot-shadow product--instock color-success p-relative">
+              {{ 'products.product.in_stock' | t }}
+            </span>
+          {%- endif -%}
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="dialog__footer p-sticky zi-2 bottom-0 d-flex fd-column middle-xs">
+  <div class="product__price dialog--animate w-100 no-js-hidden d-flex between-xs middle-xs" id="productQuickBuyPrice-{{- section.id -}}" role="status">
+    <span>{{ 'general.cart.subtotal' | t }}</span>
+    {%- render 'product-price', product: product, target: product.selected_or_first_available_variant, price_style: 'fw-700', regular_price: 'd-none-important', unit_price: 'd-none-important' -%}
+  </div>
+  <div class="product__purchase p-zero d-flex fd-row-sm fd-column mt-20 w-100">
+    <sht-prd-qck-buy-frm class="product__form flex-1">
+      {%- form 'product', product, id: product_form_id, class: 'form form__fields', novalidate: 'novalidate' -%}
+        <div class="form__field">
+          <input type="hidden" class="form__control" name="id" value="{{ product.selected_or_first_available_variant.id }}" disabled>
+        </div>
+        <div class="d-flex fd-column">
+          <div class="js-product-form-error-wrapper" data-type="error-wrapper" role="alert" hidden>
+            <span class="d-flex middle-xs mb-12">
+              <span class="icon--error icon icon--small mr-8 fs-0">
+                {%- render 'icon-error', size: 16 -%}
+              </span>
+              <span class="js-product-form-error-message" data-type="error-message"></span>
+            </span>
+          </div>
+          <div class="d-flex gap-12">
+            <div class="w-100">
+              <button
+                type="submit"
+                name="add"
+                class="js-product-form-submit-btn w-100 btn btn-large btn-primary"
+                {% if product.selected_or_first_available_variant.available == false %}
+                  disabled
+                {% endif %}
+              >
+                <span class="p-relative d-flex middle-xs center-xs ta-center">
+                  <span class="hidden js-product-form-spinner product-form-spinner">
+                    {% render 'icon-spinner' %}
+                  </span>
+                  <span class="js-product-form-submit-btn-text">
+                    {%- if product.selected_or_first_available_variant.available -%}
+                      {{ 'products.product.add_to_cart' | t }}
+                    {%- else -%}
+                      {{ 'products.product.sold_out' | t }}
+                    {%- endif -%}
+                  </span>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      {%- endform -%}
+    </sht-prd-qck-buy-frm>
+  </div>
+  <a href="{{ product.url }}" class="btn btn-link mt-6 mb-2">{{ 'products.product.view_full_details' | t }}
+    {% render 'icon-arrow-right', size: 16, class: 'ml-8' %}
+  </a>
+</div>
+{%- assign files = 'component-quickbuy.js' | split: ', ' -%}
+<script>
+
+  {%- for file in files -%}
+    {%- assign id = file | replace: ".js", "-js" | strip | append: "-file" -%}
+    {%- assign fileName = id | replace: "-", "_" -%}
+    if (!SHTHelper.qs(`#{{ id }}`)) {
+        let {{ fileName }} = document.createElement("script");
+        {{ fileName }}.setAttribute('src', `{{ file | asset_url }}`);
+        {{ fileName }}.setAttribute('id', '{{ id }}');
+        document.body.appendChild({{ fileName }});
+    }
+  {%- endfor -%}
+</script>
+
+{% schema %}
+{
+  "name": "t:sections.main_product.name",
+  "tag": "section",
+  "class": "section-product-quick-buy"
+}
+{% endschema %}

@@ -1,0 +1,67 @@
+<sht-text-hotspots class="clm m-auto" style="--w-xs:12;--w-sm:12;--w-md:6;">
+  <div class="p-relative h-100 w-100 d-block zi-1">
+    {% render 'image',
+      image_item: hotspot_image,
+      ratio: ratio,
+      image_wrap_classes: 'corner-radius-s',
+      image_classes: 'anm anm-zoomOut anm-card-media',
+      media_style: '--duration: .7s;'
+    %}
+    <div class="p-absolute h-100 w-100 left-0 top-0 anm anm-fadeInUpLarge anm-card" style="--duration: .7s;">
+      {% for block in section.blocks %}
+          {%- liquid
+            assign is_active = ''
+            assign index = section.blocks.size | minus: forloop.index | plus: 1
+            if forloop.first
+              assign is_active = ' is-active'
+            endif
+          -%}
+          {% capture hotspots_item %}
+            <div class="tt-htspt__item corner-radius-s color-{{ section.settings.card_color_scheme }} background">
+              {% capture icon %}
+                {%- liquid
+                  assign icon_svg = ''
+                  assign icon_source = block.settings.icon_source
+                  if icon_source == 'theme_library'
+                    render 'icon-loader', icon: block.settings.options_icon, size: 36
+                  elsif icon_source == 'custom_img'
+                    assign custom_icon = 'image' | placeholder_svg_tag: 'placeholder media of-cover'
+                    assign custom_icon = block.settings.custom_img | image_url: width: block.settings.custom_img.width | image_tag: widths: '120', sizes: '(min-width: 361px) calc(100vw/2), calc(100vw/3)', alt: block.settings.heading, class: 'media of-cover h-100 w-100'
+                    render 'image', image_item: custom_icon, image_wrap_classes: "icon-custom--large d-inline-block", image_classes: "h-100 w-100"
+                  else
+                    assign icon_svg = block.settings.html_code
+                  endif
+                -%}
+                {%- if icon_svg != '' -%}
+                  <div class="icon icon-custom--large h-100 w-100">
+                    {{- icon_svg -}}
+                  </div>
+                {%- endif -%}
+              {% endcapture %}
+                {{ icon }}
+              <h3 class="card__heading fw-700 m-zero mt-16 ta-left hide-empty">{{- block.settings.heading | escape -}}</h3>
+              <div class="mt-8 rte hide-empty wb-break-word">
+                {{- block.settings.description -}}
+              </div>
+            </div>
+          {% endcapture %}
+          {% capture hotspots_list %}
+            {{ hotspots_list }}
+            {{ hotspots_item }}
+          {% endcapture %}
+          <div class="{{ block.settings.content_position }}">
+            <span class="tt-htspt__line p-absolute" style="--axis-x: {{ block.settings.left_offset }}%; --axis-y: {{ block.settings.top_offset }}%"></span>
+            <button type="button" aria-label="{{ 'accessibility.view_text_hotspot_info' | t: item_name: block.settings.heading | escape }}" class="btn btn-icon icon br-50p btn-large hotspot-item js-text-hotspot-button {{ is_active }}" style="--axis-x: {{ block.settings.left_offset }}%; --axis-y: {{ block.settings.top_offset }}%" aria-controls="text-hotspot-{{ section_id }}-{{ block.id }}" {{ block.shopify_attributes }}>
+              {{ icon | replace: 'width="36" height="36"', 'width="24" height="24"' | replace: 'icon-custom--large', 'icon-custom--small' }}
+            </button>
+            <div id="text-hotspot-{{ section_id }}-{{ block.id }}" class="tt-htspt__content js-text-hotspot-content bs-card w-100 corner-radius-s d-none d-block-md p-absolute ta-left fs-body c-pointer zi-{{- index -}} {{ is_active }}" style="--axis-x: {{ block.settings.left_offset }}%; --axis-y: {{ block.settings.top_offset }}%;">
+              {{ hotspots_item }}
+            </div>
+          </div>
+      {% endfor %}
+    </div>
+  </div>
+</sht-text-hotspots>
+<div class="clm m-auto d-grid d-none-md r-gap-20 anm anm-fadeInUpLarge anm-card" style="--w-xs:12;--w-sm:8; --duration: .7s;">
+  {{ hotspots_list }}
+</div>

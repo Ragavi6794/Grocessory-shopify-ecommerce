@@ -1,0 +1,885 @@
+{%- liquid
+  assign column_desktop = 12.0 | divided_by: section.settings.items_per_row_on_desktop
+-%}
+<div class="section section-index--{{section.index |  replace: '1', 'first' }} {% render 'sections-spacing' %} color-{{- section.settings.color_scheme }}">
+  <div class="ctnr background" data-ui-component="Icon With Text Section" role="region" aria-labelledby="sectionHeading-{{ section.id | md5 | truncate: 12, "" }}">
+    <div class="m-auto js-animate {{ section.settings.content_align }}">
+      {% render 'section-header',
+        content_align: section.settings.content_align,
+        subheading: section.settings.subheading,
+        heading: section.settings.heading,
+        heading_size: section.settings.heading_size,
+        description: section.settings.description,
+        section: section
+      %}
+
+      <div class="s-content rw" role="list">
+        {%- for block in section.blocks -%}
+          {% liquid
+            assign color_icon = block.settings.color_text_icon
+            unless block.settings.color_text_icon and block.settings.color_text_icon.alpha != 0.0
+              assign color_icon = 'var(--color-normal-text)'
+            endunless
+          %}
+          <div role="listitem" class="clm anm anm-fadeInUpLarge" style="--w-xs:12;--w-sm:6;--w-md: {{ column_desktop }}; --delay: {{ forloop.index | plus: 2 | times: 0.05 -}}s; --duration: .7s; --color-highlight-icon: {{ color_icon }}" {{ block.shopify_attributes }}>
+            <div class="card card--standard">
+              <div class="card__media">
+                {%- liquid
+                assign icon_svg = ''
+                assign icon_source = block.settings.icon_source
+                if icon_source == 'theme_library'
+                  render 'icon-loader', icon: block.settings.options_icon, size: 36, class: "icon--square h-100 w-100 d-inline-block color-icon"
+                elsif icon_source == 'custom_img'
+                  assign custom_icon = 'image' | placeholder_svg_tag: 'placeholder media of-cover'
+                  assign custom_icon = block.settings.custom_img | image_url: width: block.settings.custom_img.width | image_tag: widths: '120', sizes: '(min-width: 361px) calc(100vw/2), calc(100vw/3)', alt: block.settings.heading, class: 'media of-cover h-100 w-100'
+                  render 'image', image_item: custom_icon, image_wrap_classes: "icon--square d-inline-block", image_classes: "h-100 w-100"
+                else
+                  assign icon_svg = block.settings.html_code
+                endif
+
+                -%}
+                {%- if icon_svg != '' -%}
+                  <div class="icon--square h-100 w-100 d-inline-block">
+                    {{- icon_svg -}}
+                  </div>
+                {%- endif -%}
+              </div>
+              <div class="card__content w-100 wb-break-word">
+                <h3 class="m-zero card__heading fw-700 hide-empty">{{- block.settings.heading | escape -}}</h3>
+                <div class="text-block mt-md-16 mt-12 hide-empty">{{- block.settings.description -}}</div>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+      <div class="s-footer anm anm-fadeInUpLarge {{ section.settings.button_main_text | default: 'd-none' | replace: section.settings.button_main_text, '' }}" style="--duration: .7s; --delay: .15s">
+        <a class="btn btn-primary btn-large hide-empty" href="{{- section.settings.button_main_link | default: '#' -}}">{{- section.settings.button_main_text -}}</a>
+      </div>
+    </div>
+
+  </div>
+  {%- render 'section-id', section: section -%}
+</div>
+{% schema %}
+{
+  "name": "t:sections.icon_with_text.name",
+  "disabled_on": {
+    "groups": [
+      "header"
+    ]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:general.settings.headers.header_general.content"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:general.settings.color_scheme.label",
+      "default": "scheme-3"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "t:general.settings.section_subheading.label",
+      "default": "Add a tagline"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:general.settings.section_heading.label",
+      "default": "Our core values"
+    },
+    {
+      "type": "select",
+      "label": "t:general.settings.heading_size.label",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:general.settings.heading_size.options.h2.label"
+        },
+        {
+          "value": "h3",
+          "label": "t:general.settings.heading_size.options.h3.label"
+        },
+        {
+          "value": "h4",
+          "label": "t:general.settings.heading_size.options.h4.label"
+        },
+        {
+          "value": "h5",
+          "label": "t:general.settings.heading_size.options.h5.label"
+        }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "t:general.settings.section_description.label"
+    },
+    {
+      "type": "header",
+      "content": "t:general.settings.headers.header_layout.content"
+    },
+    {
+      "type": "select",
+      "id": "items_per_row_on_desktop",
+      "label": "t:general.settings.items_per_row_on_desktop.label",
+      "default": "4",
+      "options": [
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        },
+        {
+          "value": "5",
+          "label": "5"
+        },
+        {
+          "value": "6",
+          "label": "6"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "content_align",
+      "label": "t:general.settings.content_alignment.label",
+      "default": "ta-center middle-xs",
+      "options": [
+        {
+          "value": "ta-left",
+          "label": "t:general.settings.option_left.label"
+        },
+        {
+          "value": "ta-center middle-xs",
+          "label": "t:general.settings.option_center.label"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "t:general.settings.headers.header_button.content"
+    },
+    {
+      "type": "text",
+      "id": "button_main_text",
+      "label": "t:general.settings.label.label",
+      "info": "t:general.settings.button_label.info",
+      "default": "Check now"
+    },
+    {
+      "type": "url",
+      "id": "button_main_link",
+      "label": "t:general.settings.link.label"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "t:sections.icon_with_text.blocks.icon_with_text_item.name",
+      "settings": [
+        {
+          "type": "header",
+          "content": "t:sections.icon_with_text.settings.headers.header_icon.content"
+        },
+        {
+          "type": "select",
+          "label": "t:general.settings.icon_source.label",
+          "info": "t:general.settings.icon_source.info",
+          "id": "icon_source",
+          "options": [
+            {
+              "value": "theme_library",
+              "label": "t:general.settings.theme_library.label"
+            },
+            {
+              "value": "custom_img",
+              "label": "t:general.settings.custom_image.label"
+            },
+            {
+              "value": "custom_svg",
+              "label": "t:general.settings.custom_svg.label"
+            }
+          ],
+          "default": "theme_library"
+        },
+        {
+          "type": "select",
+          "id": "options_icon",
+          "label": "t:general.settings.theme_library.label",
+          "default": "3d-model",
+          "options": [
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "3d-model",
+              "label": "3d model"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "arrow-down",
+              "label": "Arrow down"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "arrow-left",
+              "label": "Arrow left"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "arrow-right",
+              "label": "Arrow right"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "arrow-up",
+              "label": "Arrow up"
+            },
+            {
+              "group": "t:general.settings.tech.label",
+              "value": "at-sign",
+              "label": "At sign"
+            },
+            {
+              "group": "t:general.settings.other.label",
+              "value": "audio-wave",
+              "label": "Audio wave"
+            },
+            {
+              "group": "t:general.settings.shop.label",
+              "value": "award-gift",
+              "label": "Award gift"
+            },
+            {
+              "group": "t:general.settings.tech.label",
+              "value": "battery",
+              "label": "Battery"
+            },
+            {
+              "group": "t:general.settings.tech.label",
+              "value": "bluetooth",
+              "label": "Bluetooth"
+            },
+            {
+              "group": "t:general.settings.shipping.label",
+              "value": "box",
+              "label": "Box"
+            },
+            {
+              "group": "t:general.settings.shop.label",
+              "value": "building",
+              "label": "Building"
+            },
+            {
+              "group": "t:general.settings.tech.label",
+              "value": "camera",
+              "label": "Camera"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "cart",
+              "label": "Cart"
+            },
+            {
+              "group": "t:general.settings.tech.label",
+              "value": "charger",
+              "label": "Charger"
+            },
+            {
+              "group": "t:general.settings.communication.label",
+              "value": "chat",
+              "label": "Chat"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "check-mark",
+              "label": "Check mark"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "check",
+              "label": "Check"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "chevron-down",
+              "label": "Chevron down"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "chevron-left",
+              "label": "Chevron left"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "chevron-right",
+              "label": "Chevron right"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "chevron-up",
+              "label": "Chevron up"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "close",
+              "label": "Close"
+            },
+            {
+              "group": "t:general.settings.communication.label",
+              "value": "comment",
+              "label": "Comment"
+            },
+            {
+              "group": "t:general.settings.other.label",
+              "value": "compare",
+              "label": "Compare"
+            },
+            {
+              "group": "t:general.settings.communication.label",
+              "value": "credit-card",
+              "label": "Credit card"
+            },
+            {
+              "group": "t:general.settings.communication.label",
+              "value": "customer-support",
+              "label": "Customer-support"
+            },
+            {
+              "group": "t:general.settings.other.label",
+              "value": "document",
+              "label": "Document"
+            },
+            {
+              "group": "t:general.settings.communication.label",
+              "value": "download",
+              "label": "Download"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "edit",
+              "label": "Edit"
+            },
+            {
+              "group": "t:general.settings.communication.label",
+              "value": "envelope",
+              "label": "Envelope"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "error",
+              "label": "Error"
+            },
+            {
+              "group": "t:general.settings.social_media.label",
+              "value": "facebook",
+              "label": "Facebook"
+            },
+            {
+              "group": "t:general.settings.other.label",
+              "value": "file",
+              "label": "File"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "filter",
+              "label": "Filter"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "fullscreen-exit",
+              "label": "Fullscreen exit"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "fullscreen",
+              "label": "Fullscreen"
+            },
+            {
+              "group": "t:general.settings.tech.label",
+              "value": "gaming",
+              "label": "Gaming"
+            },
+            {
+              "group": "t:general.settings.shop.label",
+              "value": "gift",
+              "label": "Gift"
+            },
+            {
+              "group": "t:general.settings.shipping.label",
+              "value": "global",
+              "label": "Global"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "hamburger-menu",
+              "label": "Hamburger menu"
+            },
+            {
+              "group": "t:general.settings.shipping.label",
+              "value": "handcart",
+              "label": "Handcart"
+            },
+            {
+              "group": "t:general.settings.shop.label",
+              "value": "happy",
+              "label": "Happy"
+            },
+            {
+              "group": "t:general.settings.tech.label",
+              "value": "headphone",
+              "label": "Headphone"
+            },
+            {
+              "group": "t:general.settings.shop.label",
+              "value": "heart",
+              "label": "Heart"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "info",
+              "label": "Info"
+            },
+            {
+              "group": "t:general.settings.social_media.label",
+              "value": "instagram",
+              "label": "Instagram"
+            },
+            {
+              "group": "t:general.settings.communication.label",
+              "value": "leaf",
+              "label": "Leaf"
+            },
+            {
+              "group": "t:general.settings.other.label",
+              "value": "lifetime",
+              "label": "Lifetime"
+            },
+            {
+              "group": "t:general.settings.other.label",
+              "value": "light-weight",
+              "label": "Light weight"
+            },
+            {
+              "group": "t:general.settings.other.label",
+              "value": "light",
+              "label": "Light"
+            },
+            {
+              "group": "t:general.settings.other.label",
+              "value": "lightning",
+              "label": "Lightning"
+            },
+            {
+              "group": "t:general.settings.shop.label",
+              "value": "like",
+              "label": "Like"
+            },
+            {
+              "group": "t:general.settings.communication.label",
+              "value": "link",
+              "label": "Link"
+            },
+            {
+              "group": "t:general.settings.social_media.label",
+              "value": "linkedin",
+              "label": "LinkedIn"
+            },
+            {
+              "group": "t:general.settings.communication.label",
+              "value": "lock-off",
+              "label": "Lock off"
+            },
+            {
+              "group": "t:general.settings.communication.label",
+              "value": "lock-on",
+              "label": "Lock on"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "login",
+              "label": "Login"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "logout",
+              "label": "Logout"
+            },
+            {
+              "group": "t:general.settings.communication.label",
+              "value": "mail-box",
+              "label": "Mail box"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "mail",
+              "label": "Mail"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "map-pin",
+              "label": "Map pin"
+            },
+            {
+              "group": "t:general.settings.other.label",
+              "value": "map",
+              "label": "Map"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "minus",
+              "label": "Minus"
+            },
+            {
+              "group": "t:general.settings.communication.label",
+              "value": "mobile-phone",
+              "label": "Mobile phone"
+            },
+            {
+              "group": "t:general.settings.communication.label",
+              "value": "money",
+              "label": "Money"
+            },
+            {
+              "group": "t:general.settings.other.label",
+              "value": "music",
+              "label": "Music"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "pause",
+              "label": "Pause"
+            },
+            {
+              "group": "t:general.settings.shop.label",
+              "value": "percent",
+              "label": "Percent"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "phone",
+              "label": "Phone"
+            },
+            {
+              "group": "t:general.settings.shipping.label",
+              "value": "pin",
+              "label": "Pin"
+            },
+            {
+              "group": "t:general.settings.social_media.label",
+              "value": "pinterest",
+              "label": "Pinterest"
+            },
+            {
+              "group": "t:general.settings.shipping.label",
+              "value": "plane",
+              "label": "Plane"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "play-circle",
+              "label": "Play circle"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "play",
+              "label": "Play"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "plus",
+              "label": "Plus"
+            },
+            {
+              "group": "t:general.settings.shop.label",
+              "value": "price-tag",
+              "label": "Price tag"
+            },
+            {
+              "group": "t:general.settings.tech.label",
+              "value": "printer",
+              "label": "Printer"
+            },
+            {
+              "group": "t:general.settings.tech.label",
+              "value": "processor",
+              "label": "Processor"
+            },
+            {
+              "group": "t:general.settings.communication.label",
+              "value": "protect",
+              "label": "Protect"
+            },
+            {
+              "group": "t:general.settings.communication.label",
+              "value": "question-mark",
+              "label": "Question mark"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "quick-shop",
+              "label": "Quick shop"
+            },
+            {
+              "group": "t:general.settings.communication.label",
+              "value": "recycle",
+              "label": "Recycle"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "remove",
+              "label": "Remove"
+            },
+            {
+              "group": "t:general.settings.shipping.label",
+              "value": "return",
+              "label": "Return"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "RSS",
+              "label": "Rss"
+            },
+            {
+              "group": "t:general.settings.other.label",
+              "value": "ruler",
+              "label": "Ruler"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "search",
+              "label": "Search"
+            },
+            {
+              "group": "t:general.settings.communication.label",
+              "value": "secure-profile",
+              "label": "Secure profile"
+            },
+            {
+              "group": "t:general.settings.communication.label",
+              "value": "send",
+              "label": "Send"
+            },
+            {
+              "group": "t:general.settings.communication.label",
+              "value": "settings",
+              "label": "Settings"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "share",
+              "label": "Share"
+            },
+            {
+              "group": "t:general.settings.other.label",
+              "value": "shining",
+              "label": "Shining"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "sign-in",
+              "label": "Sign in"
+            },
+            {
+              "group": "t:general.settings.tech.label",
+              "value": "smart-home",
+              "label": "Smart home"
+            },
+            {
+              "group": "t:general.settings.tech.label",
+              "value": "smartwatch",
+              "label": "Smartwatch"
+            },
+            {
+              "group": "t:general.settings.social_media.label",
+              "value": "snapchat",
+              "label": "Snapchat"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "sort",
+              "label": "Sort"
+            },
+            {
+              "group": "t:general.settings.tech.label",
+              "value": "speaker",
+              "label": "Speaker"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "star-half",
+              "label": "Star half"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "star-outline",
+              "label": "Star outline"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "star",
+              "label": "Star"
+            },
+            {
+              "group": "t:general.settings.shop.label",
+              "value": "storefront",
+              "label": "Storefront"
+            },
+            {
+              "group": "t:general.settings.other.label",
+              "value": "target",
+              "label": "Target"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "three-dots",
+              "label": "Three dots"
+            },
+            {
+              "group": "t:general.settings.social_media.label",
+              "value": "tiktok",
+              "label": "Tiktok"
+            },
+            {
+              "group": "t:general.settings.shipping.label",
+              "value": "timer",
+              "label": "Timer"
+            },
+            {
+              "group": "t:general.settings.communication.label",
+              "value": "tree",
+              "label": "Tree"
+            },
+            {
+              "group": "t:general.settings.shipping.label",
+              "value": "truck",
+              "label": "Truck"
+            },
+            {
+              "group": "t:general.settings.social_media.label",
+              "value": "tumblr",
+              "label": "Tumblr"
+            },
+            {
+              "group": "t:general.settings.social_media.label",
+              "value": "twitter",
+              "label": "Twitter"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "user",
+              "label": "User"
+            },
+            {
+              "group": "t:general.settings.shipping.label",
+              "value": "validation",
+              "label": "Validation"
+            },
+            {
+              "group": "t:general.settings.social_media.label",
+              "value": "vimeo",
+              "label": "Vimeo"
+            },
+            {
+              "group": "t:general.settings.tech.label",
+              "value": "wifi",
+              "label": "Wifi"
+            },
+            {
+              "group": "t:general.settings.tech.label",
+              "value": "wireless-charge",
+              "label": "Wireless charge"
+            },
+            {
+              "group": "t:general.settings.social_media.label",
+              "value": "youtube",
+              "label": "Youtube"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "zoom-in",
+              "label": "Zoom in"
+            },
+            {
+              "group": "t:general.settings.functional.label",
+              "value": "zoom-out",
+              "label": "Zoom out"
+            }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_img",
+          "label": "t:general.settings.custom_image.label",
+          "info": "t:general.settings.custom_image.info"
+        },
+        {
+          "type": "html",
+          "id": "html_code",
+          "label": "t:general.settings.custom_svg.label",
+          "info": "t:general.settings.custom_svg.info"
+        },
+        {
+          "type": "color",
+          "id": "color_text_icon",
+          "label": "t:general.settings.custom_color_icon.label"
+        },
+        {
+          "type": "header",
+          "content": "t:general.settings.headers.header_text.content"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "t:general.settings.heading.label",
+          "default": "Item heading"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "t:general.settings.description.label",
+          "default": "<p>Share information about your products, policies or services. </p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.icon_with_text.name",
+      "blocks": [
+        {
+          "type": "item",
+          "settings": {
+            "options_icon": "bluetooth"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "options_icon": "global"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "options_icon": "camera"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "options_icon": "3d-model"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

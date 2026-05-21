@@ -1,0 +1,221 @@
+{%- liquid
+  assign placeholder = 'image' | placeholder_svg_tag: 'placeholder media of-cover w-100 h-100'
+  assign map_media = placeholder
+  assign media_alt = section.settings.image.alt | default: section.settings.image.image | split: '/' | last
+  assign map_media = section.settings.image | image_url: width: section.settings.image.width | image_tag: widths: '750, 950, 1024, 1200, 1400, 1600, 1800, 2000', sizes: '(min-width: 361px) calc(100vw/2), calc(100vw/3)', alt: media_alt, class: 'js-image-lazy media of-cover w-100 h-100'
+  assign map_address = section.settings.map_address
+
+  assign section_style = 's-media-with-text--solid'
+  assign page_background_color = settings.page_background | downcase
+  assign section_background_color = section.settings.color_scheme.settings.color_background | downcase
+  assign container_rounded = 'corner-radius-m corner-radius-zero-mb'
+  if page_background_color == section_background_color or section.settings.color_scheme.settings.color_background.alpha == 0.0
+      assign section_style = 's-media-with-text--transparent'
+      assign media_rounded = 'corner-radius-m'
+      assign container_rounded = ''
+  endif
+
+-%}
+<div class="section section-index--{{section.index |  replace: '1', 'first' }} color-{{- section.settings.color_scheme }}">
+  <div class="ctnr s-map-ctnr s-media-with-text-ctnr {{ section_style }}  d-grid {{ container_rounded }} js-animate anm" style="--mh-md:{{ section.settings.height }}vh;" data-ui-component="Map Section" role="region" aria-labelledby="sectionHeading-{{ section.id | md5 | truncate: 12, "" }}">
+    <div class="s-header__content s-map__content s-media-with-text__content s-card background d-flex fd-column zi-1 w-100 h-100 p-relative ">
+      {%- if section.settings.subheading != blank -%}
+        <span class="s-header__subheading d-inline-block fw-700 hide-empty">{{- section.settings.subheading -}}</span>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="s-header__heading {{ section.settings.heading_size }}">
+          {{- section.settings.heading -}}
+        </h2>
+      {%- endif -%}
+      {%- if section.settings.description != blank -%}
+        <div class="s-header__description">
+          {{- section.settings.description -}}
+        </div>
+      {%- endif -%}
+      {%- unless map_address == blank -%}
+        <div class="s-header__buttons">
+          <a href="{{ map_address | url_encode | prepend: 'https://www.google.com/maps/place/' }}" target="_blank" class="btn {{ section.settings.button_style }} btn-large">
+            {{- section.settings.button_text | escape | default: 'Get direction' -}}
+          </a>
+        </div>
+      {%- endunless -%}
+    </div>
+
+    <div class="s-map__map s-media-with-text__media  h-100 w-100 p-relative o-hidden {{ media_rounded }}{{ section.settings.content_ordering }} map-media h-100 media-wrapper" style="--ratio: {{ section.settings.mobile_ratio }} ; --mh-md: {{ section.settings.map_height }};">
+      {%- if section.settings.image != blank or section.settings.image == blank and map_address == blank -%}
+        {% render 'image',
+          ratio: '1/1',
+          image_item: map_media,
+          image_wrap_classes: 'w-100 h-100',
+          image_classes: 'w-100 h-100 anm anm-zoomOut anm-card',
+          media_style: '--duration: .7s;'
+          %}
+      {%- else -%}
+        <sht-map data-zoom="14" data-type="roadmap" data-location="{{ map_address }}">
+          <iframe defer class="js-map-iframe w-100 h-100 d-block" loading="lazy" scrolling="no" title="Google Map" src="" srcdoc="loading..."></iframe>
+        </sht-map>
+      {%- endif -%}
+    </div>
+    </div>
+    {%- render 'section-id', section: section -%}
+</div>
+{% schema %}
+{
+  "name": "t:sections.map.name",
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer"
+    ]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:general.settings.headers.header_general.content"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:general.settings.color_scheme.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:general.settings.headers.header_text.content"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "t:general.settings.subheading.label",
+      "default": "Add a tagline"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:general.settings.heading.label",
+      "default": "Map heading"
+    },
+    {
+      "type": "select",
+      "label": "t:general.settings.heading_size.label",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:general.settings.heading_size.options.h2.label"
+        },
+        {
+          "value": "h3",
+          "label": "t:general.settings.heading_size.options.h3.label"
+        },
+        {
+          "value": "h4",
+          "label": "t:general.settings.heading_size.options.h4.label"
+        },
+        {
+          "value": "h5",
+          "label": "t:general.settings.heading_size.options.h5.label"
+        }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "t:general.settings.description.label",
+      "default": "<p>Highlight your new collection or share content related to this image</p>"
+    },
+    {
+      "type": "header",
+      "content": "t:general.settings.headers.header_mapcanvas.content"
+    },
+    {
+      "type": "text",
+      "id": "map_address",
+      "label": "t:sections.map.settings.map_address.label",
+      "info": "t:sections.map.settings.map_address.info",
+      "default": "Brooklyn, NY, USA"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:sections.map.settings.custom_map_image.label",
+      "info": "t:sections.map.settings.custom_map_image.info"
+    },
+    {
+      "type": "select",
+      "label": "t:sections.map.settings.map_height.label",
+      "info": "t:general.settings.height_on_large_screen.info",
+      "id": "map_height",
+      "options": [
+        {
+          "value": "70vh",
+          "label": "t:general.settings.height.options.option_70.label"
+        },
+        {
+          "value": "100vh",
+          "label": "t:general.settings.height.options.fill_screen_height.label"
+        }
+      ],
+      "default": "70vh"
+    },
+    {
+      "type": "select",
+      "label": "t:sections.map.settings.map_mobile_ratio.label",
+      "id": "mobile_ratio",
+      "options": [
+        {
+          "value": "1/1",
+          "label": "t:general.settings.image_ratio.options.option_square.label"
+        },
+        {
+          "value": "2/3",
+          "label": "t:general.settings.image_ratio.options.option_portrait.label"
+        },
+        {
+          "value": "3/2",
+          "label": "t:general.settings.image_ratio.options.option_landscape.label"
+        }
+      ],
+      "default": "1/1"
+    },
+    {
+      "type": "header",
+      "content": "t:general.settings.headers.header_button.content",
+      "info": "t:sections.map.settings.header_direction_button.content"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "t:general.settings.label.label",
+      "default": "Get direction"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "t:general.settings.style.label",
+      "default": "btn-primary",
+      "options": [
+        {
+          "value": "btn-primary",
+          "label": "t:general.settings.primary.label"
+        },
+        {
+          "value": "btn-secondary",
+          "label": "t:general.settings.secondary.label"
+        },
+        {
+          "value": "btn-link",
+          "label": "t:general.settings.tertiary.label"
+        }
+      ]
+    }
+
+  ],
+  "presets": [
+    {
+      "name": "t:sections.map.name"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,100 @@
+{%- liquid
+  assign section_id = section.id | md5 | truncate: 12, ""
+  assign pagination_dots = ''
+  assign pagination_position = 'between-xs'
+  if section.settings.enable_navigation == false and section.settings.enable_pagination
+    assign pagination_position = 'center-xs'
+  endif
+-%}
+<div class="clm" style="--w-xs:12;--w-sm:12;--w-md:8;">
+  <div class="p-relative h-100 w-100 d-block">
+    {% render 'image',
+      image_item: hotspot_image,
+      ratio: ratio,
+      image_wrap_classes: 'corner-radius-s background-feild',
+      image_classes: 'anm anm-zoomOut anm-card-media',
+      media_style: '--duration: .7s;'
+    %}
+    <div class="p-absolute h-100 w-100 left-0 top-0 anm anm-fadeInUpLarge anm-card" style="--duration: .7s;">
+      <sht-carousel-trig id="carouselTrigger-{{ section_id }}" data-carousel-target="carousel-{{ section_id }}" class="p-relative h-100 w-100 d-block">
+        {% for block in section.blocks %}
+          {%- liquid
+            assign active_class = ''
+            assign current_dot= ''
+            assign aria_current = ' aria-current="false"'
+            if forloop.first
+              assign active_class = ' hotspot-item--active'
+              assign aria_current = ' aria-current="true"'
+              assign current_dot= ' is-active'
+            endif
+            -%}
+            {% capture carousel_item %}
+              {{ carousel_item }}
+              <sht-carousel-itm id="carouselItem-{{ forloop.index }}-{{ block.id }}-{{ section_id }}" role="group" aria-roledescription="Slide" aria-label="{{ 'accessibility.slide' | t }} {{ forloop.index }} {{ 'accessibility.of' | t }} {{ forloop.length }}" class="js-carousel-item w-100 p-relative scrollable-aln-start d-flex aln-itm-ctr fg-1 fs-0 fd-column o-hidden">
+                <div class="p-20 background color-{{ section.settings.card_color_scheme }} corner-radius-s">
+                  {% capture icon %}
+                    {%- liquid
+                      assign icon_svg = ''
+                      assign icon_source = block.settings.icon_source
+                      if icon_source == 'theme_library'
+                        render 'icon-loader', icon: block.settings.options_icon, size: 36
+                      elsif icon_source == 'custom_img'
+                        assign custom_icon = 'image' | placeholder_svg_tag: 'placeholder media of-cover'
+                        assign custom_icon = block.settings.custom_img | image_url: width: block.settings.custom_img.width | image_tag: widths: '120', sizes: '(min-width: 361px) calc(100vw/2), calc(100vw/3)', alt: block.settings.heading, class: 'media of-cover h-100 w-100'
+                        render 'image', image_item: custom_icon, image_wrap_classes: "icon-custom--large d-inline-block", image_classes: "h-100 w-100"
+                      else
+                        assign icon_svg = block.settings.html_code
+                      endif
+                    -%}
+                    {%- if icon_svg != '' -%}
+                      <div class="icon icon-custom--large h-100 w-100">
+                        {{- icon_svg -}}
+                      </div>
+                    {%- endif -%}
+                  {% endcapture %}
+                  {{ icon }}
+                  <h3 class="card__heading fw-700 m-zero mt-16 ta-left hide-empty">{{- block.settings.heading | escape -}}</h3>
+                  <div class="mt-8 rte accordion-content hide-empty wb-break-word">
+                    {{- block.settings.description -}}
+                  </div>
+                </div>
+              </sht-carousel-itm>
+            {% endcapture %}
+            {% capture pagination_dots %}
+              {{ pagination_dots }}
+              <li class="js-carousel-pagination-dot dots-pagination{{ current_dot }}" data-dot-index="{{ forloop.index }}"></li>
+            {% endcapture %}
+            <button style="--axis-x: {{ block.settings.left_offset }}%; --axis-y: {{ block.settings.top_offset }}%" class="js-carousel-trigger js-tooltip-placeholder btn btn-icon icon br-50p btn-large hotspot-item c-pointer {{ active_class }}" {{ aria_current }} aria-describedby="carouselItem-{{ forloop.index }}-{{ block.id }}-{{ section_id }}" aria-label="{{ 'accessibility.load_media_in_slider' | t: item_name: block.settings.heading | escape }}" aria-controls="carousel-{{ section_id }}" {{ block.shopify_attributes }} type="button">
+              {{ icon | replace: 'width="36" height="36"', 'width="24" height="24"' | replace: 'icon-custom--large', 'icon-custom--small' }}
+            </button>
+        {% endfor %}
+      </sht-carousel-trig>
+    </div>
+  </div>
+</div>
+<div class="clm m-auto anm anm-fadeInUpLarge anm-card" style="--w-xs:12;--w-sm:8;--w-md:4;--duration: .7s;">
+  <sht-carousel class="p-relative d-block text-hotspot-carousel" id="carousel-{{ section_id }}" data-section-id="{{ section_id }}" data-carousel-trigger="carouselTrigger-{{ section_id }}">
+    <div class=" d-flex {{ pagination_position }} middle-xs no-js-hidden js-carousel-pagination mb-16">
+      <button type="button" data-step="1" class="js-carousel-prev-btn btn btn-icon btn-plain btn-large {{ section.settings.enable_navigation | default: 'd-none-important' | replace: 'true', '' }}" aria-label="{{ 'accessibility.previous_slide' | t }}" name="previous" disabled="disabled">
+        {%- render 'icon-arrow-left' -%}
+      </button>
+      <ul class="js-carousel-pagination-dots d-flex middle-xs ls-none gap-6 {{ section.settings.enable_pagination | default: 'd-none-important' | replace: 'true', '' }}">
+        {{ pagination_dots }}
+      </ul>
+      <div class="d-none-important middle-xs">
+        <div class="carousel__counter">
+          <span class="js-carousel-counter-current">1</span>
+          <span aria-hidden="true"> / </span>
+          <span class="visually-hidden">{{ 'accessibility.of' | t }}</span>
+          <span class="js-carousel-counter-total">{{ section.blocks.size }}</span>
+        </div>
+      </div>
+      <button type="button" data-step="1" class="js-carousel-next-btn btn btn-icon btn-plain btn-large {{ section.settings.enable_navigation | default: 'd-none-important' | replace: 'true', '' }}" aria-label="{{ 'accessibility.next_slide' | t }}" name="next">
+        {%- render 'icon-arrow-right' -%}
+      </button>
+    </div>
+    <div aria-atomic="true" class="js-carousel-items d-flex p-zero m-zero ox-auto p-relative disable-scrollbars scrollable scrollable-x">
+      {{ carousel_item }}
+    </div>
+  </sht-carousel>
+</div>

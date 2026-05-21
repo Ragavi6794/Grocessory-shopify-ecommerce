@@ -1,0 +1,47 @@
+{% liquid
+  assign image_width = '750, 950, 1024'
+  assign sizes = "(min-width: 361px) calc(100vw/2), calc(100vw/3)"
+  assign article_placeholder = 'image' | placeholder_svg_tag: 'placeholder media of-cover'
+  assign article_image = article_placeholder
+  assign article_image = article.image.src | image_url: width: article.image.width | image_tag: widths: image_width, sizes: sizes, alt: article.title, class: 'media of-cover w-100'
+  assign show_blog_tag = show_blog_tag | default: false
+  assign article_card_scheme = ''
+  if settings.blog_card_style == 'card'
+      assign article_card_scheme = 'card--border corner-radius-s background color-' | append: settings.blog_color_scheme
+  endif
+%}
+<div class="card w-100 h-100 {{ article_card_scheme }} card--{{ settings.blog_card_style }} p-relative">
+  <div class="card__media card__media--{{- settings.blog_card_style }} p-relative d-none {{ show_image | replace: true, 'd-block' }}">
+    <a href="{{ article.url }}" aria-label="{{ article.title | escape }}" class="p-absolute w-100 h-100 zi-1"></a>
+    {%- render 'image', ratio: settings.blog_post_card_featured_image_ratio, image_item: article_image -%}
+  </div>
+  <div class="card__content w-100 wb-break-word">
+    <ul class="ls-none mb-16 r-gap-16 c-gap-8 fw-wrap d-none {{ settings.blog_post_card_show_blog_tag | default: '' | replace: 'true', 'd-flex' }} hide-empty">
+      {%- for tag in article.tags -%}
+        <li>
+          {{- tag | link_to_tag: tag | replace: '<a', '<a class="tag"' -}}
+        </li>
+      {%- endfor -%}
+    </ul>
+    <h3 class="mb-12 card__heading fw-700">
+      <a href="{{ article.url }}">{{- article.title -}}</a>
+    </h3>
+    {%- if settings.blog_post_card_show_excerpt -%}
+      {%- if article.excerpt.size > 0 or article.content.size > 0 -%}
+        <p class="card__excerpt o-hidden mb-16">
+          {%- if article.excerpt.size > 0 -%}
+            {{ article.excerpt | strip_html | truncatewords: 30 }}
+          {%- else -%}
+            {{ article.content | strip_html | truncatewords: 30 }}
+          {%- endif -%}
+        </p>
+      {%- endif -%}
+    {%- endif -%}
+    <div class="hide-empty mb-8 subtext color-light">
+      <span class="d-none {{ show_published_date | replace: true, 'd-inline-block' }}">{{- article.published_at | date: format: 'abbreviated_date' -}}</span>
+      {%- if settings.blog_post_card_show_author and settings.blog_post_card_show_published_date %} • {% endif -%}
+      <span class="d-none {{ show_author | replace: true, 'd-inline-block' }}">{{- 'sections.featured_blog.article.by_author' | t: author: article.author -}}</span>
+    </div>
+    <a href="{{ article.url }}" class="btn btn-small btn-link {{ settings.blog_post_card_show_read_more | default: 'd-none-important' | replace: 'true', '' }}">{{ 'blogs.article.read_more' | t }}</a>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+{%- liquid
+  assign media = 'image' | placeholder_svg_tag: 'placeholder js-image-lazy'
+  assign media = product.featured_image | image_url: width: 300 | image_tag: widths: '300', sizes: '100vw', alt: product.title, class: 'js-image-lazy media of-cover'
+  assign media_style = 'background: ' | append: settings.product_comparison_image_background
+%}
+<div class="product-compare__wrapper r-gap-8 c-gap-12" data-product="{{ product.id }}">
+  <div class="product-compare__media">
+    {% render 'image', image_item: media, image_classes: 'corner-radius-xs', media_style: media_style %}
+  </div>
+  <div class="product-compare__info d-grid gap-8">
+    <p class="subtext color-light hide-empty m-zero">{{- product.vendor -}}</p>
+
+    <a href="{{ product.url }}" class="wb-break-word h6 d-block m-zero">{{- product.title | escape -}}</a>
+
+    {% render 'product-price', product: product, target: product.selected_or_first_available_variant, price_class: 'price--large', price_style: 'mr-8' %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product compare",
+  "tag": "section",
+  "class": "section-product-compare"
+}
+{% endschema %}

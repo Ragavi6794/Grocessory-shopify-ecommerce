@@ -1,0 +1,294 @@
+{%- liquid
+  assign items_per_row_on_desktop = section.settings.items_per_row_on_desktop | plus: 0
+  assign items_per_row_on_mobile = section.settings.items_per_row_on_mobile | plus: 0
+  assign column_mobile = 12.0 | divided_by: section.settings.items_per_row_on_mobile
+  assign column_desktop = 12.0 | divided_by: section.settings.items_per_row_on_desktop
+-%}
+<div class="section section-index--{{section.index |  replace: '1', 'first' }} {% render 'sections-spacing' %} color-{{- section.settings.color_scheme }}" data-ui-component="Image With Text Columns Section" role="region" aria-labelledby="sectionHeading-{{ section.id | md5 | truncate: 12, "" }}">
+  <div class="ctnr background top-picks">
+    <div class="js-animate {{ section.settings.content_alignment }}">
+      {% render 'section-header',
+        content_align: section.settings.content_alignment,
+        subheading: section.settings.subheading,
+        heading: section.settings.heading,
+        heading_size: section.settings.heading_size,
+        section: section
+      %}
+      <div class="s-content">
+        <sht-carousel class="sht-carousel p-relative d-block " data-enable="{{ section.settings.enable_carousel }}">
+          <div aria-atomic="true" class="o-hidden rw   {{ section.settings.enable_carousel | default: '' | replace: 'true', 'fw-nowrap carousel ox-auto p-relative scrollable scrollable-x disable-scrollbars js-carousel-items m-zero' }}">
+            {% for block in section.blocks %}
+              {%- liquid
+                  assign media = 'image' | placeholder_svg_tag: 'placeholder media w-100'
+                  assign media_alt = block.settings.image.alt | default: block.settings.image.image | split: '/' | last
+                  assign media = block.settings.image | image_url: width: block.settings.image.width | image_tag: widths: '750, 950, 1024, 1200, 1400, 1600, 1800, 2000', sizes: '(min-width: 361px) calc(100vw/2), calc(100vw/3)', alt: media_alt, class: ' media of-cover w-100'
+                  assign total_items = forloop.length | plus: 0
+                -%}
+              <sht-carousel-itm class="clm card--standard  anm anm-fadeInUpLarge {{ section.settings.enable_carousel | default: '' | replace: 'true', 'carousel__item js-carousel-item p-relative scrollable-aln-start d-flex fd-column middle-xs fg-1 fs-0 p-zero' }}" style="--w-xs:12;--w-sm:6;--w-md: {{ column_desktop }}; --delay: {{ forloop.index | plus: 2 | times: 0.05 -}}s; --duration: .7s" role="group" aria-roledescription="Slide" aria-label="{{ 'accessibility.slide' | t }} {{ forloop.index }} {{ 'accessibility.of' | t }} {{ forloop.length }}" data-item-index="{{ forloop.index }}" {{ block.shopify_attributes }}>
+                {% if block.settings.image_link != blank %}<a href="{{ block.settings.image_link }}" class="slideshowDefault_link"></a>{% endif %}
+                {% render 'image',
+                  image_item: media,
+                  ratio: section.settings.image_ratio,
+                  image_wrap_classes: 'w-100 card__media card__media--standard'
+                %}
+                <div class="card__content card__content--outer wb-break-word w-100">
+                  <h3 class="card__heading fw-700 hide-empty mb-0">{{- block.settings.heading | escape -}}</h3>
+                  <div class="hide-empty mt-8 text-block">{{- block.settings.description -}}</div>
+                </div>
+              </sht-carousel-itm>
+            {% endfor %}
+          </div>
+
+          <div class="carousel-pagination carousel-pagination--position carousel-pagination--position w-100 p-absolute no-js-hidden d-none {{ section.settings.enable_carousel | replace: 'true', 'd-block-md' }}">
+            <div class="p-absolute zi-1 left-0">
+              <button type="button" data-step="{{ items_per_row_on_desktop }}" class="js-carousel-prev-btn btn btn-secondary btn-icon icon btn-large " aria-label="{{ 'accessibility.previous_slide' | t }}" name="previous" disabled>{% render 'icon-arrow-left' %}</button>
+            </div>
+            <div class="p-absolute zi-1 right-0">
+              <button type="button" data-step="{{ items_per_row_on_desktop }}" class="js-carousel-next-btn btn btn-secondary btn-icon icon btn-large" aria-label="{{ 'accessibility.next_slide' | t }}" name="next" disabled>{% render 'icon-arrow-right' %}</button>
+            </div>
+          </div>
+
+          {% if section.settings.show_progress_indicator == true and section.settings.enable_carousel == true %}
+            <div class="slider-scrollbar {% if items_per_row_on_desktop < total_items %} d-flex-md {% else %} d-none-md {% endif %} {% if items_per_row_on_mobile < total_items %} d-flex {% else %} d-none {% endif %}">
+              <div class="scrollbar-track js-scrollbar-track" data-thumb-mobile="1" data-thumb-desk="{{ items_per_row_on_desktop }}" data-thumb-total="{{ total_items }}" style="--width-thumb-desktop: {{ items_per_row_on_desktop | times: 100.0 | divided_by: total_items }}%; --width-thumb-mobile: {{ 1 | times: 100.0 | divided_by: total_items }}%">
+                <div class="scrollbar-thumb js-scrollbar-thumb"></div>
+              </div>
+            </div>
+          {% endif %}
+
+        </sht-carousel>
+      </div>
+      <div class="s-footer anm anm-fadeInUpLarge {{ section.settings.text | default: 'd-none' | replace: section.settings.text, '' }}" style="--duration: .7s; --delay: .15s">
+        <a class="btn btn-primary btn-large hide-empty" href="{{- section.settings.link | default: '#' -}}">
+          {{- section.settings.text -}}
+        </a>
+        </div>
+    </div>
+
+  </div>
+  {%- render 'section-id', section: section -%}
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.image_with_text_columns.name",
+  "class": "top-picks-section",
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer"
+    ]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:general.settings.headers.header_general.content"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:general.settings.color_scheme.label",
+      "default": "scheme-3"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "t:general.settings.section_subheading.label",
+      "default": "Add a tagline"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:general.settings.section_heading.label",
+      "default": "Our core values"
+    },
+    {
+      "type": "select",
+      "label": "t:general.settings.heading_size.label",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:general.settings.heading_size.options.h2.label"
+        },
+        {
+          "value": "h3",
+          "label": "t:general.settings.heading_size.options.h3.label"
+        },
+        {
+          "value": "h4",
+          "label": "t:general.settings.heading_size.options.h4.label"
+        },
+        {
+          "value": "h5",
+          "label": "t:general.settings.heading_size.options.h5.label"
+        }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "header",
+      "content": "t:general.settings.headers.header_image.content"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "t:general.settings.image_ratio.label",
+      "default": "4/3",
+      "options": [
+        {
+          "value": "1/1",
+          "label": "t:general.settings.image_ratio.options.option_square.label"
+        },
+        {
+          "value": "3/4",
+          "label": "t:sections.image_with_text.settings.options.option_portrait.label"
+        },
+        {
+          "value": "4/3",
+          "label": "t:sections.image_with_text.settings.options.option_landscape.label"
+        },
+        {
+          "value": "auto",
+          "label": "t:general.settings.image_ratio.options.option_adapt.label"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "t:general.settings.headers.header_layout.content"
+    },
+    {
+      "type": "select",
+      "id": "items_per_row_on_desktop",
+      "label": "t:general.settings.items_per_row_on_desktop.label",
+      "default": "4",
+      "options": [
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        },
+        {
+          "value": "5",
+          "label": "5"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_carousel",
+      "label": "t:general.settings.enable_carousel.label",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_progress_indicator",
+      "label": "t:general.settings.show_progress_indicator.label",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "t:general.settings.content_alignment.label",
+      "default": "ta-center",
+      "options": [
+        {
+          "value": "ta-left",
+          "label": "t:general.settings.option_left.label"
+        },
+        {
+          "value": "ta-center",
+          "label": "t:general.settings.option_center.label"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "t:general.settings.headers.header_button.content"
+    },
+    {
+      "type": "text",
+      "label": "t:general.settings.label.label",
+      "info": "t:general.settings.button_label.info",
+      "id": "text",
+      "default": "Check now"
+    },
+    {
+      "type": "url",
+      "label": "t:general.settings.link.label",
+      "id": "link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "t:sections.image_with_text_columns.blocks.column.name",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:general.settings.image.label"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "t:general.settings.heading.label",
+          "default": "Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "t:general.settings.description.label",
+          "default": "<p>Share information about your products, policies or services.</p>"
+        },
+        {
+          "type": "url",
+          "id": "image_link",
+          "label": "Image Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.image_with_text_columns.name",
+      "blocks": [
+        {
+          "type": "text"
+        },
+        {
+          "type": "text"
+        },
+        {
+          "type": "text"
+        },
+        {
+          "type": "text"
+        },
+        {
+          "type": "text"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+  .top-picks{
+    padding:0px 17px !important;
+    border-radius:0 !important;
+  }
+  .top-picks-section .s-header {
+    justify-content: center;
+  }
+  @media screen and (max-width: 458px){
+    .top-picks{
+    padding-bottom: 20px !important;
+  }
+  }
+</style>

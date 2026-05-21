@@ -1,0 +1,32 @@
+
+
+{%- if settings.product_specification_metafield_namespace != blank and product.metafields[settings.product_specification_metafield_namespace].size > 0 -%}
+  {%- liquid
+    assign html = ''
+    assign key_array = metafield_keys | remove: " " | downcase | split: ","
+  -%}
+  {%- if metafield_keys.size > 0 -%}
+    {%- for k in key_array -%}
+      {%- liquid
+          assign specification_value = ''
+          assign specification_name = k | upcase | replace: '_', ' '
+          if product.metafields[settings.product_specification_metafield_namespace][k].type == 'file_reference'
+            assign specification_value = product.metafields[settings.product_specification_metafield_namespace][k] | file_url
+          endif
+      -%}
+      {%- if specification_name != '' and specification_value != '' -%}
+        {%- capture html -%}
+          {{ html }}
+          <a target="_blank" href="{{- specification_value -}}" download class="btn btn-secondary btn-large">
+            {{- specification_name -}}
+          </a>
+        {%- endcapture -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- if html != '' -%}
+      <div class="d-flex gap-16 fw-wrap">
+        {{ html }}
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+{%- endif -%}

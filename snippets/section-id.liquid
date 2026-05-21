@@ -1,0 +1,15 @@
+{%- if request.design_mode and request.page_type == 'product' and settings.show_section_id_in_product_page -%}
+  <div class="section-identifier">
+    <div class="ctnr" style="border: 1px dashed; padding-block: 10px;">
+      <span class="section__identifier d-block fw-b mb-12 wb-break-word">
+        <span>Section ID: </span><span>shopify-section-{{ section.id }}</span>
+      </span>
+      <span class="section__identifier__message d-flex middle-xs color-light">
+        {% render 'icon-info', size: '16', class: 'mr-8' %}
+        <span class="flex-1">
+          {{ 'general.section_identifier.info' | t }}
+        </span>
+      </span>
+    </div>
+  </div>
+{%- endif -%}

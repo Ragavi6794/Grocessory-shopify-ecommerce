@@ -1,0 +1,103 @@
+{%- liquid
+  assign image_element_classes = 'js-image-lazy media w-100 h-100 ' | append: settings.product_comparison_image_fit_type
+  assign image_element = 'product-1' | placeholder_svg_tag: 'placeholder w-100 h-100'
+  assign image_element = media | image_url: width: media.width | image_tag: widths: '750, 950, 1024, 1200, 1400, 1600, 1800, 2000', sizes: '(min-width: 361px) calc(100vw/2), calc(100vw/3)', alt: media.alt, class: image_element_classes
+  assign hide_variant_image_class = ''
+
+  if hide_variant_image
+    assign hide_variant_image_class = 'd-none'
+  endif
+  assign model_ratio = ratio
+  if ratio == 'auto'
+    assign ratio = media.aspect_ratio
+    assign model_ratio = '1'
+  endif
+-%}
+
+<sht-prd-comparison-itm class="js-carousel-item scrollable-aln-start product-slideshow__item corner-radius-s product-slideshow__item--{{ media.media_type }} js-product-slideshow-item {% if is_first_image %} d-block {% else %} {{ hide_variant_image_class }} {% endif %}" data-show-comparison="{{ media.id }}" data-media-id="{{ section.id }}-{{ media.id }}" data-comparison="{{ blockID }}-{{ media.id }}" role="listitem" tabindex="-1">
+  <div class="w-100 h-100 o-hidden d-block-md p-relative d-flex middle-xs" data-hide-variant-image="{{ hide_variant_image }}"
+  {% if media.media_type == 'model' %}
+    style="aspect-ratio: {{ model_ratio }};"
+  {% else %}
+    style="--ratio: {{ ratio }}; --ratio-md: {{ ratio_md }}"
+  {% endif %}>
+    {%- case media.media_type -%}
+      {%- when 'image' -%}
+        <div class="w-100 h-100" style="background-color: {{ media_background }};">
+          {% render 'image', image_item: image_element, ratio: ratio, media_style: media_style, image_wrap_classes: 'w-100 h-100', image_classes: 'w-100 h-100' %}
+        </div>
+      {%- when 'external_video' -%}
+        {%- liquid
+          assign external_class = 'w-100 media-wrapper js-media-item-' | append: media.host
+          if media.aspect_ratio <= 1
+            assign external_class = 'h-100 w-auto media-wrapper h-md-100 js-media-item-' | append: media.host
+          endif
+        -%}
+        <sht-prd-media-itm-deferred-video class="js-product-media-deferred-video media-type--video w-100 h-100 d-flex middle-xs center-xs">
+          <div class="js-product-media-item-deferred-video-image w-100 h-100 p-relative">
+            <button class="p-absolute zi-1 center-middle p-zero b-zero br-50p" aria-label="{{ 'accessibility.play_video' | t }}" >
+              <span class="d-flex center-xs middle-xs btn-primary btn-large btn-icon br-50p">
+                {% render 'icon-play', size: 20, class: 'c-pointer' %}
+              </span>
+            </button>
+            {% render 'image', image_item: image_element, ratio: ratio, image_wrap_classes: 'w-100 h-100', image_classes: 'w-100 h-100 c-pointer' %}
+          </div>
+          <template>
+            {{- media | external_video_url: autoplay: true, playlist: media.external_id | external_video_tag: class: external_class -}}
+          </template>
+        </sht-prd-media-itm-deferred-video>
+      {%- when 'video' -%}
+        {%- liquid
+          assign internal_class = 'w-100 js-media-item-video media-wrapper background-video'
+          if media.aspect_ratio <= 1
+            assign internal_class = 'h-100 w-100 js-media-item-video media-wrapper background-video'
+          endif
+        -%}
+        <sht-prd-media-itm-deferred-video class="js-product-media-deferred-video media-type--video w-100 h-100 d-flex middle-xs center-xs">
+          <div class="js-product-media-item-deferred-video-image w-100 h-100 p-relative">
+            <button class="p-absolute zi-1 center-middle p-zero b-zero br-50p" aria-label="{{ 'accessibility.play_video' | t }}">
+              <span class="d-flex center-xs middle-xs btn-primary btn-large btn-icon zi-1 br-50p">
+                {% render 'icon-play', size: 20, class='c-pointer' %}
+              </span>
+            </button>
+            {% render 'image', image_item: image_element, ratio: ratio, image_wrap_classes: 'w-100 h-100', image_classes: 'w-100 h-100 c-pointer' %}
+          </div>
+          <template>
+            {{- media | video_tag: autoplay: true, muted: false, controls: true, preload: 'none', class: internal_class -}}
+          </template>
+        </sht-prd-media-itm-deferred-video>
+      {%- when 'model' -%}
+        <sht-prd-media-itm-model class="js-product-media-deferred-model w-100 h-100 d-flex middle-xs center-xs p-absolute top-0">
+          <div class="js-product-media-item-model-image w-100 h-100 d-flex center-xs middle-xs">
+            <button class="p-absolute zi-1 center-middle p-zero b-zero br-50p" aria-label="{{ 'accessibility.play_3d_viewer' | t }}">
+              <span class="d-flex center-xs middle-xs btn-primary btn-large btn-icon zi-1 br-50p c-pointer">
+                {% render 'icon-3d-model', size: 20 %}
+              </span>
+            </button>
+            {% render 'image', image_item: image_element, ratio: ratio, image_wrap_classes: 'w-100 c-pointer' %}
+          </div>
+          <template>
+            {%- liquid
+              echo media | media_tag: image_size: '1024x', toggleable: true
+            -%}
+          </template>
+        </sht-prd-media-itm-model>
+        {% if xr_button %}
+          <div class="product__xr-btn middle-x p-absolute zi-1">
+            <button
+              class="btn btn-large btn-secondary no-js-hidden"
+              type="button"
+              aria-label="{{ 'products.product.xr_button_label' | t }}"
+              data-shopify-xr
+              data-shopify-model3d-id="{{ media.id }}"
+              data-shopify-title="title"
+              data-shopify-xr-hidden
+            >
+              {% render 'icon-3d-model', size: 20, class: 'mr-8' %}
+              {{ 'products.product.xr_button' | t }}
+            </button>
+          </div>
+        {% endif %}
+    {%- endcase -%}
+  </div>
+</sht-prd-comparison-itm>

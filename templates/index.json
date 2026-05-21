@@ -1,0 +1,706 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "slideshow_XmfQBy": {
+      "type": "slideshow",
+      "blocks": {
+        "slide_Rg4n7f": {
+          "type": "slide",
+          "settings": {
+            "content_position_desktop": "center-md middle-md ta-center",
+            "content_position_mobile": "center-xs middle-xs ta-center",
+            "image_overlay_opacity": 0,
+            "color_mask_overlay": "",
+            "color_text_overlay": "",
+            "sub_heading": "",
+            "heading": "",
+            "description": "",
+            "desktop_image": "shopify://shop_images/Super-fast.jpg",
+            "mobile_image": "shopify://shop_images/Super-fast2.jpg",
+            "slide_link": "https://minutes.gulffruits.com/",
+            "button_1_label": "",
+            "button_1_style": "btn-primary",
+            "button_1_link": "",
+            "button_2_label": "",
+            "button_2_style": "btn-secondary",
+            "button_2_link": ""
+          }
+        },
+        "slide_4jbejF": {
+          "type": "slide",
+          "settings": {
+            "content_position_desktop": "center-md middle-md ta-center",
+            "content_position_mobile": "center-xs middle-xs ta-center",
+            "image_overlay_opacity": 0,
+            "color_mask_overlay": "",
+            "color_text_overlay": "",
+            "sub_heading": "",
+            "heading": "",
+            "description": "",
+            "desktop_image": "shopify://shop_images/Mandarin-Juice-web.jpg",
+            "mobile_image": "shopify://shop_images/Mandarin-Juice-mob.jpg",
+            "slide_link": "shopify://collections/juices",
+            "button_1_label": "",
+            "button_1_style": "btn-primary",
+            "button_1_link": "",
+            "button_2_label": "",
+            "button_2_style": "btn-secondary",
+            "button_2_link": ""
+          }
+        },
+        "slide_C4jG6k": {
+          "type": "slide",
+          "settings": {
+            "content_position_desktop": "center-md middle-md ta-center",
+            "content_position_mobile": "center-xs middle-xs ta-center",
+            "image_overlay_opacity": 0,
+            "color_mask_overlay": "",
+            "color_text_overlay": "",
+            "sub_heading": "",
+            "heading": "",
+            "description": "",
+            "desktop_image": "shopify://shop_images/Mango-Season.jpg",
+            "mobile_image": "shopify://shop_images/Mango-Season-mob.jpg",
+            "slide_link": "shopify://collections/mangoes",
+            "button_1_label": "",
+            "button_1_style": "btn-primary",
+            "button_1_link": "",
+            "button_2_label": "",
+            "button_2_style": "btn-secondary",
+            "button_2_link": ""
+          }
+        },
+        "slide_Xbc8rn": {
+          "type": "slide",
+          "settings": {
+            "content_position_desktop": "center-md middle-md ta-center",
+            "content_position_mobile": "center-xs middle-xs ta-center",
+            "image_overlay_opacity": 0,
+            "color_mask_overlay": "",
+            "color_text_overlay": "",
+            "sub_heading": "",
+            "heading": "",
+            "description": "",
+            "desktop_image": "shopify://shop_images/Platter-web.jpg",
+            "mobile_image": "shopify://shop_images/Platter-mob.jpg",
+            "slide_link": "shopify://collections/platters",
+            "button_1_label": "",
+            "button_1_style": "btn-primary",
+            "button_1_link": "",
+            "button_2_label": "",
+            "button_2_style": "btn-secondary",
+            "button_2_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "slide_Rg4n7f",
+        "slide_4jbejF",
+        "slide_C4jG6k",
+        "slide_Xbc8rn"
+      ],
+      "custom_css": [],
+      "settings": {
+        "color_scheme": "",
+        "heading_size": "h2",
+        "height_desktop": "adapt_img",
+        "height_mobile": "adapt_img",
+        "enable_pagination": true,
+        "enable_navigation": false,
+        "enable_autoplay": true,
+        "delay": 8,
+        "accessibility_content": "Slideshow about our brand"
+      }
+    },
+    "collection_list": {
+      "type": "collection-list",
+      "blocks": {
+        "collection_item_6pNx8D": {
+          "type": "collection_item",
+          "settings": {
+            "collection": "fruit-basket",
+            "custom_image": "shopify://shop_images/Icon.jpg",
+            "custom_title": "90 Minutes",
+            "custom_link": "https://minutes.gulffruits.com/"
+          }
+        },
+        "collection_item_z9wa4y": {
+          "type": "collection_item",
+          "settings": {
+            "collection": "mangoes",
+            "custom_image": "shopify://shop_images/mango_656ac608-e915-4ebe-89d2-cc1d5018a235.jpg",
+            "custom_title": "Mangoes",
+            "custom_link": ""
+          }
+        },
+        "collection_item_iPJVnk": {
+          "type": "collection_item",
+          "settings": {
+            "collection": "best-sellers",
+            "custom_title": "",
+            "custom_link": ""
+          }
+        },
+        "collection_item_DTwJLa": {
+          "type": "collection_item",
+          "settings": {
+            "collection": "fruit-cakes",
+            "custom_title": "",
+            "custom_link": ""
+          }
+        },
+        "collection_item_mjXG3j": {
+          "type": "collection_item",
+          "settings": {
+            "collection": "fruit-basket",
+            "custom_title": "",
+            "custom_link": ""
+          }
+        },
+        "collection_item_BmYrh9": {
+          "type": "collection_item",
+          "settings": {
+            "collection": "platters",
+            "custom_title": "",
+            "custom_link": ""
+          }
+        },
+        "collection_item_dbixKn": {
+          "type": "collection_item",
+          "settings": {
+            "collection": "fruits",
+            "custom_title": "",
+            "custom_link": ""
+          }
+        },
+        "collection_item_AH4Qab": {
+          "type": "collection_item",
+          "settings": {
+            "collection": "vegetables",
+            "custom_title": "",
+            "custom_link": ""
+          }
+        },
+        "collection_item_WWef7a": {
+          "type": "collection_item",
+          "settings": {
+            "collection": "juices",
+            "custom_title": "",
+            "custom_link": ""
+          }
+        },
+        "collection_item_4chMtK": {
+          "type": "collection_item",
+          "settings": {
+            "collection": "party-packs",
+            "custom_title": "",
+            "custom_link": ""
+          }
+        },
+        "collection_item_bmwwaW": {
+          "type": "collection_item",
+          "settings": {
+            "collection": "dates",
+            "custom_title": "",
+            "custom_link": ""
+          }
+        },
+        "collection_item_QBB4GB": {
+          "type": "collection_item",
+          "settings": {
+            "collection": "nuts-seeds",
+            "custom_title": "",
+            "custom_link": ""
+          }
+        },
+        "collection_item_BAFi8x": {
+          "type": "collection_item",
+          "settings": {
+            "collection": "bulk-buy",
+            "custom_title": "",
+            "custom_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "collection_item_6pNx8D",
+        "collection_item_z9wa4y",
+        "collection_item_iPJVnk",
+        "collection_item_DTwJLa",
+        "collection_item_mjXG3j",
+        "collection_item_BmYrh9",
+        "collection_item_dbixKn",
+        "collection_item_AH4Qab",
+        "collection_item_WWef7a",
+        "collection_item_4chMtK",
+        "collection_item_bmwwaW",
+        "collection_item_QBB4GB",
+        "collection_item_BAFi8x"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "subheading": "",
+        "heading": "Shop By Category",
+        "heading_size": "h4",
+        "description": "",
+        "items_per_row_on_desktop": "12",
+        "items_per_row_on_mobile": "4",
+        "enable_carousel": true,
+        "show_progress_indicator": true,
+        "content_alignment": "ta-left",
+        "enable_view_all": true,
+        "button_main_text": "Shows all"
+      }
+    },
+    "product_lists_Dc89P7": {
+      "type": "product-lists",
+      "blocks": {
+        "collection_gVUBHg": {
+          "type": "collection",
+          "settings": {
+            "collection": "essentials-boxes",
+            "heading": ""
+          }
+        }
+      },
+      "block_order": [
+        "collection_gVUBHg"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "subheading": "",
+        "heading": "Essential Box",
+        "heading_size": "h4",
+        "description": "",
+        "items_to_show": 12,
+        "items_per_row_on_desktop": "6",
+        "items_per_row_on_mobile": "2",
+        "enable_carousel": true,
+        "show_progress_indicator": false,
+        "content_alignment": "ta-left",
+        "enable_view_more": true,
+        "button_text": "Show all",
+        "button_link": "shopify://collections/essentials-boxes"
+      }
+    },
+    "product_lists_HhkUxb": {
+      "type": "product-lists",
+      "blocks": {
+        "collection_QhHpr7": {
+          "type": "collection",
+          "settings": {
+            "collection": "mangoes",
+            "heading": ""
+          }
+        }
+      },
+      "block_order": [
+        "collection_QhHpr7"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "subheading": "",
+        "heading": "Mangoes",
+        "heading_size": "h4",
+        "description": "",
+        "items_to_show": 12,
+        "items_per_row_on_desktop": "6",
+        "items_per_row_on_mobile": "2",
+        "enable_carousel": true,
+        "show_progress_indicator": false,
+        "content_alignment": "ta-left",
+        "enable_view_more": true,
+        "button_text": "Show all",
+        "button_link": "shopify://collections/mangoes"
+      }
+    },
+    "image_banner_JeGmjm": {
+      "type": "image-banner",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "image_overlay_opacity": 0,
+        "color_mask_overlay": "",
+        "color_text_overlay": "",
+        "height_desktop": "adapt_img",
+        "content_position_desktop": "middle-md center-md ta-center-md",
+        "height_mobile": "adapt_img",
+        "content_position_mobile": "middle-xs center-xs ta-center",
+        "desktop_image": "shopify://shop_images/Super-fast_51722643-6650-489e-8e82-3fc32f264c54.jpg",
+        "mobile_image": "shopify://shop_images/Super-fast2.jpg",
+        "banner_link": "https://minutes.gulffruits.com"
+      }
+    },
+    "product_lists_8L39EP": {
+      "type": "product-lists",
+      "blocks": {
+        "collection_jfDHyJ": {
+          "type": "collection",
+          "settings": {
+            "collection": "combo-pack",
+            "heading": ""
+          }
+        }
+      },
+      "block_order": [
+        "collection_jfDHyJ"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "subheading": "",
+        "heading": "Combo Packs",
+        "heading_size": "h4",
+        "description": "",
+        "items_to_show": 12,
+        "items_per_row_on_desktop": "6",
+        "items_per_row_on_mobile": "2",
+        "enable_carousel": true,
+        "show_progress_indicator": false,
+        "content_alignment": "ta-left",
+        "enable_view_more": true,
+        "button_text": "Show all",
+        "button_link": "shopify://collections/combo-pack"
+      }
+    },
+    "image_banner_kzqEFy": {
+      "type": "image-banner",
+      "disabled": true,
+      "settings": {
+        "color_scheme": "scheme-1",
+        "image_overlay_opacity": 0,
+        "color_mask_overlay": "",
+        "color_text_overlay": "",
+        "height_desktop": "adapt_img",
+        "content_position_desktop": "middle-md center-md ta-center-md",
+        "height_mobile": "adapt_img",
+        "content_position_mobile": "middle-xs center-xs ta-center",
+        "desktop_image": "shopify://shop_images/Cut-Fruits_93a9ad0f-2c6c-4007-b8ba-6c670b144667.jpg",
+        "mobile_image": "shopify://shop_images/Cut-Fruits-mob.jpg",
+        "banner_link": "shopify://collections/cut-fruits"
+      }
+    },
+    "product_lists_aeM7eL": {
+      "type": "product-lists",
+      "blocks": {
+        "collection_MEWy46": {
+          "type": "collection",
+          "settings": {
+            "collection": "fruit-cakes",
+            "heading": ""
+          }
+        }
+      },
+      "block_order": [
+        "collection_MEWy46"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "subheading": "",
+        "heading": "Melon Cakes",
+        "heading_size": "h4",
+        "description": "",
+        "items_to_show": 12,
+        "items_per_row_on_desktop": "6",
+        "items_per_row_on_mobile": "2",
+        "enable_carousel": true,
+        "show_progress_indicator": false,
+        "content_alignment": "ta-left",
+        "enable_view_more": true,
+        "button_text": "Show all",
+        "button_link": "shopify://collections/fruit-cakes"
+      }
+    },
+    "product_lists_6Enawp": {
+      "type": "product-lists",
+      "blocks": {
+        "collection_pLGWPU": {
+          "type": "collection",
+          "settings": {
+            "collection": "exotic",
+            "heading": ""
+          }
+        }
+      },
+      "block_order": [
+        "collection_pLGWPU"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "subheading": "",
+        "heading": "Exotic",
+        "heading_size": "h4",
+        "description": "",
+        "items_to_show": 12,
+        "items_per_row_on_desktop": "6",
+        "items_per_row_on_mobile": "2",
+        "enable_carousel": true,
+        "show_progress_indicator": false,
+        "content_alignment": "ta-left",
+        "enable_view_more": true,
+        "button_text": "Show all",
+        "button_link": "shopify://collections/exotic"
+      }
+    },
+    "product_lists_nQMmF8": {
+      "type": "product-lists",
+      "blocks": {
+        "collection_bMwDbd": {
+          "type": "collection",
+          "settings": {
+            "collection": "ramadan",
+            "heading": ""
+          }
+        }
+      },
+      "block_order": [
+        "collection_bMwDbd"
+      ],
+      "disabled": true,
+      "settings": {
+        "color_scheme": "scheme-1",
+        "subheading": "",
+        "heading": "Ramadan",
+        "heading_size": "h4",
+        "description": "",
+        "items_to_show": 12,
+        "items_per_row_on_desktop": "6",
+        "items_per_row_on_mobile": "2",
+        "enable_carousel": true,
+        "show_progress_indicator": false,
+        "content_alignment": "ta-left",
+        "enable_view_more": true,
+        "button_text": "Show all",
+        "button_link": "shopify://collections/ramadan"
+      }
+    },
+    "product_lists_cFDDgg": {
+      "type": "product-lists",
+      "blocks": {
+        "collection_cmhigc": {
+          "type": "collection",
+          "settings": {
+            "collection": "daily-essentials",
+            "heading": ""
+          }
+        }
+      },
+      "block_order": [
+        "collection_cmhigc"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "subheading": "",
+        "heading": "Daily Essentials",
+        "heading_size": "h4",
+        "description": "",
+        "items_to_show": 12,
+        "items_per_row_on_desktop": "6",
+        "items_per_row_on_mobile": "2",
+        "enable_carousel": true,
+        "show_progress_indicator": false,
+        "content_alignment": "ta-left",
+        "enable_view_more": true,
+        "button_text": "Show all",
+        "button_link": "shopify://collections/daily-essentials"
+      }
+    },
+    "product_lists_wEGdFx": {
+      "type": "product-lists",
+      "blocks": {
+        "collection_HQrqFU": {
+          "type": "collection",
+          "settings": {
+            "collection": "cut-vegetables",
+            "heading": ""
+          }
+        }
+      },
+      "block_order": [
+        "collection_HQrqFU"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "subheading": "",
+        "heading": "Pre Cuts",
+        "heading_size": "h4",
+        "description": "",
+        "items_to_show": 12,
+        "items_per_row_on_desktop": "6",
+        "items_per_row_on_mobile": "2",
+        "enable_carousel": true,
+        "show_progress_indicator": false,
+        "content_alignment": "ta-left",
+        "enable_view_more": true,
+        "button_text": "Show all",
+        "button_link": "shopify://collections/cut-vegetables"
+      }
+    },
+    "product_lists_z38JVL": {
+      "type": "product-lists",
+      "blocks": {
+        "collection_9WzhBP": {
+          "type": "collection",
+          "settings": {
+            "collection": "berries",
+            "heading": ""
+          }
+        }
+      },
+      "block_order": [
+        "collection_9WzhBP"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "subheading": "",
+        "heading": "Berries",
+        "heading_size": "h4",
+        "description": "",
+        "items_to_show": 12,
+        "items_per_row_on_desktop": "6",
+        "items_per_row_on_mobile": "2",
+        "enable_carousel": true,
+        "show_progress_indicator": false,
+        "content_alignment": "ta-left",
+        "enable_view_more": true,
+        "button_text": "Show all",
+        "button_link": "shopify://collections/berries"
+      }
+    },
+    "product_lists_gcbT6E": {
+      "type": "product-lists",
+      "blocks": {
+        "collection_B4PHD7": {
+          "type": "collection",
+          "settings": {
+            "collection": "cut-fruits",
+            "heading": ""
+          }
+        }
+      },
+      "block_order": [
+        "collection_B4PHD7"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "subheading": "",
+        "heading": "Cut Fruits",
+        "heading_size": "h4",
+        "description": "",
+        "items_to_show": 12,
+        "items_per_row_on_desktop": "6",
+        "items_per_row_on_mobile": "2",
+        "enable_carousel": true,
+        "show_progress_indicator": true,
+        "content_alignment": "ta-left",
+        "enable_view_more": true,
+        "button_text": "Show all",
+        "button_link": "shopify://collections/cut-fruits"
+      }
+    },
+    "product_lists_K49DTx": {
+      "type": "product-lists",
+      "blocks": {
+        "collection_AEdaLH": {
+          "type": "collection",
+          "settings": {
+            "collection": "juices",
+            "heading": ""
+          }
+        }
+      },
+      "block_order": [
+        "collection_AEdaLH"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "subheading": "",
+        "heading": "Fresh Juice",
+        "heading_size": "h4",
+        "description": "",
+        "items_to_show": 12,
+        "items_per_row_on_desktop": "6",
+        "items_per_row_on_mobile": "2",
+        "enable_carousel": true,
+        "show_progress_indicator": false,
+        "content_alignment": "ta-left",
+        "enable_view_more": true,
+        "button_text": "Show all",
+        "button_link": "shopify://collections/juices"
+      }
+    },
+    "image_banner_YLCRYA": {
+      "type": "image-banner",
+      "disabled": true,
+      "settings": {
+        "color_scheme": "scheme-1",
+        "image_overlay_opacity": 0,
+        "color_mask_overlay": "",
+        "color_text_overlay": "",
+        "height_desktop": "adapt_img",
+        "content_position_desktop": "middle-md center-md ta-center-md",
+        "height_mobile": "adapt_img",
+        "content_position_mobile": "middle-xs center-xs ta-center",
+        "desktop_image": "shopify://shop_images/Bulk-Buy1_98fb2b55-3a6f-4ba8-aad8-9ce428313f58.jpg",
+        "mobile_image": "shopify://shop_images/Bulk-Buy2_0663f99b-9c03-410a-870b-220f04e2c540.jpg",
+        "banner_link": "shopify://collections/charity"
+      }
+    },
+    "product_lists_kGBLmH": {
+      "type": "product-lists",
+      "blocks": {
+        "collection_9qdei4": {
+          "type": "collection",
+          "settings": {
+            "collection": "vegetables",
+            "heading": ""
+          }
+        }
+      },
+      "block_order": [
+        "collection_9qdei4"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "subheading": "",
+        "heading": "Vegetables",
+        "heading_size": "h4",
+        "description": "",
+        "items_to_show": 12,
+        "items_per_row_on_desktop": "6",
+        "items_per_row_on_mobile": "2",
+        "enable_carousel": true,
+        "show_progress_indicator": false,
+        "content_alignment": "ta-left",
+        "enable_view_more": true,
+        "button_text": "Show all",
+        "button_link": "shopify://collections/vegetables"
+      }
+    }
+  },
+  "order": [
+    "slideshow_XmfQBy",
+    "collection_list",
+    "product_lists_Dc89P7",
+    "product_lists_HhkUxb",
+    "image_banner_JeGmjm",
+    "product_lists_8L39EP",
+    "image_banner_kzqEFy",
+    "product_lists_aeM7eL",
+    "product_lists_6Enawp",
+    "product_lists_nQMmF8",
+    "product_lists_cFDDgg",
+    "product_lists_wEGdFx",
+    "product_lists_z38JVL",
+    "product_lists_gcbT6E",
+    "product_lists_K49DTx",
+    "image_banner_YLCRYA",
+    "product_lists_kGBLmH"
+  ]
+}

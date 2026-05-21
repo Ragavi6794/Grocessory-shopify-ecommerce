@@ -1,0 +1,104 @@
+{% comment %}
+  This section generates CSS for country flag display in product cards
+  based on product.metafields.custom.odoo_country matching
+{% endcomment %}
+
+<style>
+  {% if section.blocks.size > 0 %}
+    {% for block in section.blocks %}
+      {% case block.type %}
+        {% when 'country_flag' %}
+          {% if block.settings.country_name != blank and block.settings.flag_image != blank %}
+            {% assign country_slug = block.settings.country_name | handleize %}
+            {% assign flag_url = block.settings.flag_image | image_url: width: 32 %}
+            
+            /* Flag for {{ block.settings.country_name }} */
+            .product-country-flag[data-country="{{ block.settings.country_name }}"]::before {
+              content: '';
+              display: inline-block;
+              width: 20px;
+              height: 20px;
+              background-image: url('{{ flag_url }}');
+              background-size: cover;
+              background-position: left;
+              background-repeat: no-repeat;
+              margin-right: 6px;
+              vertical-align: middle;
+              border-radius: 100px;
+            }
+          {% endif %}
+      {% endcase %}
+    {% endfor %}
+  {% endif %}
+
+  /* Base styles for country flag display */
+  .product-country-flag {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .product-country-flag::before {
+    flex-shrink: 0;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Country Flags",
+  "class": "country-flags-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Country Flags Settings"
+    },
+    {
+      "type": "paragraph",
+      "content": "Add country flags with names and links. Click 'Add Country Flag' below to get started."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "country_flag",
+      "name": "Country Flag",
+      "settings": [
+        {
+          "type": "text",
+          "id": "country_name",
+          "label": "Country Name",
+          "default": "Country",
+          "info": "Enter the country name (e.g., United States, United Kingdom)"
+        },
+        {
+          "type": "image_picker",
+          "id": "flag_image",
+          "label": "Flag Image",
+          "info": "Upload the country flag image. Recommended size: 32x32px or larger"
+        },
+        {
+          "type": "url",
+          "id": "country_link",
+          "label": "Country Link",
+          "info": "Optional: Link to country-specific page or language switcher"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_country_name",
+          "label": "Show Country Name",
+          "default": true,
+          "info": "Display country name next to flag (hidden on mobile)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Country Flags",
+      "blocks": [
+        {
+          "type": "country_flag"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

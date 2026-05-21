@@ -1,0 +1,16 @@
+<sht-dialog-quickshop class="sht-dialog dialog__quickshop color-{{ settings.color_scheme_drawer_popover }} no-focus-visible middle-md bottom-xs center-xs p-fixed left-0 top-0 h-100 w-100 o-auto zi-9" id="dialogQuickShop" hidden tabindex="-1">
+  <div class="dialog js-dialog-container disable-scrollbars oy-scroll h-100" role="dialog" aria-labelledby="dialogQuickShopTitle" aria-modal="true">
+    <div class="p-sticky top-0 zi-2">
+      <div class="dialog__header d-flex between-xs middle-xs p-absolute top-0 right-0 bg-transparent">
+        <button type="button" aria-label="{{- "accessibility.close_modal" | t -}}" class="dialog__btn js-dialog-close-btn btn btn-icon btn-small icon btn-secondary">
+          {%- render 'icon-close', size: 16 -%}
+        </button>
+      </div>
+    </div>
+    <div class="dialog__content d-flex fd-column h-100 p-relative">
+      <div class="dialog__body js-dialog-body p-relative">
+      </div>
+    </div>
+  </div>
+</sht-dialog-quickshop>
+

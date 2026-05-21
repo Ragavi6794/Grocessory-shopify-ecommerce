@@ -1,0 +1,39 @@
+{%- comment -%}
+{% render 'card-collection',
+  collection: collection,
+  media_ratio: '1/1',
+  show_product_count: settings.show_product_count,
+  custom_image: block.settings.custom_image,
+  custom_title: block.settings.custom_title,
+  custom_link: block.settings.custom_link
+%}
+{%- endcomment -%}
+{%- liquid
+  assign card_title = custom_title | default: collection.title
+  assign card_url = custom_link | default: collection.url
+
+  assign collection_image = 'collection-1' | placeholder_svg_tag: 'placeholder media of-cover w-100 h-100'
+  assign collection_image = collection.products.first.featured_image | image_url: width: section.settings.hero_image.width | image_tag: widths: '750, 950', sizes: '(min-width: 361px) calc(100vw/2), calc(100vw/3)', alt: card_title, class: 'media of-cover w-100 h-100'
+  assign collection_image = collection.image | image_url: width: section.settings.hero_image.width | image_tag: widths: '750, 950', sizes: '(min-width: 361px) calc(100vw/2), calc(100vw/3)', alt: card_title, class: 'media of-cover w-100 h-100'
+  if custom_image != blank
+    assign collection_image = custom_image | image_url: width: 950 | image_tag: widths: '750, 950', sizes: '(min-width: 361px) calc(100vw/2), calc(100vw/3)', alt: card_title, class: 'media of-cover w-100 h-100'
+  endif
+  if settings.collection_card_style == 'card'
+    assign card_mask = 'sht-mask'
+    assign card_content_classes = 'p-absolute bottom-0 w-100 zi-2'
+    assign card_scheme = 'color-' | append: settings.collection_card_color_scheme
+  endif
+-%}
+<div class="card card-collection ta-start card--{{- settings.collection_card_style }} w-100 p-relative {{ card_scheme }} {{ card_mask }} corner-radius-s" style="--overlay: {{ settings.card_collection_overlay }}">
+  <a aria-label="{{ card_title | escape }}" href="{{ card_url }}" class="d-block h-100 w-100 zi-3 p-absolute"></a>
+  <div class="card__media p-relative ratio" style="--ratio: {{settings.collection_image_ratio}}" >
+    {% render 'image', image_item: collection_image, src: collection_image.src, image_wrap_classes: 'h-100', image_classes: 'h-100 w-100' %}
+  </div>
+  {% if settings.enable_prominent_badges %}
+    {% render 'collection-prominent-badge', collection: collection %}
+  {% endif %}
+  <div class="card__content wb-break-word {{ card_content_classes }}">
+    <h3 class="fw-700 m-zero card__heading">{{ card_title }}</h3>
+    <span class="card-collection__btn wb-break-word btn btn-link btn-small {{ settings.show_product_count | default: ' d-none-important' | replace: 'true', '' }}">{{ 'general.collection.view_collection' | t: count: collection.products.size }}</span>
+  </div>
+</div>

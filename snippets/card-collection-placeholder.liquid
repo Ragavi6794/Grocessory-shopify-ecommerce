@@ -1,0 +1,20 @@
+{%- liquid
+  assign collection_placeholder = 'collection-1' | placeholder_svg_tag: 'placeholder media of-cover w-100 h-100'
+  assign collection_title      = 'sections.collection_list.collection.title' | t
+  if settings.collection_card_style == 'card'
+    assign card_mask = 'sht-mask'
+    assign card_content_classes = 'p-absolute bottom-0 w-100 zi-2'
+    assign card_scheme = 'color-' | append: settings.collection_card_color_scheme
+  endif
+-%}
+<div class="card card-collection ta-start card--{{- settings.collection_card_style }} w-100 p-relative {{ card_scheme }} {{ card_mask }} corner-radius-s" style="--overlay: {{ settings.card_collection_overlay }}">
+  <a href="#" aria-label="{{ collection_title }}" aria-disabled="true" class="d-block pe-no-link p-absolute w-100 h-100 zi-3"></a>
+  <div class="card__media p-relative ratio" style="--ratio: {{settings.collection_image_ratio}}" >
+
+    {% render 'image', image_item: collection_placeholder, image_wrap_classes: 'h-100', image_classes: 'h-100 w-100' %}
+  </div>
+  <div class="card__content wb-break-word {{ card_content_classes }}">
+    <h3 class="fw-700 m-zero card__heading">{{ collection_title }}</h3>
+    <span class="card-collection__btn wb-break-word btn btn-link btn-small {{ settings.show_product_count | default: ' d-none-important' | replace: 'true', '' }}">{{ 'general.collection.view_collection' | t: count: '68' }}</span>
+  </div>
+</div>

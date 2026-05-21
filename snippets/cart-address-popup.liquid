@@ -1,0 +1,948 @@
+<!-- Address Modal -->
+<div id="addressModal" class="address-modal">
+  <div class="address-modal-content">
+    <div class="address-modal-header">
+      {% if localization.language.iso_code == "ar" %}
+        <h3>إضافة عنوان جديد</h3>
+        {% else %}
+        <h3>Add New Address</h3>
+      {% endif %}
+      <span class="close-modal" onclick="closeAddressModal()">&times;</span>
+    </div>
+    
+    <div id="successMessage" class="success-message">
+      {% if localization.language.iso_code == "ar" %}
+        تمت إضافة العنوان بنجاح!
+      {% else %}
+        Address added successfully!
+      {% endif %}
+
+    </div>
+    
+    <div id="errorMessage" class="error-message-modal">
+      <span id="errorText"></span>
+    </div>
+    
+    <div class="address-form d-flex fw-wrap r-gap-24 r-gap-md-32">
+      <div class="clm" style="--w-md:6">
+        <label for="addressFirstNameNew" class="field__label d-block mb-8 fw-700">
+          {% if localization.language.iso_code == "ar" %}
+            الاسم الأول
+          {% else %}
+            First Name
+          {% endif %}
+          <span class="ml-4 color-error">*</span></label>
+        <input class="field__text field--focus field--hover w-100" type="text" id="addressFirstNameNew" autocomplete="given-name" placeholder="{% if localization.language.iso_code == "ar" %}الاسم الأول{% else %}First Name{% endif %}" required/>
+        <div class="field-error" id="firstNameError" style="display: none;">
+          {% if localization.language.iso_code == "ar" %}
+            الاسم الأول مطلوب
+          {% else %}
+            First name is required
+          {% endif %}
+        </div>
+      </div>
+      
+      <div class="clm" style="--w-md:6">
+        <label for="addressLastNameNew" class="field__label d-block mb-8 fw-700">
+          {% if localization.language.iso_code == "ar" %}
+          اسم العائلة
+          {% else %}
+            Last Name
+          {% endif %}  
+        <span class="ml-4 color-error">*</span></label>
+        <input class="field__text field--focus field--hover w-100" type="text" id="addressLastNameNew" autocomplete="family-name" placeholder="{% if localization.language.iso_code == "ar" %}اسم العائلة{% else %}Last Name{% endif %}" required/>
+        <div class="field-error" id="lastNameError" style="display: none;">
+          {% if localization.language.iso_code == "ar" %}
+            اسم العائلة مطلوب
+          {% else %}
+            Last name is required
+          {% endif %}  
+        </div>
+      </div>
+      
+      
+      <div class="clm" style="--w-md:6">
+        <label for="addressPhoneNew" class="field__label d-block mb-8 fw-700">
+          {% if localization.language.iso_code == "ar" %}
+            رقم الهاتف
+          {% else %}
+            Phone Number
+          {% endif %} 
+          <span class="ml-4 color-error">*</span></label>
+        <div class="phone-input-wrapper" style="display: flex; align-items: center;">
+          <span class="phone-prefix" style="background: #f8f9fa; border: 1px solid #ddd; border-right: none; padding: 10px 12px; border-radius: 4px 0 0 4px; font-weight: 500;">+971</span>
+          <input class="field__text field--focus field--hover" style="border-radius: 0 4px 4px 0; flex: 1;" type="tel" id="addressPhoneNew" autocomplete="tel" placeholder="50 1234567" pattern="^(50|52|54|55|56|58)\s?\d{7}$" title="Please enter a valid UAE mobile number" required/>
+        </div>
+        <div class="field-error" id="phoneError" style="display: none;">
+          {% if localization.language.iso_code == "ar" %}
+             يرجى إدخال رقم هاتف محمول صالح في الإمارات (مثال: 50 1234567)
+          {% else %}
+           Please enter a valid UAE mobile number (e.g., 50 1234567)
+          {% endif %}        
+        </div>
+      </div>
+      
+      <div class="clm" style="--w-md:6">
+        <label for="addressVillaFlatNew" class="field__label d-block mb-8 fw-700">
+          {% if localization.language.iso_code == "ar" %}
+            عنوان الفيلا/الشقة
+          {% else %}
+            Villa/Flat Address
+          {% endif %}   
+        <span class="ml-4 color-error">*</span></label>
+        <input class="field__text field--focus field--hover w-100" type="text" id="addressVillaFlatNew" autocomplete="address-line1" placeholder="{% if localization.language.iso_code == "ar" %}عنوان الفيلا/الشقة{% else %}Villa/Flat Address{% endif %}" required/>
+        <div class="field-error" id="villaFlatError" style="display: none;">Villa/Flat address is required</div>
+      </div>
+      
+      <div class="clm" style="--w-md:6">
+        <label for="addressAddress1New" class="field__label d-block mb-8 fw-700">
+          {% if localization.language.iso_code == "ar" %}
+            عنوان الشارع
+          {% else %}
+            Street Address
+          {% endif %}  
+          <span class="ml-4 color-error">*</span></label>
+        <input class="field__text field--focus field--hover w-100" type="text" id="addressAddress1New" autocomplete="address-line2" placeholder="{% if localization.language.iso_code == "ar" %}عنوان الشارع{% else %}Street Address{% endif %}" required/>
+        <div class="field-error" id="address1Error" style="display: none;">Address is required</div>
+      </div>
+      
+      <div class="clm" style="--w-md:6">
+        <label for="addressCityNew" class="field__label d-block mb-8 fw-700">
+          {% if localization.language.iso_code == "ar" %}
+            المدينة
+          {% else %}
+              Area
+            {% endif %}
+          <span class="ml-4 color-error">*</span></label>
+        <input class="field__text field--focus field--hover w-100" type="text" id="addressCityNew" autocomplete="address-level2" placeholder="{% if localization.language.iso_code == "ar" %}المدينة{% else %}Area{% endif %}" required/>
+        <div class="field-error" id="cityError" style="display: none;">City is required</div>
+      </div>
+
+      <!-- Hidden country field with default UAE value -->
+      <input type="hidden" id="addressCountryNew" value="AE" />
+      
+      <div class="clm" style="--w-md:6">
+        <label for="addressProvinceNew" class="field__label d-block mb-8 fw-700">
+          {% if localization.language.iso_code == "ar" %}
+            الولاية / المحافظة
+          {% else %}
+            State/Province
+          {% endif %}   
+        <span class="ml-4 color-error">*</span></label>
+        <select class="field__text field--focus field--hover w-100" id="addressProvinceNew" autocomplete="address-level1" required>
+          <option value="" selected disabled>  
+            {% if localization.language.iso_code == "ar" %}
+              اختر الإمارة
+            {% else %}
+              Select State
+            {% endif %}
+           </option>
+          <option value="Dubai">
+            {% if localization.language.iso_code == "ar" %}
+              دبي
+            {% else %}
+              Dubai
+            {% endif %}
+          </option>
+          <option value="Abu Dhabi">
+            {% if localization.language.iso_code == "ar" %}
+              أبوظبي
+            {% else %}
+              Abu Dhabi
+            {% endif %}
+          </option>
+        </select>
+        <div class="field-error" id="provinceError" style="display: none;">State is required</div>
+      </div>
+      
+      <div class="clm" style="--w-xs:12">
+        <label class="custom-checkbox-label d-flex align-items-center c-pointer">
+          <input type="checkbox" id="setDefaultAddress" class="custom-checkbox-input">
+          <span class="custom-checkbox"></span>
+          <span class="checkbox-text">
+            {% if localization.language.iso_code == "ar" %}
+              تعيين كعنوان افتراضي
+            {% else %}
+              Set as default address
+            {% endif %}
+          </span>
+        </label>
+      </div>
+      
+      <div class="clm d-flex end-md gap-12 fd-column-reverse fd-row-md" style="--w-xs:12">
+        <button class="btn btn-large btn-secondary" type="button" onclick="closeAddressModal()">
+          {% if localization.language.iso_code == "ar" %}
+           إلغاء 
+          {% else %}
+            Cancel
+          {% endif %}
+        </button>
+        <button class="btn btn-large btn-primary" id="saveBtn" type="button" onclick="saveAddressViaAPI()">
+          <span id="saveButtonText">
+          {% if localization.language.iso_code == "ar" %}
+           إضافة العنوان
+          {% else %}
+            Add Address
+          {% endif %}
+          </span>
+          <span id="saveButtonSpinner" style="display: none;">Adding...</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.delivery-address {
+    margin-bottom: 10px;
+    border-radius: 0;
+}
+
+.address-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.address-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 500;
+}
+.change-address {
+    text-decoration: none;
+    font-size: 14px;
+    color: #3866df;
+    border-radius: 4px;
+}
+.address-list {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    margin-bottom: 14px;
+}
+
+.address-option {
+  display: flex;
+  align-items: flex-start;
+  background: #db325e33;
+  border-radius: 8px;
+  border: 2px solid #ccc;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.address-option input[type="radio"] {
+  margin-top: 8px;
+  cursor: pointer;
+}
+.address-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+    padding: 1rem;
+    padding-right: 5px;
+    margin-bottom: 1rem;
+    gap: 2rem;
+    width: 100%;
+}
+
+.address-left p,
+.address-right p {
+  margin: 2px 0;
+}
+
+.default-badge {
+  top: 8px;
+  right: 2px;
+  background: #db325e;
+  color: white;
+  padding: 3px 8px;
+  font-size: 12px;
+ }
+</style>
+
+<style>
+.delivery-address {
+    margin-bottom: 10px;
+    border-radius: 0;
+}
+
+.address-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.address-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 500;
+}
+.change-address {
+    text-decoration: none;
+    font-size: 14px;
+    color: #3866df;
+    border-radius: 4px;
+}
+.address-list {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    margin-bottom: 14px;
+}
+
+.address-option {
+  display: flex;
+  align-items: flex-start;
+  background: #fdfdfd !important;
+  border-radius: 8px;
+  border: 2px solid #ccc;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.address-option input[type="radio"] {
+  margin-top: 8px;
+  cursor: pointer;
+}
+.address-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  position: relative;
+  margin-bottom: 1rem;
+  flex-direction: row;
+}
+
+.address-left p,
+.address-right p {
+  margin: 2px 0;
+}
+
+.default-badge {
+  top: 8px;
+  right: 2px;
+  background: #db325e;
+  font-weight: bold;
+}
+
+.address-left {
+  flex: 1;
+}
+
+.address-right {
+  text-align: right;
+  min-width: 180px;
+}
+
+.info-block {
+  margin-bottom: 8px;
+}
+
+.label {
+  font-weight: bold;
+  margin-bottom: 2px;
+  display: block;
+}
+
+/* .address-option:hover, .address-option input[type="radio"]:checked {
+  border: 2px solid #ff4f4f;
+  border-radius: 8px;
+} */
+.address-option:hover, 
+.address-option:has(input[type="radio"]:checked){
+  border: 2px solid #fcebef;
+  border-radius: 8px;
+  background: #fcebef !important;
+}
+#datepicker, #local_delivery {
+    border: 1px solid #fdeef0 !important;
+    background: #fdeef0 !important;
+}
+  .ld_text_input_icon_wrapper svg {
+    top: 10px;
+    color: #db325e !important;
+}
+  .info-block {
+    text-align: justify;
+}
+  .phone-label{
+    color: #000;
+  }
+  label{
+    color: #000;
+  }
+
+  /* Address Modal Styles */
+  .address-modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+  }
+
+  .address-modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 30px;
+    border: none;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 800px;
+    overflow-y: auto;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  }
+
+  .address-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+  }
+
+  .address-modal-header h3 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .close-modal {
+    color: #aaa;
+    font-size: 32px;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    background: none;
+    border: none;
+  }
+
+  .close-modal:hover,
+  .close-modal:focus {
+    color: #000;
+  }
+
+  .success-message {
+    display: none;
+    background-color: #d4edda;
+    color: #155724;
+    padding: 12px 20px;
+    border: 1px solid #c3e6cb;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-weight: 500;
+  }
+
+  .error-message-modal {
+    display: none;
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 12px 20px;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-weight: 500;
+  }
+
+  .field-error {
+    color: #dc3545;
+    font-size: 14px;
+    margin-top: 5px;
+    display: none;
+  }
+
+  .field-error.show {
+    display: block;
+  }
+
+  /* Custom Checkbox Styling */
+  .custom-checkbox-label {
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+    gap: 8px;
+  }
+  .address-form .field__text {
+    padding: 0 0.6rem;
+  }
+
+  .custom-checkbox-input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+
+  .custom-checkbox {
+    position: relative;
+    height: 20px;
+    width: 20px;
+    background-color: #fff;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .custom-checkbox-input:checked ~ .custom-checkbox {
+    background-color: #3866df;
+    border-color: #3866df;
+  }
+
+  .custom-checkbox:after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 4px;
+    top: 0px;
+    width: 6px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+
+  .custom-checkbox-input:checked ~ .custom-checkbox:after {
+    display: block;
+  }
+
+  .checkbox-text {
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+  }
+
+  .custom-checkbox-label:hover .custom-checkbox {
+    border-color: #3866df;
+  }
+
+  /* Responsive modal */
+  @media (max-width: 768px) {
+    .address-modal-content {
+      margin: 2% auto;
+      padding: 20px;
+      width: 95%;
+      max-height: 95vh;
+    }
+    .address-left p {
+      font-size: 11px;
+    }
+    label.address-option .address-box {
+      gap: 5px;
+      padding: 0.5rem;
+    }
+    
+    .address-modal-header h3 {
+      font-size: 20px;
+    }
+  }
+
+  /* Custom dropdown styling for addressProvinceNew */
+  #addressProvinceNew {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+    padding-right: 40px;
+    cursor: pointer;
+  }
+
+  #addressProvinceNew:focus {
+    outline: none;
+    border-color: #3866df;
+    box-shadow:  0 6px 18px #3866df59 ;
+  }
+</style>
+
+<script>
+// Address Modal Functions
+function openAddressModal() {
+  document.getElementById('addressModal').style.display = 'block';
+  clearForm();
+  hideMessages();
+}
+
+function closeAddressModal() {
+  document.getElementById('addressModal').style.display = 'none';
+  clearForm();
+  hideMessages();
+}
+
+function clearForm() {
+  const form = document.querySelector('.address-form');
+  const inputs = form.querySelectorAll('input, select');
+  inputs.forEach(input => {
+    if (input.type === 'checkbox') {
+      input.checked = false;
+    } else if (input.id === 'addressCountryNew') {
+      // Keep the hidden country field value as "AE"
+      input.value = 'AE';
+    } else {
+      input.value = '';
+    }
+  });
+  hideValidationErrors();
+}
+
+function hideMessages() {
+  document.getElementById('successMessage').style.display = 'none';
+  document.getElementById('errorMessage').style.display = 'none';
+}
+
+function hideValidationErrors() {
+  const errors = document.querySelectorAll('.field-error');
+  errors.forEach(error => error.style.display = 'none');
+}
+
+function showError(message) {
+  const errorDiv = document.getElementById('errorMessage');
+  const errorText = document.getElementById('errorText');
+  errorText.textContent = message;
+  errorDiv.style.display = 'block';
+  document.getElementById('successMessage').style.display = 'none';
+}
+
+function showSuccess(message) {
+  const successDiv = document.getElementById('successMessage');
+  successDiv.textContent = message;
+  successDiv.style.display = 'block';
+  document.getElementById('errorMessage').style.display = 'none';
+}
+
+function validateForm() {
+  let isValid = true;
+  hideValidationErrors();
+
+  // Get current language
+  const isArabic = '{{ localization.language.iso_code }}' === 'ar';
+
+  // Required fields validation with translatable messages
+  const requiredFields = [
+    { 
+      id: 'addressFirstNameNew', 
+      errorId: 'firstNameError', 
+      message: isArabic ? 'الاسم الأول مطلوب' : 'First name is required' 
+    },
+    { 
+      id: 'addressLastNameNew', 
+      errorId: 'lastNameError', 
+      message: isArabic ? 'اسم العائلة مطلوب' : 'Last name is required' 
+    },
+    { 
+      id: 'addressPhoneNew', 
+      errorId: 'phoneError', 
+      message: isArabic ? 'رقم الهاتف مطلوب' : 'Phone number is required' 
+    },
+    { 
+      id: 'addressVillaFlatNew', 
+      errorId: 'villaFlatError', 
+      message: isArabic ? 'عنوان الفيلا/الشقة مطلوب' : 'Villa/Flat address is required' 
+    },
+    { 
+      id: 'addressAddress1New', 
+      errorId: 'address1Error', 
+      message: isArabic ? 'عنوان الشارع مطلوب' : 'Address is required' 
+    },
+    { 
+      id: 'addressProvinceNew', 
+      errorId: 'provinceError', 
+      message: isArabic ? 'الولاية مطلوبة' : 'State is required' 
+    },
+    { 
+      id: 'addressCityNew', 
+      errorId: 'cityError', 
+      message: isArabic ? 'المدينة مطلوبة' : 'City is required' 
+    }
+  ];
+
+  requiredFields.forEach(field => {
+    const input = document.getElementById(field.id);
+    const error = document.getElementById(field.errorId);
+    
+    if (!input.value.trim()) {
+      error.textContent = field.message;
+      error.style.display = 'block';
+      isValid = false;
+    }
+  });
+
+  // Phone validation with translatable message
+  const phone = document.getElementById('addressPhoneNew').value.trim();
+  const phoneError = document.getElementById('phoneError');
+  const phonePattern = /^(50|52|54|55|56|58)\s?\d{7}$/;
+  
+  if (phone && !phonePattern.test(phone)) {
+    phoneError.textContent = isArabic ? 
+      'يرجى إدخال رقم هاتف محمول صالح في الإمارات (مثال: 50 1234567)' : 
+      'Please enter a valid UAE mobile number (e.g., 50 1234567)';
+    phoneError.style.display = 'block';
+    isValid = false;
+  }
+
+  return isValid;
+}
+
+async function saveAddressViaAPI() {
+  console.log('🔥 Address Modal Debug: Function called - saveAddressViaAPI()');
+  console.log('🕐 Address Modal Debug: Timestamp:', new Date().toISOString());
+  
+  if (!validateForm()) {
+    console.log('🚫 Address Modal Debug: Form validation failed');
+    return;
+  }
+
+  console.log('✅ Address Modal Debug: Form validation passed');
+
+  const saveBtn = document.getElementById('saveBtn');
+  const saveText = document.getElementById('saveButtonText');
+  const saveSpinner = document.getElementById('saveButtonSpinner');
+  
+  console.log('🎯 Address Modal Debug: Button elements found:', {
+    saveBtn: !!saveBtn,
+    saveText: !!saveText,
+    saveSpinner: !!saveSpinner
+  });
+  
+  // Show loading state
+  saveBtn.disabled = true;
+  saveText.style.display = 'none';
+  saveSpinner.style.display = 'inline';
+  hideMessages();
+
+  console.log('🚀 Address Modal Debug: Starting address creation...');
+  console.log('🌐 Address Modal Debug: Current page URL:', window.location.href);
+  console.log('🍪 Address Modal Debug: Document cookies:', document.cookie);
+  console.log('👤 Address Modal Debug: Customer logged in check:', typeof customer !== 'undefined');
+
+  try {
+    // Get form data
+    const addressData = {
+      firstName: document.getElementById('addressFirstNameNew').value.trim(),
+      lastName: document.getElementById('addressLastNameNew').value.trim(),
+      company: '',
+      phone: '+971' + document.getElementById('addressPhoneNew').value.trim(),
+      address1: document.getElementById('addressVillaFlatNew').value.trim(),
+      address2: document.getElementById('addressAddress1New').value.trim(),
+      city: document.getElementById('addressCityNew').value.trim(),
+      province: document.getElementById('addressProvinceNew').value.trim(),
+      zip: '',
+      country: document.getElementById('addressCountryNew').value,
+      isDefault: document.getElementById('setDefaultAddress').checked
+    };
+
+    console.log('📋 Address Modal Debug: Form data collected:', addressData);
+    console.log('📋 Address Modal Debug: Form data validation:');
+    console.log('  - First Name:', addressData.firstName ? '✓' : '✗', `"${addressData.firstName}"`);
+    console.log('  - Last Name:', addressData.lastName ? '✓' : '✗', `"${addressData.lastName}"`);
+    console.log('  - Phone:', addressData.phone ? '✓' : '✗', `"${addressData.phone}"`);
+    console.log('  - Address1:', addressData.address1 ? '✓' : '✗', `"${addressData.address1}"`);
+    console.log('  - City:', addressData.city ? '✓' : '✗', `"${addressData.city}"`);
+    console.log('  - Province:', addressData.province ? '✓' : '✗', `"${addressData.province}"`);
+    console.log('  - Country:', addressData.country ? '✓' : '✗', `"${addressData.country}"`);
+    console.log('  - ZIP:', addressData.zip ? '✓' : '✗', `"${addressData.zip}"`);
+    console.log('  - Default:', addressData.isDefault ? 'Yes' : 'No');
+    console.log('  - Checkbox element:', document.getElementById('setDefaultAddress'));
+    console.log('  - Checkbox checked property:', document.getElementById('setDefaultAddress').checked);
+    console.log('  - Checkbox value being sent:', addressData.isDefault ? '1' : '0');
+
+    // Check if customer is logged in
+    console.log('🔍 Address Modal Debug: Shopify object check:');
+    console.log('  - window.Shopify exists:', !!window.Shopify);
+    console.log('  - window.Shopify.shop exists:', !!(window.Shopify && window.Shopify.shop));
+    console.log('  - Shopify shop value:', window.Shopify ? window.Shopify.shop : 'N/A');
+    
+    if (!window.Shopify || !window.Shopify.shop) {
+      console.error('❌ Address Modal Debug: Shopify object not found');
+      showError('Shopify integration error. Please refresh the page.');
+      return;
+    }
+
+    console.log('✅ Address Modal Debug: Shopify object validated successfully');
+
+    // Prepare form data for submission
+    const formData = new URLSearchParams({
+      'form_type': 'customer_address',
+      'utf8': '✓',
+      'address[first_name]': addressData.firstName,
+      'address[last_name]': addressData.lastName,
+      'address[company]': '',
+      'address[phone]': addressData.phone,
+      'address[address1]': addressData.address1,
+      'address[address2]': addressData.address2,
+      'address[city]': addressData.city,
+      'address[province]': addressData.province,
+      'address[zip]': '',
+      'address[country]': addressData.country
+    });
+
+    // Only add default parameter if checkbox is checked
+    if (addressData.isDefault) {
+      formData.append('address[default]', '1');
+    }
+
+    console.log('📤 Address Modal Debug: Form data prepared for submission');
+    console.log('📤 Address Modal Debug: Request URL: /account/addresses');
+    console.log('📤 Address Modal Debug: Request method: POST');
+    console.log('📤 Address Modal Debug: Form data string:', formData.toString());
+    console.log('📤 Address Modal Debug: Form data entries:');
+    for (const [key, value] of formData.entries()) {
+      console.log(`    ${key}: "${value}"`);
+    }
+
+    // Use Shopify's customer address creation endpoint
+    console.log('🌐 Address Modal Debug: Making fetch request...');
+    console.log('🕐 Address Modal Debug: Request start time:', new Date().toISOString());
+    
+    const response = await fetch('/account/addresses', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'X-Requested-With': 'XMLHttpRequest',
+        'Accept': 'application/json, text/html, */*'
+      },
+      body: formData
+    });
+
+    console.log('🕐 Address Modal Debug: Response received time:', new Date().toISOString());
+    console.log('📥 Address Modal Debug: Response status:', response.status);
+    console.log('📥 Address Modal Debug: Response status text:', response.statusText);
+    console.log('📥 Address Modal Debug: Response OK:', response.ok);
+    console.log('📥 Address Modal Debug: Response type:', response.type);
+    console.log('📥 Address Modal Debug: Response URL:', response.url);
+    console.log('📥 Address Modal Debug: Response redirected:', response.redirected);
+    console.log('📥 Address Modal Debug: Response headers:', Object.fromEntries(response.headers.entries()));
+
+    if (response.ok) {
+      console.log('✅ Address Modal Debug: Response status is OK (200-299)');
+      const responseText = await response.text();
+      console.log('📄 Address Modal Debug: Response text length:', responseText.length);
+      console.log('📄 Address Modal Debug: Response content type:', response.headers.get('content-type'));
+      console.log('📄 Address Modal Debug: Full response text:', responseText);
+      
+      // Check if response contains any error indicators
+      const containsError = responseText.toLowerCase().includes('error');
+      const containsInvalid = responseText.toLowerCase().includes('invalid');
+      const containsFailed = responseText.toLowerCase().includes('failed');
+      const containsSuccess = responseText.toLowerCase().includes('success');
+      const containsAddress = responseText.toLowerCase().includes('address');
+      
+      console.log('🔍 Address Modal Debug: Response content analysis:');
+      console.log('  - Contains "error":', containsError);
+      console.log('  - Contains "invalid":', containsInvalid);
+      console.log('  - Contains "failed":', containsFailed);
+      console.log('  - Contains "success":', containsSuccess);
+      console.log('  - Contains "address":', containsAddress);
+      
+      // Get current language for success message
+      const isArabic = '{{ localization.language.iso_code }}' === 'ar';
+      const successMessage = isArabic ? 'تمت إضافة العنوان بنجاح!' : 'Address added successfully!';
+      showSuccess(successMessage);
+      
+      // Wait 2 seconds then close modal and refresh page
+      setTimeout(() => {
+        console.log('🔄 Address Modal Debug: Timeout triggered after 2 seconds');
+        console.log('🔄 Address Modal Debug: Closing modal and refreshing page');
+        console.log('🔄 Address Modal Debug: About to call closeAddressModal()');
+        closeAddressModal();
+        console.log('🔄 Address Modal Debug: About to call window.location.reload()');
+        window.location.reload();
+      }, 2000);
+      
+    } else {
+      const errorText = await response.text();
+      console.error('❌ Address Modal Debug: HTTP Error:', response.status, response.statusText);
+      console.error('❌ Address Modal Debug: Error response:', errorText);
+      
+      // Try to parse error message from response
+      let errorMessage = 'Failed to add address. Please try again.';
+      
+      // Check if response contains HTML with error messages
+      if (errorText.includes('error') || errorText.includes('Error')) {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(errorText, 'text/html');
+        const errorElements = doc.querySelectorAll('.errors, .error, .field-error, [class*="error"]');
+        
+        if (errorElements.length > 0) {
+          const errors = Array.from(errorElements).map(el => el.textContent.trim()).filter(text => text);
+          if (errors.length > 0) {
+            errorMessage = `Address creation failed: ${errors.join(', ')}`;
+          }
+        }
+      }
+      
+      // Check for specific error conditions
+      if (response.status === 401) {
+        errorMessage = 'Please log in to add addresses.';
+      } else if (response.status === 403) {
+        errorMessage = 'Permission denied. Please log in again.';
+      } else if (response.status === 422) {
+        errorMessage = 'Invalid address data. Please check all fields.';
+      } else if (response.status === 429) {
+        errorMessage = 'Too many requests. Please wait and try again.';
+      }
+      
+      showError(errorMessage);
+    }
+
+  } catch (error) {
+    console.error('❌ Address Modal Debug: Network/JavaScript error:', error);
+    console.error('❌ Address Modal Debug: Error stack:', error.stack);
+    
+    let errorMessage = 'An error occurred. Please try again.';
+    
+    if (error.name === 'TypeError' && error.message.includes('fetch')) {
+      errorMessage = 'Network error. Please check your connection and try again.';
+    } else if (error.name === 'SyntaxError') {
+      errorMessage = 'Invalid response from server. Please try again.';
+    }
+    
+    showError(errorMessage);
+  } finally {
+    // Reset button state
+    console.log('🔄 Address Modal Debug: Resetting button state');
+    saveBtn.disabled = false;
+    saveText.style.display = 'inline';
+    saveSpinner.style.display = 'none';
+  }
+}
+
+// Add debugging function to check customer login status
+function checkCustomerStatus() {
+  console.log('👤 Address Modal Debug: Customer status check');
+  console.log('👤 Customer object:', typeof customer !== 'undefined' ? customer : 'undefined');
+  console.log('👤 Shopify object:', typeof Shopify !== 'undefined' ? Shopify : 'undefined');
+  console.log('👤 Current URL:', window.location.href);
+  console.log('👤 Cookies:', document.cookie);
+}
+
+// Close modal when clicking outside of it
+window.onclick = function(event) {
+  const modal = document.getElementById('addressModal');
+  if (event.target === modal) {
+    closeAddressModal();
+  }
+}
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'Escape') {
+    const modal = document.getElementById('addressModal');
+    if (modal.style.display === 'block') {
+      closeAddressModal();
+    }
+  }
+});
+</script>

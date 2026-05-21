@@ -1,0 +1,39 @@
+{% for i in (1..5) %}
+  <div class="d-flex fw-wrap gap-8" id="mainproductComparisonPrice-{{ forloop.index }}" role="status">
+    {% render 'product-price', product: product, target: product.selected_or_first_available_variant %}
+  </div>
+
+  <div class="hide-empty fw-700" id="mainproductComparisonInventoryTracking-{{ forloop.index }}">
+    {%- if product.selected_or_first_available_variant.inventory_quantity > 0 -%}
+      {%- liquid
+        assign stock_status = 'product--instock color-success'
+        if settings.product_information_low_stock_threshold > 0 and settings.product_information_low_stock_threshold >= product.selected_or_first_available_variant.inventory_quantity
+          assign stock_status = 'product--lowstock color-warning'
+        endif
+      -%}
+      <span class="product-inventory-tracking icon-dot-shadow {{ stock_status }} p-relative">
+        {%- if settings.product_information_low_stock_threshold > 0 and settings.product_comparison_show_stock_number -%}
+          {{ 'products.product.in_stock_html' | t: stock:  product.selected_or_first_available_variant.inventory_quantity }}
+        {%- else -%}
+          {{ 'products.product.in_stock' | t }}
+        {%- endif -%}
+      </span>
+    {%- else -%}
+      {%- if product.selected_or_first_available_variant.inventory_policy != 'continue' and product.selected_or_first_available_variant.inventory_management != blank -%}
+        <span class="product-inventory-tracking icon-dot-shadow product--outstock p-relative color-error">{{ 'products.product.out_of_stock' | t }}</span>
+      {% else %}
+        <span class="product-inventory-tracking icon-dot-shadow product--instock color-success p-relative">
+        {{ 'products.product.in_stock' | t }}
+        </span>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+
+{% endfor %}
+{% schema %}
+  {
+    "name": "t:sections.main_product.name",
+    "tag": "section",
+    "class": "main-product-comparison d-none-important"
+  }
+  {% endschema %}

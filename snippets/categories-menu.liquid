@@ -1,0 +1,188 @@
+
+<style>
+  .categories-filter {
+    padding: 15px;
+    border-radius: 8px;
+    max-height: 400px;
+    overflow: auto;
+    filter: drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.16));
+    background-color: #fff;
+    margin-bottom: 34px;
+    scrollbar-width: none;
+    padding-top: 0;
+    border-bottom: 20px solid white;
+  }
+
+  .category-radio-btn-div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .category-filter-level-2 {
+    padding-left: 1rem;
+  }
+
+  .category-radio-btn {
+    position: relative;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-right: 0.5rem;
+  }
+
+  .category-radio-btn-circle {
+    position: absolute;
+    width: 1.8rem;
+    height: 1.8rem;
+    border-radius: 50%;
+    background-color: whitesmoke;
+    border: 1px solid lightgrey;
+  }
+
+  .category-radio-btn-circle--active {
+    border: 6px solid #db325e;
+  }
+
+  .categories-filter h3 {
+    color: #db325e;
+    font-size: 20px;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: white;
+    padding-bottom: 9px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #d3d3d36b;
+  }
+
+  .categories-filter ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .categories-filter li {
+    margin: 5px 0;
+    position: relative;
+  }
+
+  .categories-filter a {
+    text-decoration: none;
+    color: #000;
+    padding-bottom: 11px;
+    font-size: 16px;
+    gap: 3px;
+  }
+
+  .categories-filter a:hover {
+    color: #db325e;
+  }
+
+  .toggle-subcategories {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 8px;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    right: 20px;
+    top: 40%;
+  }
+  .toggle-subcategories.expanded {
+    transform: rotate(180deg);
+    top: 10px;
+    right: 0;
+  }
+  .subcategory-list {
+    display: none;
+    margin-left: 1rem;
+    padding-left: 1rem;
+  }
+
+  .subcategory-list.active {
+    display: block;
+  }
+ @media screen and (max-width: 1024px){ 
+  .categories-filter {
+    max-height: none;
+    overflow: visible;
+    filter: unset;
+    margin-bottom: unset;
+    border-bottom: unset;
+  }
+   .filter__drawer__body:has(.categories-filter) {
+     padding-top: 0;
+   }
+}
+</style>
+
+<div class="categories-filter">
+  <h3>Categories</h3>
+  <ul>
+    {% for link in linklists['categories'].links %}
+      <li>
+        <a class="category-radio-btn-div category-filter-level-1" href="{{ link.url }}" title="{{ link.title }}">
+          <div class="category-radio-btn">
+            <span class="category-radio-btn-circle"></span>
+          </div>
+          <span>
+            {{ link.title }}
+          </span>
+        </a>
+        {% if link.links.size > 0 %}
+          <button class="toggle-subcategories">
+            <svg class="open icon-chevron-down p-absolute" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" focusable="false">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M19.7071 9.00421L18.2929 7.59L12 13.8829L5.70712 7.59L4.29291 9.00421L12 16.7113L19.7071 9.00421Z"></path>
+            </svg>
+          </button>
+          <ul class="subcategory-list">
+            {% for sublink in link.links %}
+              <li>
+                <a class="category-radio-btn-div category-filter-level-2" href="{{ sublink.url }}" title="{{ sublink.title }}">
+                  <div class="category-radio-btn">
+                    <span class="category-radio-btn-circle"></span>
+                  </div>
+                  <span>
+                    {{ sublink.title }}
+                  </span>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const currentURL = window.location.pathname; // Get current path without query parameters
+
+    // Handle active class for category radio buttons
+    document.querySelectorAll(".category-radio-btn-div").forEach((link) => {
+      const href = link.getAttribute("href");
+      const radioCircle = link.querySelector(".category-radio-btn-circle");
+      if (href !== "" && href !== "#" && radioCircle) {
+        const linkURL = new URL(link.href, window.location.origin).pathname; // Get clean path
+        if (linkURL && linkURL !== "#" && linkURL === currentURL) {
+          radioCircle.classList.add("category-radio-btn-circle--active");
+        } else {
+          radioCircle.classList.remove("category-radio-btn-circle--active");
+        }
+      }
+    });
+
+    // Handle subcategory expand/collapse
+    document.querySelectorAll(".toggle-subcategories").forEach((button) => {
+      button.addEventListener("click", function () {
+        const subcategoryList = this.nextElementSibling;
+        subcategoryList.classList.toggle("active");
+        this.classList.toggle("expanded");
+      });
+    });
+  });
+</script>

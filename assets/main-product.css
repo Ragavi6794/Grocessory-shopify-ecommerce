@@ -1,0 +1,402 @@
+div#mobileBottomNav {
+    display: none;
+}
+.product__info-wrapper .product__variants--radios span.product-swatches.product-swatches--text_only.product-variant-label {
+    padding: 12px 32px;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    background: #fff;
+    font-size: 12px;
+    min-width: fit-content;
+    height: auto;
+}
+
+/* Delivery Info Styling */
+.delivery-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    margin-top: 12px;
+    background: #5D12390D;
+}
+
+.delivery-info img {
+    flex-shrink: 0;
+}
+
+.delivery-text {
+    flex: 1;
+}
+
+.delivery-message {
+    font-size: 12px;
+    line-height: 1.4;
+    color: #5D1239;
+}
+
+.delivery-countdown {
+    font-size: 18px;
+    font-weight: 700;
+    color: #000;
+    font-family: monospace;
+    letter-spacing: 1px;
+}
+
+/* Dynamic Add to Cart Button Styles */
+.atc-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+/* Initial Add to Cart Button */
+.atc-initial-btn {
+    background: #5D1239;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 14px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.atc-initial-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+/* Quantity Controls Container */
+.atc-quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+}
+
+.atc-quantity-controls.d-none {
+    display: none !important;
+}
+
+.atc-quantity-controls.d-flex {
+    display: flex !important;
+}
+
+/* View Cart Button */
+.view-cart-btn {
+    background: #5D1239;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+        padding: 11px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    gap:10px;
+}
+.atc-quantity-controls p {
+    margin-top: 5px;
+}
+.view-cart-btn:hover {
+    opacity:0.5;
+}
+
+.view-cart-btn svg {
+    flex-shrink: 0;
+}
+
+/* Quantity Controls */
+.product__quantity-controls {
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #5D1239;
+}
+.expandable-content__btn .btn-link:hover {
+    color: black;
+}
+.product__quantity-controls path {
+    fill: #5D1239 !important;
+}
+.qty-btn-minus,
+.qty-btn-plus {
+    background: #fff;
+
+    width: fit-content;
+    padding: 10px;fff
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.qty-btn-minus:hover,
+.qty-btn-plus:hover {
+    opacity:0.5;
+}
+
+.qty-btn-minus:disabled,
+.qty-btn-plus:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.product__quantity-controls .qty-element {
+    width: 60px;
+    height: 44px;
+    border: none;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+    background: #fff;
+    margin-left: 0 !important;
+    color: #5D1239;
+}
+
+.product__quantity-controls .qty-element:focus {
+    outline: none;
+}
+
+/* Hide initial button when quantity controls are shown */
+.atc-wrapper.show-quantity .atc-initial-btn {
+    display: none;
+}
+
+.atc-wrapper.show-quantity .atc-quantity-controls {
+    display: flex !important;
+    justify-content: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header__icons .header__icon.header__icon--cart {
+        display: block !important;
+    }
+    .atc-quantity-controls {
+        flex-direction: row;
+        gap: 12px;
+    }
+    
+    .view-cart-btn {
+        justify-content: center;
+    }
+    
+    .qty-element {
+        flex: 1;
+    }
+    .btn-slideshow-thumb .media{
+      display:none;
+    }
+    sht-vert-carousel-itm .btn-slideshow-thumb {
+        width: 8px;
+        height: 8px;
+        background: #E2D4DB;
+    }
+    sht-vert-carousel-itm {
+      border-radius: 100px;
+    }
+    .product-slideshow__thumbnail .product-slideshow__thumb {
+      padding-inline: 3px;
+    }
+    .is-active-item .btn-slideshow-thumb {
+      background: #AB8498;
+    }
+    .product-slideshow__thumbnail {
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      top: 85%;
+    }
+}
+.view-cart-btn {
+    width: 55%;
+}
+.product__info-stock {
+    display: flex;
+    justify-content: space-between;
+}
+span.product-inventory-tracking {
+    font-family: Poppins;
+    font-weight: 500;
+    font-size: 14px;
+}
+h1.product-title-size {
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+ .product__info .badge--sale{
+  background: white;
+  color: #1CB859;
+  font-weight: 500;
+  font-size:14px;
+  margin:0;
+}
+.delivery-logo {
+    padding: 5px;
+    background: #5D12394D;
+    border-radius: 5px;
+    display: flex;
+}
+.wk_cashback_product {
+    margin: 0 !important;
+}
+
+@media (min-width: 768px) {
+    .product-rating-badge  {
+        top: 94% !important;
+        left: 14% !important;
+    }
+    sht-share-prd-btn{
+        top: 94% !important;
+    }
+    .delivery-info {
+    margin-bottom: 1em !important;
+    }
+    .view-cart-btn {
+     width: 60% !important;
+    }
+}
+@media (min-width: 768px) and (max-width: 1024px) {
+    .atc-wrapper.show-quantity .atc-quantity-controls {
+      justify-content: center !important;
+    }
+    sht-carousel-wrapper .product__badge {
+        left: 5% !important;
+    }
+    sht-carousel .product-badges {
+        right: 5%;
+    }
+    sht-atc-frm.product__form .plp-atc-btn {
+     top: 85% !important;
+    }
+}
+
+@media (min-width: 1024px) {
+    .atc-wrapper.show-quantity .atc-quantity-controls {
+      justify-content: flex-start !important;
+    }
+}
+
+.atc-quantity-controls path {
+    fill: #5D1239;
+}
+@media (max-width: 768px) {
+    .product__info-container {
+        padding-bottom: 0;
+    }
+    .main-product.section {
+        padding: 0;
+    }
+    .product-details {
+     gap: 10px !important;
+    }
+    .delivery-info {
+      width: 100% !important;
+    }
+    .header-wrapper .header {
+   gap: 0 !important;
+}
+}
+
+.section.footer {
+    margin-top: 0 !important;
+}
+
+a.language-button {
+    display: none;
+}
+.header__icons {
+   gap: 13px !important;
+    padding: 0px 5px !important;
+}
+.header__icons .btn-icon {
+    width: fit-content !important;
+}
+div:empty {
+    display: none;
+}
+
+.js-web-share-api-container .icon {
+  background: none;
+    border: none;
+    top: -10px;
+    position: relative;
+}
+.js-web-share-api-btn:hover, .js-web-share-api-btn:focus {
+    box-shadow: none !important;
+}
+.js-web-share-api-btn:hover:before{
+    opacity:0 !important;
+}
+/* View Cart Loading Spinner */
+.view-cart-btn.is-loading {
+    pointer-events: none;
+    position: relative;
+}
+
+.view-cart-btn.is-loading svg,
+.view-cart-btn.is-loading p {
+    opacity: 0;
+}
+
+.view-cart-btn.is-loading::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: viewCartSpinner 0.8s linear infinite;
+}
+
+@keyframes viewCartSpinner {
+    to {
+        transform: rotate(360deg);
+    }
+}
+sht-carousel-wrapper .product__badge {
+    position: absolute;
+    z-index: 1;
+    left: 0;
+}
+sht-carousel-wrapper  span.badge {
+    padding: 2px 8px;
+    font-size: 11px !important;
+    margin: 0;
+}
+sht-carousel-wrapper span.badge.badge--sale {
+    background: #DD1F45;
+    font-weight: 400;
+    color: white;
+}
+
+.expandable-content[data-expanded] {
+    max-height: 8rem;
+    transition: max-height .2s ease-in-out;
+}
+sht-prd-recom.product-recommendations p.product-promo-badge {
+    font-size: 10px !important;
+}
+.product-details .price__sale .price-item.price-item--regular {
+    color: #98A2B3;
+}
+.product-slideshow__thumbs {
+    background: #F9F6F7;
+    border-radius: 10px;
+    padding: 2px;
+}
+
+.atc-wrapper .atc-quantity-controls path{
+    fill: white;
+    stroke: white;
+}

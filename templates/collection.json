@@ -1,0 +1,57 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "breadcrumb": {
+      "type": "breadcrumb",
+      "settings": {
+        "color_scheme": "scheme-1"
+      }
+    },
+    "header": {
+      "type": "main-collection-header",
+      "settings": {
+        "color_scheme": "scheme-2",
+        "image_overlay_opacity": 0,
+        "color_mask_overlay": "",
+        "color_text_overlay": "",
+        "heading_size": "h2",
+        "show_collection_image": false,
+        "show_description": false,
+        "height_desktop": "auto",
+        "content_position_desktop": "middle-md center-md ta-center-md",
+        "height_mobile": "auto",
+        "content_position_mobile": "middle-xs center-xs ta-center"
+      }
+    },
+    "main": {
+      "type": "main-collection-products",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "show_collection_title": false,
+        "item_per_page": 24,
+        "main_collection_layout": "grid",
+        "enabel_grid_list_layout": false,
+        "items_per_row_on_desktop": "4",
+        "items_per_row_on_mobile": "2",
+        "enable_filter": true,
+        "enable_sort": true,
+        "filter_sort_layout": "side-bar",
+        "expand_all_filter": false,
+        "enable_comparison": false
+      }
+    }
+  },
+  "order": [
+    "breadcrumb",
+    "header",
+    "main"
+  ]
+}

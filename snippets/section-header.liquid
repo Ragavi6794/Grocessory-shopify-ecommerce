@@ -1,0 +1,81 @@
+{% comment %}
+  Renders section header
+  Example usage:
+  {% render 'section-header',
+    section: section,
+    classes: 'w-100 h-100 p-relative zi-1',
+    header_style: header_style,
+    content_position_desktop: section.settings.content_position_desktop,
+    content_position_mobile: section.settings.content_position_mobile,
+    subheading: section.settings.subheading,
+    heading: section.settings.heading,
+    heading_size: section.settings.heading_size,
+    description: section.settings.description,
+    countdown: section.settings.enable_countdown_timer,
+    button_1_label: section.settings.button_1_label,
+    button_1_style: section.settings.button_1_style,
+    button_1_link: section.settings.button_1_link,
+    button_2_label: section.settings.button_2_label,
+    button_2_style: section.settings.button_2_style,
+    button_2_link: section.settings.button_2_link
+
+  %}
+{% endcomment %}
+{%- liquid
+  assign classes = classes | default: 's-header'
+  if content_align == 'ta-center'
+    assign content_align = 'middle-xs center-xs ta-center'
+  elsif content_align == 'ta-left'
+    assign content_align = 'start-xs top-xs ta-start'
+  endif
+
+  assign content_align_class_desktop = 'start-md ta-left-md'
+  if content_position_desktop contains 'ta-center'
+    assign content_align_class_desktop = 'center-md ta-center-md'
+  endif
+
+  assign content_align_class_mobile = 'start-xs ta-left'
+  if content_position_mobile contains 'ta-center'
+    assign content_align_class_mobile = 'center-xs ta-center'
+  endif
+
+-%}
+
+
+<div class="s-header__content d-flex fd-column hide-empty {{ content_align }} {{ classes }} {{ content_position_mobile }} {{ content_position_desktop }} wb-break-word" {{ header_style }}>
+  {%- if subheading != blank -%}
+    <span class="s-header__subheading s-header__sub hide-empty d-inline-block fw-700 wb-break-word js-animate anm anm-fadeInUpSmall" style="--duration: .6s;">{{- subheading | escape -}}</span>
+  {%- endif -%}
+  {%- if heading != blank -%}
+    <h2 id="sectionHeading-{{ section.id | md5 | truncate: 12, "" }}" class="s-header__heading top-picks-header s-header__title wb-break-word {{ heading_classes }} {{ heading_size }} js-animate anm anm-fadeInUpSmall" style="--duration: .6s;">{{- heading | escape -}}</h2>
+  {%- endif -%}
+  {%- if description != blank -%}
+    <div class="s-header__description s-header__desc text-block wb-break-word hide-empty {{ description_class }} {{ description_class_md }} {{ description_extra_class }} js-animate anm anm-fadeInUpSmall" style="--duration: .7s; --delay: .05s">{{- description -}}</div>
+  {%- endif -%}
+  {%- if countdown -%}
+    {% assign class = 's-header__countdown w-100 s-header__description ' | append: content_position_mobile | append: ' ' | append: content_position_desktop %}
+    {%- render 'countdown', block: section, class:  class -%}
+  {%- endif -%}
+  {%- if button_1_label != blank or button_2_label != blank -%}
+  <div class="s-header__buttons d-inline-flex gap-8 fw-wrap js-animate anm anm-fadeInUpSmall {{ content_align_class_mobile }} {{ content_align_class_desktop }}" style="--duration: .7s; --delay: .05s">
+    {%- if button_1_label != blank -%}
+      <a class="btn btn-large {{ button_1_style | default: 'btn-primary' }}" href="{{- button_1_link | default: '#' -}}">{{- button_1_label | escape -}}</a>
+    {%- endif -%}
+    {%- if button_2_label != blank -%}
+      <a class="btn btn-large {{ button_2_style | default: 'btn-secondary' }}" href="{{- button_2_link | default: '#' -}}">{{- button_2_label | escape -}}</a>
+    {%- endif -%}
+  </div>
+  {%- endif -%}
+
+  {% if button_label != blank and button_link != blank %}
+    <a href="{{ button_link }}" class="section_headingLink">
+      <span>{{ button_label }}</span>
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </a>
+  {% endif %}
+</div>
+<style>
+  .top-picks-header{
+    margin-top:5px;
+  }
+</style>
